@@ -1,7 +1,7 @@
 # practz
 Install below packages before getting started to react-native<br/>
 1.First install react-native cli
-```react-native cli``` 
+```react-native cli``` <br/>
 ```npm install -g react-native-cli``` <br/>
 2.Set up Android development environment <br/>
 	i.install android sdk (install via android studio) <br/>
