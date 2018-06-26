@@ -14,3 +14,4 @@ eg:sdk.dir =C:\\Users\\username\\AppData\\Local\\Android\\Sdk
 5.To run
  ```cd project_folder``` 
  ```react-native run-android```
+ 
