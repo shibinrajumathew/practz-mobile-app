@@ -59,7 +59,6 @@ componentWillUnmount() {
 
       const { navigate } = this.props.navigation;
     return (
-      <KeyboardAvoidingView behavior="padding"  style={styles.container}>
         <View style={styles.logoContainer}>
           {}
         <Image source={require('./img/download.png')}
@@ -68,12 +67,6 @@ componentWillUnmount() {
 
       </View>
 
-
-
-
-
-  </KeyboardAvoidingView>
-
     );
   }
 }
@@ -81,7 +74,7 @@ componentWillUnmount() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#5e3f8c',
   },
  img:{
    width: (Dimensions.get('window').width),
@@ -94,32 +87,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  myForm: {
-    flex:1.5,
-    marginTop:10,
-    padding: 20,
-  },
-  formTitle:{
-    flex:2,
-    fontSize: 22,
-    textAlign: 'center',
-    color: 'black',
-  },
-  input:{
-    height: 60,
-    padding: 20,
-    backgroundColor: '#f2f2f2',
-    marginBottom: 10,
-  },
-  buttonContainer:{
-    backgroundColor: '#5c8a8a',
-    paddingVertical: 25,
 
-  },
-  buttonText:{
-    textAlign: 'center',
-    color: '#fff',
-    fontWeight: 'bold',
-
-  }
 });
