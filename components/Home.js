@@ -75,7 +75,7 @@ class Message extends React.Component {
 
 export default TabNavigator(
   {
-    Home: { screen: HomeScreen },
+    Home: { screen: Home },
     Attempted: { screen: Attempted },
     Notes: { screen: Notes },
     Message:{ screen: Message},

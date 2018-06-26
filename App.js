@@ -13,7 +13,9 @@ export const SimpleApp = StackNavigator({
 
   Home: { screen: Splash },
   Login:{ screen: Login},
-  Dash:{ screen: Dash},
+  Dash:{ screen: Dash,
+    navigationOptions: { header: 'Dash title'},
+  },
 
 
 });

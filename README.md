@@ -9,7 +9,7 @@ npm install -g react-native-cli<br/>
 	<br/>
 3.Install adb (optional for run in real devices)<br/>
 4.Create a local.properties file inside the android folder.<br/>
-eg:sdk.dir =C:\\Users\\shibin\\AppData\\Local\\Android\\Sdk<br/>
+eg:sdk.dir =C:\\Users\\username\\AppData\\Local\\Android\\Sdk<br/>
 5.To run <br/>
  cd project<br/>
  react-native run-android<br/>
