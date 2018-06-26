@@ -46,7 +46,7 @@ class Attempted extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Settings!</Text>
+        <Text>Attempt!</Text>
 
       </View>
     );
@@ -57,7 +57,7 @@ class Notes extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Details!</Text>
+        <Text>Notes!</Text>
       </View>
     );
   }
