@@ -1,20 +1,23 @@
 /* @flow */
 
+import ProgressBarAnimated from 'react-native-progress-bar-animated';
 import React, { Component } from 'react';
+import styles from './Assests/Style';
+import {MessagePage} from './MessagePage';
+import {ProfilePage} from './ProfilePage';
+import {LandingPage} from './LandingPage';
+import {AttemptedPage} from './AttemptedPage';
+import {NotesPage} from './NotesPage';
 import Icon from 'react-native-ionicons';
 import { StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
 import {
   View,
   ScrollView,
   Image,
-  TextInput,
-  Picker,
-  KeyboardAvoidingView,
   TouchableOpacity,
   Dimensions,
   Text,
   Alert,
-  NetInfo,
   Button,
   StyleSheet,
   AsyncStorage,
@@ -22,22 +25,13 @@ import {
 
 
  class Home extends Component {
-  static navigationOptions = {
-  headerLeft: null,
-  title: 'Hospital Admin',
-  headerStyle:{
-    backgroundColor:'#1993cb',
-  },
-  headerTitleStyle:{
-    color:'white',
-  },
-  };
   render() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Home!</Text>
+    const { navigate } = this.props.navigation;
 
-      </View>
+    return (
+      <ScrollView style={[styles.container,styles.flexcol]} >
+        <LandingPage navigation={this.props.navigation}/>
+      </ScrollView>
     );
   }
 }
@@ -45,10 +39,9 @@ import {
 class Attempted extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Attempt!</Text>
-
-      </View>
+      <ScrollView style={[styles.container,styles.flexcol]} >
+        <AttemptedPage/>
+      </ScrollView>
     );
   }
 }
@@ -56,18 +49,27 @@ class Attempted extends React.Component {
 class Notes extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Notes!</Text>
-      </View>
+      <ScrollView style={[styles.container,styles.flexcol]} >
+        <NotesPage/>
+      </ScrollView>
     );
   }
 }
-class Message extends React.Component {
+class Message extends Component {
   render() {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Message!</Text>
-      </View>
+      <ScrollView style={[styles.container,styles.flexcol]} >
+      <MessagePage/>
+      </ScrollView>
+    );
+  }
+}
+class Profile extends Component {
+  render() {
+    return (
+      <ScrollView style={[styles.container,styles.flexcol]} >
+      <ProfilePage/>
+      </ScrollView>
     );
   }
 }
@@ -79,6 +81,7 @@ export default TabNavigator(
     Attempted: { screen: Attempted },
     Notes: { screen: Notes },
     Message:{ screen: Message},
+    Profile:{ screen: Profile},
   },
   {
     navigationOptions: ({ navigation }) => ({
@@ -88,15 +91,14 @@ export default TabNavigator(
         if (routeName === 'Home') {
           iconName = `ios-home${focused ? '' : '-outline'}`;
         } else if (routeName === 'Attempted') {
-          iconName = `ios-refresh${focused ? '' : '-outline'}`;
+          iconName = `ios-refresh-circle${focused ? '' : '-outline'}`;
         } else if (routeName === 'Notes') {
           iconName = `ios-clipboard${focused ? '' : '-outline'}`;
         } else if (routeName === 'Message') {
           iconName = `ios-mail-open${focused ? '' : '-outline'}`;
+        } else if (routeName === 'Profile') {
+          iconName = `ios-person${focused ? '' : '-outline'}`;
         }
-
-        // You can return any component that you like here! We usually use an
-        // icon component from react-native-vector-icons
         return <Icon name={iconName} size={25} color={tintColor} />;
       },
     }),

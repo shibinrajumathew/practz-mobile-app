@@ -28,14 +28,9 @@ export default class Login extends Component {
 
   static navigationOptions = {
     title:'Please Login',
-  //   title: (<Image source={require('./images/pro_logo_ins.png')}
-  //
-  // /> ),
-  headerStyle:{
+    headerStyle:{
     display:'none',},
-  headerTitleStyle: {
-    // marginLeft:'auto',
-    // marginRight:'auto',
+    headerTitleStyle: {
     fontWeight:'bold',
     display:'none',
   },
@@ -45,8 +40,19 @@ export default class Login extends Component {
 
 componentDidMount() {
   this.timeoutHandle = setTimeout(()=>{
-                  this.props.navigation.navigate('Login');
-         }, 5000);
+    AsyncStorage.multiGet(['authority']).then((data) => {
+        let user = data[0][1];
+        if (user !== null)
+        {
+          this.props.navigation.navigate('Dash');
+        }else {
+          this.props.navigation.navigate('Login');
+        }
+
+    });
+
+
+         }, 50);
 }
 
 
@@ -61,7 +67,7 @@ componentWillUnmount() {
     return (
         <View style={styles.logoContainer}>
           {}
-        <Image source={require('./img/download.png')}
+        <Image source={require('./Assests/images/download.png')}
         style={styles.img}
       />
 

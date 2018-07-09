@@ -1,4 +1,4 @@
-/* Login page for practz no sign up 
+/* Login page for practz no sign up
 *  Author: shibin
 */
 import React, { Component } from 'react';
@@ -17,6 +17,7 @@ import {
   StyleSheet,
   AsyncStorage,
 } from 'react-native';
+import Load from "react-native-loading-gif";
 
 export default class Login extends Component {
   constructor(){
@@ -41,28 +42,47 @@ export default class Login extends Component {
 
 checkUser(){
   console.log("onCheck user:");
-  fetch('https://ideal.dev.practz.com/practz/login', {
+  this.refs.Load.OpenLoad();
+  fetch('https://demoreg.practz.com/login', {
   method: 'post',
   headers: {
     'Accept': 'application/json, text/plain,',
     'Content-Type': 'application/json'
   },
   body: JSON.stringify({
-    "username" :"orgadmin1@mozanta.com",
-    "password":"practz",
+    "username" : this.state.emailid,
+    "password": this.state.pass,
+    // "username" :"demo_reg_admin@practz.com",
+    // "password":"Demoadmin",
     "appId":"ILEARN",
-    "domainName":"ideal.dev.practz.com"
+    "domainName":"demoreg.practz.com"
   })
 })
   .then(response =>  response.json())
   .then(responseobj => {
+    this.refs.Load.CloseLoad();
     this.setState({
 
     });
-    console.log("return----login status:",responseobj.success);
+    if(responseobj["status"] != undefined){
+      if(responseobj["error"]=="Unauthorized"){
+      console.log("wrong user");
+      Alert.alert("Wrong username or password");
+    }else{
+        console.log("another error");
+      }
+    }else if((responseobj.data.principal.authorities[0].authority)=="ROLE_EF_CRT_ORG_ADMN"){
 
+    AsyncStorage.multiSet([[ "authority","ROLE_EF_CRT_ORG_ADMN" ]]);
+    console.log("done");
+    this.props.navigation.navigate('Dash');
+  }
+    else{
+    Alert.alert("Wrong username or password");
+    console.log("Something out of control");
+    console.log("you are logged in status:",responseobj.data.principal.authorities[0].authority);
+  }
 
-    // this.props.navigation.navigate(this.reDirect());
   })
   .catch((error) => {
       console.error(error);
@@ -89,33 +109,14 @@ componentDidMount() {
   }
 });
 
-
-//Get session for future use do not rewrite
-// AsyncStorage.multiGet(['user', 'role_no']).then((data) => {
-//     let user = data[0][1];
-//
-//     let role_no = data[1][1];
-// //navigate('Admin')
-//     if (role_no !== null)
-//     {
-//       this.setState({xtest:data[1][1]});
-//       this.props.navigation.navigate(this.reDirect());
-//
-//
-//     }
-//
-// });
-
 }
 
   render() {
-
-
       const { navigate } = this.props.navigation;
     return (
       <ScrollView behavior="padding"  style={styles.container}>
         <View style={styles.logoContainer}>
-        <Image source={require('./img/logo2.png')}
+        <Image source={require('./Assests/images/logo2.png')}
         style={styles.img}
       />
       <Text style={{
@@ -155,7 +156,6 @@ componentDidMount() {
           onChangeText={(text) => this.setState({pass:text})}
           placeholder="Password"
         />
-
         <TouchableOpacity
           onPress={() => this.checkUser()}
           title="Home" style={styles.buttonContainer}
@@ -172,6 +172,7 @@ componentDidMount() {
           }}  >Forgot password ?</Text>
           </View>
         </View>
+        <Load ref="Load"></Load>
   </ScrollView>
 
     );
