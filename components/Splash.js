@@ -13,63 +13,59 @@ import {
 } from 'react-native';
 
 
-
-
-
-
 export default class Login extends Component {
-  constructor(){
+  constructor() {
     //inherit parent props
     super();
     //create dynamic variables
-    this.state={
+    this.state = {
     }
   }
 
   static navigationOptions = {
-    title:'Please Login',
-    headerStyle:{
-    display:'none',},
+    title: 'Please Login',
+    headerStyle: {
+      display: 'none',
+    },
     headerTitleStyle: {
-    fontWeight:'bold',
-    display:'none',
-  },
+      fontWeight: 'bold',
+      display: 'none',
+    },
 
   };
 
 
-componentDidMount() {
-  this.timeoutHandle = setTimeout(()=>{
-    AsyncStorage.multiGet(['authority']).then((data) => {
+  componentDidMount() {
+    this.timeoutHandle = setTimeout(() => {
+      AsyncStorage.multiGet(['authority']).then((data) => {
         let user = data[0][1];
-        if (user !== null)
-        {
+        if (user !== null) {
           this.props.navigation.navigate('Dash');
-        }else {
+        } else {
           this.props.navigation.navigate('Login');
         }
 
-    });
+      });
 
 
-         }, 50);
-}
+    }, 50);
+  }
 
 
-componentWillUnmount() {
+  componentWillUnmount() {
 
-         clearTimeout(this.timeoutHandle);
-}
+    clearTimeout(this.timeoutHandle);
+  }
   render() {
 
 
-      const { navigate } = this.props.navigation;
+    const { navigate } = this.props.navigation;
     return (
-        <View style={styles.logoContainer}>
-          {}
+      <View style={styles.logoContainer}>
+        {}
         <Image source={require('./Assests/images/download.png')}
-        style={styles.img}
-      />
+          style={styles.img}
+        />
 
       </View>
 
@@ -82,11 +78,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#5e3f8c',
   },
- img:{
-   width: (Dimensions.get('window').width),
-   height: (Dimensions.get('window').height),
+  img: {
+    width: (Dimensions.get('window').width),
+    height: (Dimensions.get('window').height),
 
- },
+  },
   logoContainer: {
     flex: 1,
     width: Dimensions.get('window').width,

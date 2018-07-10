@@ -3,11 +3,11 @@
 import ProgressBarAnimated from 'react-native-progress-bar-animated';
 import React, { Component } from 'react';
 import styles from './Assests/Style';
-import {MessagePage} from './MessagePage';
-import {ProfilePage} from './ProfilePage';
-import {LandingPage} from './LandingPage';
-import {AttemptedPage} from './AttemptedPage';
-import {NotesPage} from './NotesPage';
+import { MessagePage } from './MessagePage';
+import { ProfilePage } from './ProfilePage';
+import { LandingPage } from './LandingPage';
+import { AttemptedPage } from './AttemptedPage';
+import { NotesPage } from './NotesPage';
 import Icon from 'react-native-ionicons';
 import { StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
 import {
@@ -24,13 +24,13 @@ import {
 } from 'react-native';
 
 
- class Home extends Component {
+class Home extends Component {
   render() {
     const { navigate } = this.props.navigation;
 
     return (
-      <ScrollView style={[styles.container,styles.flexcol]} >
-        <LandingPage navigation={this.props.navigation}/>
+      <ScrollView style={[styles.container, styles.flexcol]} >
+        <LandingPage navigation={this.props.navigation} />
       </ScrollView>
     );
   }
@@ -39,8 +39,8 @@ import {
 class Attempted extends React.Component {
   render() {
     return (
-      <ScrollView style={[styles.container,styles.flexcol]} >
-        <AttemptedPage/>
+      <ScrollView style={[styles.container, styles.flexcol]} >
+        <AttemptedPage />
       </ScrollView>
     );
   }
@@ -49,8 +49,8 @@ class Attempted extends React.Component {
 class Notes extends React.Component {
   render() {
     return (
-      <ScrollView style={[styles.container,styles.flexcol]} >
-        <NotesPage/>
+      <ScrollView style={[styles.container, styles.flexcol]} >
+        <NotesPage />
       </ScrollView>
     );
   }
@@ -58,8 +58,8 @@ class Notes extends React.Component {
 class Message extends Component {
   render() {
     return (
-      <ScrollView style={[styles.container,styles.flexcol]} >
-      <MessagePage/>
+      <ScrollView style={[styles.container, styles.flexcol]} >
+        <MessagePage />
       </ScrollView>
     );
   }
@@ -67,8 +67,8 @@ class Message extends Component {
 class Profile extends Component {
   render() {
     return (
-      <ScrollView style={[styles.container,styles.flexcol]} >
-      <ProfilePage/>
+      <ScrollView style={[styles.container, styles.flexcol]} >
+        <ProfilePage />
       </ScrollView>
     );
   }
@@ -80,8 +80,8 @@ export default TabNavigator(
     Home: { screen: Home },
     Attempted: { screen: Attempted },
     Notes: { screen: Notes },
-    Message:{ screen: Message},
-    Profile:{ screen: Profile},
+    Message: { screen: Message },
+    Profile: { screen: Profile },
   },
   {
     navigationOptions: ({ navigation }) => ({
