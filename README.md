@@ -11,13 +11,13 @@ Open an Administrator Command Prompt (right click Command Prompt and select "Run
 1.First install react-native cli <br/>
 ```npm install -g react-native-cli``` <br/>
 2.Set up Android development environment <br/>
- *i.install android sdk (install via android studio) <br/>
- *ii.install avd <br/>
- *iii.Configure the ANDROID_HOME environment variable <br/>
+ * install android sdk (install via android studio) <br/>
+ * install avd <br/>
+ * Configure the ANDROID_HOME environment variable <br/>
      <br/>
 3.Install adb (optional for run in real devices) <br/>
 4.Create a local.properties file inside the android folder. <br/>
- *eg:```sdk.dir =C:\\Users\\username\\AppData\\Local\\Android\\Sdk``` <br/>
+ * eg:```sdk.dir =C:\\Users\\username\\AppData\\Local\\Android\\Sdk``` <br/>
 <br/>
 First time in practz project then<br/>
 ```npm install``` <br/>
@@ -30,7 +30,7 @@ First time in practz project then<br/>
  (if you getting "Unable to load script from assets index.android.bundle")<br/>
 <br/>
 6.(in project directory) mkdir android/app/src/main/assets<br/>
-7.react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+7.``react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res``
 <br/>
 You can automate the above steps by placing them in scripts part of package.json like this:<br/>
 
