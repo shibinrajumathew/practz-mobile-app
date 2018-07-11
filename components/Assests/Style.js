@@ -61,6 +61,16 @@ export default StyleSheet.create({
     backgroundColor: '#ffffff',
 
   },
+  questionBox:{
+    padding: 10,
+    width: (Dimensions.get('window').width) - 40,
+  },
+  answers:{
+    borderBottomWidth: 1,
+    padding: 10,
+    borderColor: '#cbcbcb',
+    height: 50
+  },
   innerTextBox: {
     padding: 10,
     width: (Dimensions.get('window').width) - 40,
