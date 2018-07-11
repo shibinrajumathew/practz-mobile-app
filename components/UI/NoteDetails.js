@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 
-export default class NoteDetails extends Component<Props> {
+export default class NoteDetails extends Component {
   constructor(props) {
 
        super(props)

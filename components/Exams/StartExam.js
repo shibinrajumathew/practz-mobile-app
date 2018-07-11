@@ -99,12 +99,37 @@ onActionSelected(position) {
           </View>
           <ScrollView horizontal={true} style={{flex:1,marginTop: 10}}>
             <View style={[styles.flexrow]}>
-            <View style={[styles.questionUnattended]}></View><Text style={[styles.lightFont]} > Unattended </Text>
-            <View style={[styles.questionUnattended]}></View><Text style={[styles.lightFont]} > Unattended </Text>
-            <View style={[styles.questionUnattended]}></View><Text style={[styles.lightFont]} > Unattended </Text>
-            <View style={[styles.questionUnattended]}></View><Text style={[styles.lightFont]} > Unattended </Text>
-            <View style={[styles.questionForReview]}></View><Text style={[styles.lightFont]}> Attended </Text>
-            <View ><Icon name='ios-checkmark-circle' size={20} color='#8BC34A' /></View><Text style={[styles.lightFont]}> Marked for review</Text>
+              <View style={[styles.questionUnattended]}>
+                <View style={[styles.textInsideCircle]}>
+                  <Text style={[styles.lightFont]} >1</Text>
+                </View>
+              </View>
+            <View style={[styles.questionUnattended]}>
+              <View style={[styles.textInsideCircle]}>
+                <Text style={[styles.lightFont]} >2</Text>
+              </View>
+            </View>
+            <View style={[styles.questionUnattended]}>
+              <View style={[styles.textInsideCircle]}>
+                <Text style={[styles.lightFont]} >3</Text>
+              </View>
+            </View>
+            <View style={[styles.questionUnattended]}>
+              <View style={[styles.textInsideCircle]}>
+                <Text style={[styles.lightFont]} >4</Text>
+              </View>
+            </View>
+            <View style={[styles.questionForReview]}>
+              <View style={[styles.textInsideCircle]}>
+                <Text style={[styles.lightFont]} >5</Text>
+              </View>
+            </View>
+            <View style={[styles.questionAttended]}>
+              <View style={[styles.textInsideCircle]}> 
+                    <Text style={[styles.lightFont]}>6</Text>
+              </View>
+            </View>
+
             </View>
           </ScrollView>
         </View>
