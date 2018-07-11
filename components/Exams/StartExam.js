@@ -3,7 +3,7 @@ import Icon from 'react-native-ionicons';
 import ProgressBarAnimated from 'react-native-progress-bar-animated';
 import React, { Component } from 'react';
 import RadioButton from 'radio-button-react-native';
-import styles from '../Assests/Style';
+import styles from '../Assets/Style';
 import {
   View,
   ScrollView,

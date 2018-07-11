@@ -115,7 +115,7 @@ export default class Login extends Component {
     return (
       <ScrollView behavior="padding" style={styles.container}>
         <View style={styles.logoContainer}>
-          <Image source={require('./Assests/images/logo2.png')}
+          <Image source={require('./Assets/images/logo2.png')}
             style={styles.img}
           />
           <Text style={{

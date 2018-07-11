@@ -1,7 +1,7 @@
 /* @flow */
 import Icon from 'react-native-ionicons';
 import React, { Component } from 'react';
-import styles from './Assests/Style';
+import styles from './Assets/Style';
 import {
   View,
   Image,
@@ -30,7 +30,7 @@ export class MessagePage extends Component {
         </View>
         <View style={[styles.flexrow, { marginTop: 5 }]}>
           <IconBadge
-            MainElement={<Image source={require('./Assests/users_images/1.jpg')} style={[styles.roundDP]} />}
+            MainElement={<Image source={require('./Assets/users_images/1.jpg')} style={[styles.roundDP]} />}
             IconBadgeStyle={[styles.offline]} />
           <View style={[styles.flexcol]}>
             <Text style={[styles.topTitle, styles.msgDescription]}>Hannah Tran</Text>
@@ -39,7 +39,7 @@ export class MessagePage extends Component {
         </View>
         <View style={[styles.flexrow, { marginTop: 5 }]}>
           <IconBadge
-            MainElement={<Image source={require('./Assests/users_images/2.jpg')} style={[styles.roundDP]} />}
+            MainElement={<Image source={require('./Assets/users_images/2.jpg')} style={[styles.roundDP]} />}
             IconBadgeStyle={[styles.online]} />
           <View style={[styles.flexcol]}>
             <Text style={[styles.topTitle, styles.msgDescription]}>Louisa McGee</Text>
@@ -48,7 +48,7 @@ export class MessagePage extends Component {
         </View>
         <View style={[styles.flexrow, { marginTop: 5 }]}>
           <IconBadge
-            MainElement={<Image source={require('./Assests/users_images/3.jpg')} style={[styles.roundDP]} />}
+            MainElement={<Image source={require('./Assets/users_images/3.jpg')} style={[styles.roundDP]} />}
             IconBadgeStyle={[styles.online]} />
           <View style={[styles.flexcol]}>
             <Text style={[styles.topTitle, styles.msgDescription]}>Margaret Moreno</Text>
@@ -57,7 +57,7 @@ export class MessagePage extends Component {
         </View>
         <View style={[styles.flexrow, { marginTop: 5 }]}>
           <IconBadge
-            MainElement={<Image source={require('./Assests/users_images/4.jpg')} style={[styles.roundDP]} />}
+            MainElement={<Image source={require('./Assets/users_images/4.jpg')} style={[styles.roundDP]} />}
             IconBadgeStyle={[styles.offline]} />
           <View style={[styles.flexcol]}>
             <Text style={[styles.topTitle, styles.msgDescription]}>Walter Osborne</Text>
@@ -73,16 +73,16 @@ export class MessagePage extends Component {
               <Text style={[styles.addChatPlus]}>+</Text>
             </TouchableOpacity>
             <IconBadge
-              MainElement={<Image source={require('./Assests/users_images/1.jpg')} style={[styles.roundDP]} />}
+              MainElement={<Image source={require('./Assets/users_images/1.jpg')} style={[styles.roundDP]} />}
               IconBadgeStyle={[styles.offline]} />
             <IconBadge
-              MainElement={<Image source={require('./Assests/users_images/3.jpg')} style={[styles.roundDP]} />}
+              MainElement={<Image source={require('./Assets/users_images/3.jpg')} style={[styles.roundDP]} />}
               IconBadgeStyle={[styles.offline]} />
             <IconBadge
-              MainElement={<Image source={require('./Assests/users_images/2.jpg')} style={[styles.roundDP]} />}
+              MainElement={<Image source={require('./Assets/users_images/2.jpg')} style={[styles.roundDP]} />}
               IconBadgeStyle={[styles.offline]} />
             <IconBadge
-              MainElement={<Image source={require('./Assests/users_images/4.jpg')} style={[styles.roundDP]} />}
+              MainElement={<Image source={require('./Assets/users_images/4.jpg')} style={[styles.roundDP]} />}
               IconBadgeStyle={[styles.offline]} />
           </View>
         </View>
