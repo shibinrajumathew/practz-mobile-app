@@ -23,7 +23,7 @@ Open an Administrator Command Prompt (right click Command Prompt and select "Run
 First time in practz project then<br/>
  ``` npm install ``` <br/>
 <br/>
-----
+<hr/>
 <br/>
 5.To run <br/>
  ``` cd project_folder ``` <br/>
