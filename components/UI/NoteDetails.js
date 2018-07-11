@@ -10,40 +10,33 @@ import {
 
 export default class NoteDetails extends Component<Props> {
   constructor(props) {
-    
+
        super(props)
-    
+
        this.state = {
-    
+
          notes: [
-       
+
            {'postedBy':'name','topic':'topic1','postedOn':'15 July 11:59 pm'}
          ]
-    
+
        }
-    
+
      }
- 
+
   render() {
      var noteList = this.state.notes.map(function(note){
                         return  <View style={[styles.myview]}>
-          <Text style={{marginLeft:20,marginTop:10,color:'#7D7776',fontWeight:'thin'}}>Posted By  
+          <Text style={{marginLeft:20,marginTop:10,color:'#7D7776',fontWeight:'thin'}}>Posted By
              <Text style={{marginLeft:2,color:'#956FCE',}}>  {note.postedBy}
-                <Text style={{marginLeft:20,color:'#7D7776',fontWeight:'thin'}}>      Topic 
-             <Text style={{marginLeft:2,color:'#956FCE'}}> { note.topic}   </Text>
-      </Text>         
-      </Text>
+                <Text style={{marginLeft:20,color:'#7D7776',fontWeight:'thin'}}>      Topic
+                <Text style={{marginLeft:2,color:'#956FCE'}}> { note.topic}   </Text>
+                </Text>
+            </Text>
               </Text>
-      
-      
-      <Text style={{marginLeft:20,marginTop:10,color:'#7D7776',fontWeight:'thin'}}>Posted On: {note.postedOn} </Text> 
-
-         
-
-</Text>    
+      <Text style={{marginLeft:20,marginTop:10,color:'#7D7776',fontWeight:'thin'}}>Posted On: {note.postedOn} </Text>
       </View>;
            })
-
     return (
 
       <ScrollView style={{backgroundColor:'#FFFFFF'}}>
@@ -56,7 +49,7 @@ export default class NoteDetails extends Component<Props> {
     }
 }
 const styles = StyleSheet.create({
-  myview: { 
+  myview: {
     height:100,
     borderWidth: .5,
     borderColor: '#7C7676',
@@ -68,5 +61,5 @@ const styles = StyleSheet.create({
     marginTop: 20,
   backgroundColor:'#F6F4F8'
   }
-  
+
     });
