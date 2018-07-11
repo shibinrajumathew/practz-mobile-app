@@ -13,57 +13,59 @@ import {
 } from 'react-native';
 
 
-
-
-
-
 export default class Login extends Component {
-  constructor(){
+  constructor() {
     //inherit parent props
     super();
     //create dynamic variables
-    this.state={
+    this.state = {
     }
   }
 
   static navigationOptions = {
-    title:'Please Login',
-  //   title: (<Image source={require('./images/pro_logo_ins.png')}
-  //
-  // /> ),
-  headerStyle:{
-    display:'none',},
-  headerTitleStyle: {
-    // marginLeft:'auto',
-    // marginRight:'auto',
-    fontWeight:'bold',
-    display:'none',
-  },
+    title: 'Please Login',
+    headerStyle: {
+      display: 'none',
+    },
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      display: 'none',
+    },
 
   };
 
 
-componentDidMount() {
-  this.timeoutHandle = setTimeout(()=>{
-                  this.props.navigation.navigate('Login');
-         }, 5000);
-}
+  componentDidMount() {
+    this.timeoutHandle = setTimeout(() => {
+      AsyncStorage.multiGet(['authority']).then((data) => {
+        let user = data[0][1];
+        if (user !== null) {
+          this.props.navigation.navigate('Dash');
+        } else {
+          this.props.navigation.navigate('Login');
+        }
+
+      });
 
 
-componentWillUnmount() {
+    }, 50);
+  }
 
-         clearTimeout(this.timeoutHandle);
-}
+
+  componentWillUnmount() {
+
+    clearTimeout(this.timeoutHandle);
+  }
   render() {
 
 
-      const { navigate } = this.props.navigation;
+    const { navigate } = this.props.navigation;
     return (
-        <View style={styles.logoContainer}>
-          {}
-        <Image source={require('./img/download.png')}
-        style={styles.img}
-      />
+      <View style={styles.logoContainer}>
+        {}
+        <Image source={require('./Assets/images/download.png')}
+          style={styles.img}
+        />
 
       </View>
 
@@ -76,11 +78,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#5e3f8c',
   },
- img:{
-   width: (Dimensions.get('window').width),
-   height: (Dimensions.get('window').height),
+  img: {
+    width: (Dimensions.get('screen').width),
+    height: (Dimensions.get('screen').height),
 
- },
+  },
   logoContainer: {
     flex: 1,
     width: Dimensions.get('window').width,

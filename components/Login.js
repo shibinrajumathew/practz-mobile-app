@@ -1,5 +1,6 @@
-/* @flow */
-
+/* Login page for practz no sign up
+*  Author: shibin
+*/
 import React, { Component } from 'react';
 import {
   View,
@@ -16,216 +17,162 @@ import {
   StyleSheet,
   AsyncStorage,
 } from 'react-native';
-
-
-
-
-
+import Load from "react-native-loading-gif";
 
 export default class Login extends Component {
-  constructor(){
-    //inherit parent props
+  constructor() {
     super();
-    //create dynamic variables
-    this.state={
-      movie:'',
-      xtest:'',
-      f_status:'',
-      text:' ',
-      pass:'',
-      rol:'role',
-      btn: true,
-      logins:'not here',
-      search_id:'',
+    this.state = {
+      emailid: '',
+      pass: '',
     }
   }
 
   static navigationOptions = {
-    title:'Please Login',
-  //   title: (<Image source={require('./images/pro_logo_ins.png')}
-  //
-  // /> ),
-  headerStyle:{
-    display:'none',},
-  headerTitleStyle: {
-    // marginLeft:'auto',
-    // marginRight:'auto',
-    fontWeight:'bold',
-    display:'none',
-  },
+    title: 'Please Login',
+    headerStyle: {
+      display: 'none',
+    },
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      display: 'none',
+    },
 
   };
 
 
-checkUser(){
+  checkUser() {
+    console.log("onCheck user:");
+    this.refs.Load.OpenLoad();
+    fetch('https://demoreg.practz.com/login', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json, text/plain,',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "username": this.state.emailid,
+        "password": this.state.pass,
+        // "username" :"demo_reg_admin@practz.com",
+        // "password":"Demoadmin",
+        "appId": "ILEARN",
+        "domainName": "demoreg.practz.com"
+      })
+    })
+      .then(response => response.json())
+      .then(responseobj => {
+        this.refs.Load.CloseLoad();
+        this.setState({
 
+        });
+        if (responseobj["status"] != undefined) {
+          if (responseobj["error"] == "Unauthorized") {
+            console.log("wrong user");
+            Alert.alert("Wrong username or password");
+          } else {
+            console.log("another error");
+          }
+        } else if ((responseobj.data.principal.authorities[0].authority) == "ROLE_EF_CRT_ORG_ADMN") {
 
-  fetch('http://medico.vveeo.com/index.php?userid='+this.state.text+'&pass='+this.state.pass)
-  //get status and append with data and return as one object
-  .then(response =>  response.json())
-  .then(responseobj => {
-    this.setState({
-      search_id:responseobj.search_id,
-      uid:responseobj.uid,
-      uname: responseobj.username,
-      xtest: responseobj[responseobj.username][this.state.rol],
+          AsyncStorage.multiSet([["authority", "ROLE_EF_CRT_ORG_ADMN"]]);
+          console.log("done");
+          this.props.navigation.navigate('Dash');
+        }
+        else {
+          Alert.alert("Wrong username or password");
+          console.log("Something out of control");
+          console.log("you are logged in status:", responseobj.data.principal.authorities[0].authority);
+        }
+
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  //redirect function for future need
+  //reDirect(){
+  //  //body to reDirect
+  //}
+
+  componentDidMount() {
+    //internet connection check
+    NetInfo.isConnected.fetch().then(isConnected => {
+      console.log('First, is ' + (isConnected ? 'online' : 'offline'));
+      if (isConnected) {
+        this.setState({ btn: false })
+      }
+      else {
+        Alert.alert("Net info alert", "Please connnect to internet for further app use");
+
+      }
     });
 
-    if(responseobj[responseobj.username][this.state.rol]==4){
-      AsyncStorage.multiSet([
-      ["hospital",responseobj[responseobj.username][this.state.attr]],
-      ["search",this.state.search_id],
-      ["uid",this.state.uid],
-
-      ]);
-
-    }else{
-      AsyncStorage.multiSet([
-      ["search",this.state.search_id],
-      ["uid",this.state.uid],
-      ]);
-    }
-
-
-    console.log("return----xtest---",this.state.xtest);
-
-
-    this.props.navigation.navigate(this.reDirect());
-  })
-
-}
-reDirect(){
-
-
-  if(this.state.xtest==1)
-  {  return 'Admin';
-  this.setState({xtest:''});
-}
-else if(this.state.xtest==2){
-  return 'Doc';
-  this.setState({xtest:''});
-}
-else if(this.state.xtest==3){
-  return 'Patient';
-  this.setState({xtest:''});
-}else if(this.state.xtest==4){
-
-
-  return 'HospitalAdmin';
-  this.setState({xtest:''});
-}
-else if(this.state.xtest==5){
-  return 'Pharmacist';
-  this.setState({xtest:''});
-}
-else if(this.state.xtest==6){
-  return 'MedicalRep';
-  this.setState({xtest:''});
-}
-else if(this.state.xtest==7){
-  return 'LabAsst';
-  this.setState({xtest:''});
-}
-else {
-  Alert.alert("Wrong user");
-  return 'Home';
-  this.setState({xtest:''});
-}
-}
-
-
-
-componentDidMount() {
-  NetInfo.isConnected.fetch().then(isConnected => {
-  console.log('First, is ' + (isConnected ? 'online' : 'offline'));
-  if ( isConnected )
-  {
-        this.setState({btn: false})
-  }
-  else
-  {
-    Alert.alert("Net info alert","Please connnect to internet for further app use");
-
   }
 
-
-
-});
-
-
-//Get session
-AsyncStorage.multiGet(['user', 'role_no']).then((data) => {
-    let user = data[0][1];
-
-    let role_no = data[1][1];
-//navigate('Admin')
-    if (role_no !== null)
-    {
-      this.setState({xtest:data[1][1]});
-      this.props.navigation.navigate(this.reDirect());
-
-
-    }
-
-});
-
-
-/*
-// Delete session
-logout(){
-let keys = ['user', 'role_no'];
-AsyncStorage.multiRemove(keys, (err) => {
-    ('Local storage user info removed!');
-});
-}
-
-*/
-}
-
-
-componentWillUnmount() {
-  /* */
-}
   render() {
-
-
-      const { navigate } = this.props.navigation;
+    const { navigate } = this.props.navigation;
     return (
-      <KeyboardAvoidingView behavior="padding"  style={styles.container}>
+      <ScrollView behavior="padding" style={styles.container}>
         <View style={styles.logoContainer}>
-        <Image source={require('./img/logo2.png')}
-        style={styles.img}
-      />
-      </View>
-      <View style={styles.myForm}>
-
-
-        <TextInput
-          style={styles.input}
-          underlineColorAndroid="transparent"
-          onChangeText={(text) => this.setState({text})}
-          placeholder="Email"
-        />
-        <TextInput
-          underlineColorAndroid="transparent"
-          style={styles.input}
-          onChangeText={(text) => this.setState({pass:text})}
-          placeholder="Password"
-        />
-
-        <TouchableOpacity
-          onPress={() => this.props.navigation.navigate('Dash')}
-          title="Home" style={styles.buttonContainer}
-          >
-          <Text style={styles.buttonText}  >Login</Text>
-        </TouchableOpacity>
-
+          <Image source={require('./Assets/images/logo2.png')}
+            style={styles.img}
+          />
+          <Text style={{
+            color: 'white',
+            fontSize: 12,
+          }}>digitalising education
+        </Text>
+        </View>
+        <View style={styles.tabForm}>
+          <View style={styles.selectedInnerTabForm}>
+            <Text style={{
+              color: '#8bc34a',
+              fontWeight: '500',
+              fontSize: 12,
+            }}>Sign in
+          </Text>
           </View>
-
-
-
-
-  </KeyboardAvoidingView>
+          <View style={styles.innerTabForm}>
+            <Text style={{
+              color: 'white',
+              fontWeight: '500',
+              fontSize: 12,
+            }}>Sign Up
+          </Text>
+          </View>
+        </View>
+        <View style={styles.myForm}>
+          <TextInput
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            onChangeText={(text) => this.setState({ emailid: text })}
+            placeholder="Email ID"
+          />
+          <TextInput
+            underlineColorAndroid="transparent"
+            style={styles.input}
+            onChangeText={(text) => this.setState({ pass: text })}
+            placeholder="Password"
+          />
+          <TouchableOpacity
+            onPress={() => this.checkUser()}
+            title="Home" style={styles.buttonContainer}
+          >
+            <Text style={styles.buttonText}  >Let me in</Text>
+          </TouchableOpacity>
+          <View style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 10,
+          }}>
+            <Text style={{
+              color: 'white',
+            }}  >Forgot password ?</Text>
+          </View>
+        </View>
+        <Load ref="Load"></Load>
+      </ScrollView>
 
     );
   }
@@ -236,41 +183,68 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#36076b',
   },
- img:{
-   width: (Dimensions.get('window').width/2),
-   height: (Dimensions.get('window').height)/6,
-   resizeMode: 'contain',
+  img: {
+    width: (Dimensions.get('window').width / 2),
+    height: (Dimensions.get('window').height) / 6,
+    resizeMode: 'contain',
 
- },
+  },
   logoContainer: {
     width: Dimensions.get('window').width,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop:50,
+    marginTop: 20,
+  },
+  tabForm: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    marginLeft: 8,
+    flexDirection: 'row',
+  },
+  innerTabForm: {
+    width: Dimensions.get('window').width / 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    marginLeft: 5,
+    paddingBottom: 15,
+    flexDirection: 'row',
+  },
+  selectedInnerTabForm: {
+    width: Dimensions.get('window').width / 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    marginLeft: 5,
+    paddingBottom: 15,
+    flexDirection: 'row',
+    borderColor: '#8bc34a',
+    borderBottomWidth: 5,
   },
   myForm: {
-    flex:1.5,
-    marginTop:20,
+    flex: 1.5,
+    marginTop: 20,
     padding: 20,
   },
-  formTitle:{
-    flex:2,
+  formTitle: {
+    flex: 2,
     fontSize: 22,
     textAlign: 'center',
     color: 'black',
   },
-  input:{
+  input: {
     height: 60,
     padding: 20,
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#fff',
     marginBottom: 10,
   },
-  buttonContainer:{
+  buttonContainer: {
     backgroundColor: '#be36e7',
     paddingVertical: 25,
 
   },
-  buttonText:{
+  buttonText: {
     textAlign: 'center',
     color: '#fff',
     fontWeight: 'bold',
