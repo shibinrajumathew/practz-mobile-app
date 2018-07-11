@@ -1,6 +1,13 @@
 # practz
-Install npm for the first time <br/>
- ```npm install``` <br/>
+For beginners
+install Node and Python2 via Chocolatey
+<a href="https://chocolatey.org/"> click  here</a><br/>
+React Native also requires a recent version of the Java SE Development Kit (JDK), as well as Python 2. Both can be installed using Chocolatey.<br/>
+<br/>
+Open an Administrator Command Prompt (right click Command Prompt and select "Run as Administrator"), then run the following command:
+
+ ``` choco install -y nodejs.install python2 jdk8```
+
 1.First install react-native cli <br/>
 ```npm install -g react-native-cli``` <br/>
 2.Set up Android development environment <br/>
@@ -11,6 +18,10 @@ Install npm for the first time <br/>
 3.Install adb (optional for run in real devices) <br/>
 4.Create a local.properties file inside the android folder. <br/>
 eg:```sdk.dir =C:\\Users\\username\\AppData\\Local\\Android\\Sdk``` <br/>
+<br/>
+First time in mozanta project then<br/>
+```npm install``` <br/>
+<br/>
 5.To run <br/>
  ```cd project_folder``` <br/>
  ```react-native run-android``` <br/>
