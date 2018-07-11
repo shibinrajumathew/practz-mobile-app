@@ -9,10 +9,10 @@ Open an Administrator Command Prompt (right click Command Prompt and select "Run
  ``` choco install -y nodejs.install python2 jdk8```
 
 1.First install react-native cli <br/>
-```npm install -g react-native-cli``` <br/>
+``` npm install -g react-native-cli ``` <br/>
 2.Set up Android development environment <br/>
  * install android sdk (install via android studio). <br/>
- * install avd *<br/>
+ * install avd <br/>
  * Configure the ANDROID_HOME environment variable. <br/>
      <br/>
 ----
@@ -31,7 +31,7 @@ First time in practz project then<br/>
  (if you getting "Unable to load script from assets index.android.bundle")<br/>
 <br/>
 6.(in project directory) mkdir android/app/src/main/assets<br/>
-7.``` react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res ```
+7. ``` react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res ```
 <br/>
 You can automate the above steps by placing them in scripts part of package.json like this:<br/>
 
