@@ -61,6 +61,16 @@ export default StyleSheet.create({
     backgroundColor: '#ffffff',
 
   },
+  questionBox:{
+    padding: 10,
+    width: (Dimensions.get('window').width) - 40,
+  },
+  answers:{
+    borderBottomWidth: 1,
+    padding: 10,
+    borderColor: '#cbcbcb',
+    height: 50
+  },
   innerTextBox: {
     padding: 10,
     width: (Dimensions.get('window').width) - 40,
@@ -129,6 +139,15 @@ export default StyleSheet.create({
     height: 60,
 
   },
+  textInsideCircle:{
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: 15,
+    height: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   questionUnattended: {
     borderRadius: 10,
     borderWidth: 1,
@@ -136,14 +155,29 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     width: 18,
     height: 18,
+    marginRight: 5,
+    marginLeft: 5,
 
   },
   questionForReview: {
     borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#00BCD4',
     backgroundColor: '#00BCD4',
     width: 18,
     height: 18,
-
+    marginLeft: 5,
+    marginRight: 5,
+  },
+  questionAttended: {
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#8BC34A',
+    backgroundColor: '#8BC34A',
+    width: 18,
+    height: 18,
+    marginLeft: 5,
+    marginRight: 5,
   },
   shadowContainer: {
     padding: 20,
