@@ -24,6 +24,7 @@ First time in practz project then<br/>
  ``` npm install ``` <br/>
 <br/>
 ----
+<br/>
 5.To run <br/>
  ``` cd project_folder ``` <br/>
  ``` react-native run-android ``` <br/>
