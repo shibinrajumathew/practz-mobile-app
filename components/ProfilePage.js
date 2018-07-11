@@ -2,7 +2,7 @@
 import Icon from 'react-native-ionicons';
 import ProgressBarAnimated from 'react-native-progress-bar-animated';
 import React, { Component } from 'react';
-import styles from './Assests/Style';
+import styles from './Assets/Style';
 import {
   View,
   Image,
@@ -32,7 +32,7 @@ export class ProfilePage extends Component {
       <View>
         <View style={[styles.flexrow]}>
           <View elevation={2} style={styles.profileView}>
-            <Image source={require('./Assests/users_images/1.jpg')} style={[styles.profileDP]} />
+            <Image source={require('./Assets/users_images/1.jpg')} style={[styles.profileDP]} />
           </View>
           <View style={[styles.flexcol]} >
             <Text style={[styles.lightTitle, { marginTop: 10, marginLeft: 10, }]}>Walter White</Text>

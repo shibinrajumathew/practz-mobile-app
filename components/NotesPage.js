@@ -1,6 +1,6 @@
 /* @flow */
 import React, { Component } from 'react';
-import styles from './Assests/Style';
+import styles from './Assets/Style';
 import {
   View,
   ScrollView,

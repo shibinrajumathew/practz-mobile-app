@@ -63,7 +63,7 @@ export default class Login extends Component {
     return (
       <View style={styles.logoContainer}>
         {}
-        <Image source={require('./Assests/images/download.png')}
+        <Image source={require('./Assets/images/download.png')}
           style={styles.img}
         />
 
