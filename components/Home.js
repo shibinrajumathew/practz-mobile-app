@@ -2,7 +2,7 @@
 
 import ProgressBarAnimated from 'react-native-progress-bar-animated';
 import React, { Component } from 'react';
-import styles from './Assests/Style';
+import styles from './Assets/Style';
 import { MessagePage } from './MessagePage';
 import { ProfilePage } from './ProfilePage';
 import { LandingPage } from './LandingPage';
