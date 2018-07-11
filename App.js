@@ -10,12 +10,15 @@ import Login from './components/Login';
 import Dash from './components/Home';
 import ExamDetails from './components/Exams/ExamDetails';
 import StartExam from './components/Exams/StartExam';
-
+import AvailableExams from './components/UI/AvailableExams';
+import NoteDetails from './components/UI/NoteDetails';
 export const SimpleApp = StackNavigator({
 
   Home: { screen: Splash },
   Login:{ screen: Login},
   StartExam:{ screen: StartExam},
+  AvailableExams:{ screen:AvailableExams},
+  NoteDetails:{ screen:NoteDetails},
   ExamDetails:{ screen: ExamDetails,
     navigationOptions: {
       title: 'Ca 22',
