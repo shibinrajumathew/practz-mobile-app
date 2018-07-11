@@ -79,8 +79,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#5e3f8c',
   },
   img: {
-    width: (Dimensions.get('window').width),
-    height: (Dimensions.get('window').height),
+    width: (Dimensions.get('screen').width),
+    height: (Dimensions.get('screen').height),
 
   },
   logoContainer: {
