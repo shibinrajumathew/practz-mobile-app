@@ -32,7 +32,7 @@ First time in practz project then<br/>
  For some reason, in linux some more steps may needed<br/>
  (if you getting "Unable to load script from assets index.android.bundle")<br/>
 <br/>
-6.(in project directory) mkdir android/app/src/main/assets<br/>
+6.(in project directory)  ```  mkdir android/app/src/main/assets   ``` <br/>
 7.  ``` react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res ```
 <br/><br/>
 You can automate the above steps by placing them in scripts part of package.json like this:<br/>
