@@ -4,6 +4,7 @@ import ProgressBarAnimated from 'react-native-progress-bar-animated';
 import React, { Component } from 'react';
 import RadioButton from 'radio-button-react-native';
 import styles from '../Assets/Style';
+import ImageOverlay from "react-native-image-overlay";
 import {
   View,
   ScrollView,
@@ -25,6 +26,7 @@ export default class StartExam extends Component {
     super();
     this.state = {
       value: 0,
+      picTick:'../Assets/images/tick.png',
       qno:3,
       test:[{'a':'0','b':'1','c':'2'}],
       quest:'Which software launched by Union Home Minister Rajnath Singh to do speedy disposal of appeals/Complaints?',
@@ -61,12 +63,18 @@ onActionSelected(position) {
     showSettings();
   }
 }
+clearRadio(){
+  this.setState({value:0})
+  console.log('value is:',this.state.value);
+}
+
   render() {
+    let img=require('../Assets/images/tick.png');
     const { navigate } = this.props.navigation;
     return (
       <View style={{ flex: 1 }}>
         <ToolbarAndroid            actions = {[
-              {title: "Log out", show: "never"}
+              {title: "Log out", show: "always"}
             ]}
       onActionSelected={this.onActionSelected} />
         <View style={{ flex: 4 }}>
@@ -121,20 +129,23 @@ onActionSelected(position) {
             </View>
             <View style={[styles.questionForReview]}>
               <View style={[styles.textInsideCircle]}>
-                <Text style={[styles.lightFont]} >5</Text>
+                <Text style={[styles.lightFont,styles.whiteFont]} >5</Text>
               </View>
             </View>
             <View style={[styles.questionAttended]}>
-              <View style={[styles.textInsideCircle]}> 
-                    <Text style={[styles.lightFont]}>6</Text>
+              <Image style={[styles.tickedNumber]} source={img}/>
+              <View style={[styles.textInsideCircle]}>
+                <Text style={[styles.lightFont,styles.tickedNumberColor]} > 6</Text>
               </View>
             </View>
 
             </View>
           </ScrollView>
         </View>
-        <View style={[styles.submitButton]}>
-        <Text style={[styles.lightFont, styles.whiteFont]} > Start Exam</Text>
+        <View style={[styles.submitButton,styles.flexrow]}>
+          <TouchableOpacity style={[styles.questionButton]}><Text style={[styles.whiteFont]}>Previous</Text></TouchableOpacity>
+          <TouchableOpacity style={[styles.questionButton]} onPress={this.clearRadio.bind(this)}><Text style={[styles.whiteFont]}>Clear</Text></TouchableOpacity>
+          <TouchableOpacity style={[styles.questionButton,styles.white]}><Text style={[styles.violetFont]}>Review</Text></TouchableOpacity>
         </View>
       </View>
 

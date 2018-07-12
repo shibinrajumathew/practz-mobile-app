@@ -37,7 +37,7 @@ export default class Login extends Component {
 
   componentDidMount() {
     this.timeoutHandle = setTimeout(() => {
-      AsyncStorage.multiGet(['authority']).then((data) => {
+      AsyncStorage.multiGet(['UserType']).then((data) => {
         let user = data[0][1];
         if (user !== null) {
           this.props.navigation.navigate('Dash');
@@ -57,8 +57,6 @@ export default class Login extends Component {
     clearTimeout(this.timeoutHandle);
   }
   render() {
-
-
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.logoContainer}>
@@ -66,9 +64,7 @@ export default class Login extends Component {
         <Image source={require('./Assets/images/download.png')}
           style={styles.img}
         />
-
       </View>
-
     );
   }
 }

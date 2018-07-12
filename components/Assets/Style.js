@@ -61,6 +61,16 @@ export default StyleSheet.create({
     backgroundColor: '#ffffff',
 
   },
+  questionButton:{
+    borderWidth: 1,
+    borderColor: 'white',
+    padding: 10,
+    width: Dimensions.get('screen').width/3.5,
+    alignItems: 'center',
+    borderRadius: 5,
+    marginRight: 10,
+    marginLeft: 10,
+  },
   questionBox:{
     padding: 10,
     width: (Dimensions.get('window').width) - 40,
@@ -179,6 +189,14 @@ export default StyleSheet.create({
     marginLeft: 5,
     marginRight: 5,
   },
+  tickedNumber:{
+    alignItems: 'center',
+    top: 0,
+    justifyContent: 'center',
+    width: 16,
+    height: 16,
+    opacity: 1
+  },
   shadowContainer: {
     padding: 20,
     shadowColor: "#000000",
@@ -237,12 +255,6 @@ export default StyleSheet.create({
   lightFont: {
     fontFamily: 'Avenir, Light'
   },
-  whiteFont: {
-    color: '#ffffff'
-  },
-  blackFont: {
-    color: '#000'
-  },
   endFont: {
     fontWeight: 'bold',
     color: '#956FCE'
@@ -259,7 +271,18 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
+  tickedNumberColor:{
+    color: "rgba(255, 255, 255, 0.82)"
+  },
+  whiteFont: {
+    color: '#ffffff'
+  },
+  blackFont: {
+    color: '#000'
+  },
+  violetFont:{
+    color: '#5E3F8C',
+  },
   // colors
   red: {
     backgroundColor: '#F97157',
@@ -275,6 +298,9 @@ export default StyleSheet.create({
   },
   orange: {
     backgroundColor: '#ed7f7d',
+  },
+  white:{
+    backgroundColor: "#ffffff",
   },
   //flex direction
   flexrow: {

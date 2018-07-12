@@ -16,7 +16,43 @@ import {
 } from 'react-native';
 
 export class LandingPage extends Component {
+    componentDidMount() {
+    }
+
   render() {
+
+      AsyncStorage.multiGet([
+        'userId',
+        'organizationId',
+        'parentOrganizationId',
+        'organizationEmail',
+        'organizationDisplayName',
+        'UserType',
+        'liveTemplate',
+        'logourl',
+        'appId',
+        'authority',
+      ]).then((data) => {
+        // let user = data[0][1];
+        // if (user !== null) {
+        //   this.props.navigation.navigate('Dash');
+        // } else {
+        //   this.props.navigation.navigate('Login');
+        // }
+
+        console.log("test");
+        console.log("userId:",data[0][1]);
+        console.log("organizationId:",data[1][1]);
+        console.log("parentOrganizationId:",data[2][1]);
+        console.log("organizationEmail:",data[3][1]);
+        console.log("organizationDisplayName,:",data[4][1]);
+        console.log("UserType:",data[5][1]);
+        console.log("liveTemplate",data[6][1]);
+        console.log("logourl",data[7][1]);
+        console.log("appId",data[8][1]);
+        console.log("authority:",data[9][1]);
+
+      });
     return (
 
       <View>

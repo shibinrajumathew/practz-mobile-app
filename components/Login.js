@@ -23,6 +23,7 @@ export default class Login extends Component {
   constructor() {
     super();
     this.state = {
+      url:'https://demo.practz.com',
       emailid: '',
       pass: '',
     }
@@ -41,10 +42,12 @@ export default class Login extends Component {
   };
 
 
-  checkUser() {
+  isAuthenticated() {
     console.log("onCheck user:");
+    //start gif load
     this.refs.Load.OpenLoad();
-    fetch('https://demoreg.practz.com/login', {
+    //authentication
+    fetch(this.state.url+'/login', {
       method: 'post',
       headers: {
         'Accept': 'application/json, text/plain,',
@@ -53,47 +56,49 @@ export default class Login extends Component {
       body: JSON.stringify({
         "username": this.state.emailid,
         "password": this.state.pass,
-        // "username" :"demo_reg_admin@practz.com",
-        // "password":"Demoadmin",
         "appId": "ILEARN",
-        "domainName": "demoreg.practz.com"
+        "domainName": "demo.practz.com"
+        })
       })
-    })
       .then(response => response.json())
-      .then(responseobj => {
+      .then(response=> {
+        //close gif
         this.refs.Load.CloseLoad();
-        this.setState({
-
-        });
-        if (responseobj["status"] != undefined) {
-          if (responseobj["error"] == "Unauthorized") {
-            console.log("wrong user");
-            Alert.alert("Wrong username or password");
-          } else {
-            console.log("another error");
-          }
-        } else if ((responseobj.data.principal.authorities[0].authority) == "ROLE_EF_CRT_ORG_ADMN") {
-
-          AsyncStorage.multiSet([["authority", "ROLE_EF_CRT_ORG_ADMN"]]);
-          console.log("done");
+        //fetch orgnization details
+        if(response.success){
+          fetch(this.state.url+'/practz/ilearn/v1/authorization')
+            .then(responseAu => responseAu.json())
+            .then(responseAu=> {
+              //fetch user details
+              fetch(this.state.url+'/practz/v1/users/'+response.data.principal.userId)
+                .then(responseUsr => responseUsr.json())
+                .then(responseUsr=> {
+                  //set session
+                  AsyncStorage.multiSet([
+                    ["userId",response.data.principal.userId],
+                    ["organizationId",response.data.principal.organizationId],
+                    ["parentOrganizationId",response.data.principal.parentOrganizationId],
+                    ["organizationEmail",responseAu.data.organizationEmail],
+                    ["organizationDisplayName",responseAu.data.organizationDisplayName],
+                    ["UserType",responseUsr.data.type],
+                    ["UserType",responseUsr.data.type],
+                    ["authority", response.data.accessRights],
+                    ["liveTemplate",responseAu.data.liveTemplate],
+                    ["logourl",responseAu.data.logoUrl],
+                    ["appId",responseUsr.data.appId],
+                    // ["signUpEnabled"],
+                    // ["homePageEnabled"],
+                    // ["telephone1",responseUsr.data.telephone1],
+              ]);
+            });
+            });
           this.props.navigation.navigate('Dash');
-        }
-        else {
+        }else{
           Alert.alert("Wrong username or password");
-          console.log("Something out of control");
-          console.log("you are logged in status:", responseobj.data.principal.authorities[0].authority);
-        }
-
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+          }
+      }).catch((error) => {console.error(error);});
   }
 
-  //redirect function for future need
-  //reDirect(){
-  //  //body to reDirect
-  //}
 
   componentDidMount() {
     //internet connection check
@@ -101,13 +106,10 @@ export default class Login extends Component {
       console.log('First, is ' + (isConnected ? 'online' : 'offline'));
       if (isConnected) {
         this.setState({ btn: false })
-      }
-      else {
+      }else {
         Alert.alert("Net info alert", "Please connnect to internet for further app use");
-
       }
     });
-
   }
 
   render() {
@@ -156,7 +158,7 @@ export default class Login extends Component {
             placeholder="Password"
           />
           <TouchableOpacity
-            onPress={() => this.checkUser()}
+            onPress={() => this.isAuthenticated()}
             title="Home" style={styles.buttonContainer}
           >
             <Text style={styles.buttonText}  >Let me in</Text>

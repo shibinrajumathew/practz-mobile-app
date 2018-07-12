@@ -70,8 +70,8 @@ export default class ExamDetails extends Component {
             <Text style={[styles.lightFont, styles.blackFont]} >Question Colors</Text>
             <View style={[styles.flexrow]}>
               <View style={[styles.questionUnattended]}></View><Text style={[styles.lightFont]} > Unattended </Text>
-              <View style={[styles.questionForReview]}></View><Text style={[styles.lightFont]}> Attended </Text>
-              <View ><Icon name='ios-checkmark-circle' size={20} color='#8BC34A' /></View><Text style={[styles.lightFont]}> Marked for review</Text>
+              <View style={[styles.questionForReview]}></View><Text style={[styles.lightFont]}> Marked for review </Text>
+              <View ><Icon name='ios-checkmark-circle' size={20} color='#8BC34A' /></View><Text style={[styles.lightFont]}> Attended</Text>
             </View>
           </View>
         </ScrollView>
