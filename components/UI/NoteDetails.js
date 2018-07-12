@@ -21,7 +21,7 @@ export default class App extends Component<Props> {
            {'postedBy':'name','topic':'topic1','postedOn':'15 July 11:59 pm'}
          ]
 
-    
+         
        }
     
      }

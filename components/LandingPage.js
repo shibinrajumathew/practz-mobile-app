@@ -1,7 +1,7 @@
 /* @flow */
 
 import React, { Component } from 'react';
-import styles from './Assests/Style';
+import styles from './Assets/Style';
 import {
   View,
   ScrollView,
@@ -44,7 +44,7 @@ export class LandingPage extends Component {
 
         <View style={[styles.announcementBox, styles.flexrow]}>
           <View >
-            <Image style={{ marginTop: 10 }} source={require('./Assests/images/announcements.png')}
+            <Image style={{ marginTop: 10 }} source={require('./Assets/images/announcements.png')}
             />
           </View>
           <View style={[styles.flexcol, styles.innerTextBox]} >
