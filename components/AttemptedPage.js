@@ -18,11 +18,17 @@ export class AttemptedPage extends React.Component {
   constructor() {
     //inherit parent props
     super();
+    classthis=this;
     //create dynamic variables
     this.state = {
-      progress: 80,
+      progress: 50,
       progressWithOnComplete: 0,
       progressCustomized: 0,
+      attempted: [
+        {'name':'exam1','examType':'Staff Board Exam','timeAllocated':'15 min','questions':10,'ends':'15 July 11:59 pm'},
+        {'name':'exam2','examType':'Staff Board Exam','timeAllocated':'15 min','questions':10,'ends':'15 July 11:59 pm'},
+        {'name':'exam3','examType':'Staff Board Exam','timeAllocated':'15 min','questions':10,'ends':'15 July 11:59 pm'}
+      ]
     }
   }
   // increase = (key, value) => {
@@ -32,15 +38,23 @@ export class AttemptedPage extends React.Component {
   // }
 
   render() {
+    const barWidth = Dimensions.get('screen').width - 30;
+    const progressCustomStyles = {
+      backgroundColor: 'red',
+      borderRadius: 0,
+      borderColor: 'orange',
+    };
+
+
      let attemptedList = this.state.attempted.map(function(exam){
        return(
          <View style={[styles.announcementBox, styles.flexrow]}>
            <View style={[styles.flexcol, styles.innerTextBox]} >
              <Text style={[styles.heavyFont,styles.boldFont,styles.whiteFont]}>Ca 22</Text>
-             <Text style={[styles.lightFont,styles.percentage]} >{this.state.progress}%</Text>
+             <Text style={[styles.lightFont,styles.percentage]} >{classthis.state.progress}%</Text>
              <ProgressBarAnimated
                width={barWidth}
-               value={this.state.progress}
+               value={classthis.state.progress}
                backgroundColorOnComplete="#6CC644"
                backgroundColor='#956FCE'
              />
@@ -55,12 +69,7 @@ export class AttemptedPage extends React.Component {
          </View>
        );
      });
-    const barWidth = Dimensions.get('screen').width - 30;
-    const progressCustomStyles = {
-      backgroundColor: 'red',
-      borderRadius: 0,
-      borderColor: 'orange',
-    };
+
     return (
       <ScrollView style={[styles.container, styles.flexcol]} >
         <View style={[styles.flexrow, styles.availableBox]}>

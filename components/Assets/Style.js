@@ -255,8 +255,7 @@ export default StyleSheet.create({
   lightFont: {
     fontFamily: 'Avenir, Light'
   },
-<<<<<<< HEAD
-=======
+
   heavyFont: {
     fontFamily: 'Avenir, Heavy'
   },
@@ -269,18 +268,17 @@ export default StyleSheet.create({
   },
   percentage: {
     fontWeight: '500',
-    color: 'blue' 
-  }
+    color: 'blue'
+  },
   boldFont: {
     fontWeight: 'bold',
-  }
+  },
   whiteFont: {
     color: '#ffffff'
   },
   blackFont: {
     color: '#000'
   },
->>>>>>> react_mobile
   endFont: {
     fontWeight: 'bold',
     color: '#956FCE'
