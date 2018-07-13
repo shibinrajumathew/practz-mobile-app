@@ -2,6 +2,7 @@
 *  Author: shibin
 */
 import React, { Component } from 'react';
+import URL from './Url';
 import {
   View,
   ScrollView,
@@ -23,7 +24,9 @@ export default class Login extends Component {
   constructor() {
     super();
     this.state = {
-      url:'https://demo.practz.com',
+      home:URL.HOME,
+      api_authentication:URL.AUTHENTICATION,
+      api_user:URL.USER,
       emailid: '',
       pass: '',
     }
@@ -47,7 +50,7 @@ export default class Login extends Component {
     //start gif load
     this.refs.Load.OpenLoad();
     //authentication
-    fetch(this.state.url+'/login', {
+    fetch(this.state.home+'/login', {
       method: 'post',
       headers: {
         'Accept': 'application/json, text/plain,',
@@ -66,11 +69,11 @@ export default class Login extends Component {
         this.refs.Load.CloseLoad();
         //fetch orgnization details
         if(response.success){
-          fetch(this.state.url+'/practz/ilearn/v1/authorization')
+          fetch(this.state.home+this.state.api_authentication)
             .then(responseAu => responseAu.json())
             .then(responseAu=> {
               //fetch user details
-              fetch(this.state.url+'/practz/v1/users/'+response.data.principal.userId)
+              fetch(this.state.home+this.state.api_user+response.data.principal.userId)
                 .then(responseUsr => responseUsr.json())
                 .then(responseUsr=> {
                   //set session
@@ -80,7 +83,6 @@ export default class Login extends Component {
                     ["parentOrganizationId",response.data.principal.parentOrganizationId],
                     ["organizationEmail",responseAu.data.organizationEmail],
                     ["organizationDisplayName",responseAu.data.organizationDisplayName],
-                    ["UserType",responseUsr.data.type],
                     ["UserType",responseUsr.data.type],
                     ["authority", response.data.accessRights],
                     ["liveTemplate",responseAu.data.liveTemplate],
@@ -189,7 +191,6 @@ const styles = StyleSheet.create({
     width: (Dimensions.get('window').width / 2),
     height: (Dimensions.get('window').height) / 6,
     resizeMode: 'contain',
-
   },
   logoContainer: {
     width: Dimensions.get('window').width,

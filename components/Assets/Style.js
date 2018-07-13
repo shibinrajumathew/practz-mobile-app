@@ -89,7 +89,7 @@ export default StyleSheet.create({
   availableBox: {
     padding: 10,
     width: (Dimensions.get('window').width),
-    height: 35,
+    // height: 40,
   },
   sideBotton: {
     borderRadius: 8,
