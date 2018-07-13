@@ -237,6 +237,23 @@ export default StyleSheet.create({
   lightFont: {
     fontFamily: 'Avenir, Light'
   },
+  heavyFont: {
+    fontFamily: 'Avenir, Heavy'
+  },
+  bookFont: {
+    fontFamily: 'Avenir, Book'
+  },
+  count: {
+    color: '#956FCE',
+    fontWeight: '600',
+  },
+  percentage: {
+    fontWeight: '500',
+    color: 'blue' 
+  }
+  boldFont: {
+    fontWeight: 'bold',
+  }
   whiteFont: {
     color: '#ffffff'
   },

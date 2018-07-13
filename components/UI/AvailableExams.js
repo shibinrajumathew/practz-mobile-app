@@ -9,22 +9,17 @@ import {
 
 
 export default class AvailableExams extends Component<Props> {
-  constructor(props) {
-    
-       super(props)
-    
+  constructor() {
+       super()
        this.state = {
-    
          exams: [
            {'name':'exam1','examType':'Staff Board Exam','timeAllocated':'15 min','questions':10,'ends':'15 July 11:59 pm'},
            {'name':'exam2','examType':'Staff Board Exam','timeAllocated':'15 min','questions':10,'ends':'15 July 11:59 pm'},
            {'name':'exam3','examType':'Staff Board Exam','timeAllocated':'15 min','questions':10,'ends':'15 July 11:59 pm'}
          ]
-    
        }
-    
      }
- 
+
   render() {
      var examList = this.state.exams.map(function(exam){
                         return  <View style={[styles.myview]}>
@@ -39,7 +34,7 @@ export default class AvailableExams extends Component<Props> {
       <Text style={{marginLeft: 15,color:'#000000',fontSize:10,marginTop:2}}>{exam.examType} </Text>
         <Text style={{marginLeft: 15,color:'#000000',fontSize:10,marginTop:7}}>No of Question
           <Text style={{color:'#956FCE',fontSize:10,fontWeight:'bold'}}> {exam.questions}
-            <Text style={{color:'#000000',fontSize:10,marginLeft: 15,fontWeight:'300'}}>         Time Allocated 
+            <Text style={{color:'#000000',fontSize:10,marginLeft: 15,fontWeight:'300'}}>         Time Allocated
               <Text style={{marginLeft: 5,color:'#956FCE',fontSize:10,fontWeight:'bold'}}>  {exam.timeAllocated} </Text>
             </Text>
           </Text>
@@ -58,8 +53,8 @@ export default class AvailableExams extends Component<Props> {
     }
 }
 const styles = StyleSheet.create({
-  myview: { 
-    
+  myview: {
+
     borderWidth: .5,
     borderRadius: 5,
     borderColor: '#7C7676',
@@ -71,7 +66,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     marginTop: 15,
-  
+
   }
-  
+
     });
