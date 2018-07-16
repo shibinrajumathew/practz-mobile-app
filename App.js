@@ -14,6 +14,7 @@ import AvailableExams from './components/UI/AvailableExams';
 import NoteDetails from './components/UI/NoteDetails';
 import AttemptedExam from './components/UI/AttemptedExam';
 import HistoricPattern from './components/UI/HistoricPattern';
+import MyOrders from './components/UI/MyOrders';
 export const SimpleApp = StackNavigator({
 
   Home: { screen: Splash },
@@ -24,6 +25,7 @@ export const SimpleApp = StackNavigator({
   ExamDetails:{ screen: ExamDetails},
   AttemptedExam:{ screen: AttemptedExam},
   HistoricPattern:{ screen: HistoricPattern},
+  MyOrders:{ screen: MyOrders},
     navigationOptions: {
       title: 'Ca 22',
       headerTitleStyle:{
