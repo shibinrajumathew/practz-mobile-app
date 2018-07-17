@@ -16,7 +16,8 @@ export default class AttempedExam extends Component<Props> {
     this.state = {
 
       exams: [
-        {'name':'exam1','examType':'Staff Board Exam','timeAllocated':'15 min','noQuestions':10,timeTaken:'06.04mins','allotedTime':'7 mins','percent':'60%','correct':4,'wrong':3,'unattended':3}
+        {'name':'exam1','examType':'Staff Board Exam','timeAllocated':'15 min','noQuestions':10,
+        timeTaken:'06.04mins','allotedTime':'7 mins','percent':'60%','correct':4,'wrong':3,'unattended':3}
 
       ]
 
@@ -27,7 +28,8 @@ export default class AttempedExam extends Component<Props> {
 
   render() {
   var examList = this.state.exams.map(function(exam){
-  return  <View style={[styles.myview]}>
+  return <View>
+   <View style={[styles.myview]}>
   
 
   <View style={[styles.container]}>
@@ -48,51 +50,56 @@ export default class AttempedExam extends Component<Props> {
                <View style={[styles.line]}/>
 
               <View style={[styles.container]}>
-                  <View style={{flex: 1}} >
-                      <Text style={{fontSize:15,marginTop:10,marginLeft:15}}>Total Questions</Text>
+                  <View>
+                      <Text style={[styles.font]}>Total Questions</Text>
+                      <Text style={[styles.font]}>Time Taken</Text>
+                      <Text style={[styles.font]}>Total Marks</Text>
+                       <Text style={{fontSize:20,color:'#956FCE',fontWeight:'bold'}}>{exam.percent}</Text>
                   </View>
                                 
-                      <View style={{flex: 2}} >
-                         <Text style={{fontSize:15,marginTop:10,marginLeft:15,color:'#956FCE'}}>  
+                      
+                      <View>
+                         <Text style={[styles.fontcolor]}>  
                            {exam.noQuestions} </Text>
-
-                       </View>
-               </View>
-
-                                
-
-                <View style={[styles.container]}>
-                    <View style={{flex: 1,marginLeft:15}} >
-                        <Text style={{fontSize:15}}>Time Taken</Text>
-                     </View>
-                            
-                     <View style={{flex: 1}} >
-                        <Text style={{fontSize:15,marginLeft:15,color:'#956FCE'}}> 
+                       <Text style={[styles.fontcolor]}>
                            {exam.timeTaken} </Text>
+                           <Text style={[styles.fontcolor]}>  
+                           4/10 </Text>
+                       </View>
+                       
 
-                      </View>
-                                          
-                      <View style={{flex: 1,width: 20, height: 20,marginRight:20, alignItems: 'center',marginTop:5}} >
-                               <Text style ={{backgroundColor:'#CEC76F',color:'#FFFFFF',fontSize:10,alignSelf:'center',marginLeft:30}}> 
+                       <View style={[styles.allotedview]}>
+                       <Text style ={{color:'#FFFFFF',fontSize:10,alignSelf:'center',margin:3}}> 
                                         Alloted: {exam.allotedTime}
                                 </Text>
-                      </View>
-                </View>
-
-
-
-              <View style={[styles.container]}>
-                  <View style={{flex: 1,marginBottom:10}} >
-                      <Text style={{fontSize:15,marginLeft:15}}>Total Marks</Text>
-                  </View>
-                                
-                      <View style={{flex: 2}} >
-                         <Text style={{fontSize:15,marginLeft:15,color:'#956FCE'}}>  
-                           4/10 </Text>
-
                        </View>
                </View>
-               <Text style={{fontSize:20,color:'#956FCE',marginLeft:15,marginBottom:10,fontWeight:'bold'}}>{exam.percent}</Text>
+         </View>
+         <View style={[styles.container]}>
+      <View style={{flex:2,color:'#5E3F8C',marginLeft:15}}>
+       <Text>correct</Text>
+         </View>
+         <View style={[styles.correctview]}>
+         <Text style={{color:'#8BC34A'}}> {exam.correct}</Text>
+        
+  </View>
+
+  <View style={{flex:2,color:'#5E3F8C'}}>
+    <Text>wrong</Text>
+    </View>
+     <View style={[styles.wrongview]}>
+      <Text style={{color:'#EF5350'}}> {exam.wrong}</Text>
+     
+  </View>
+
+   <View style={{flex:3,color:'#EF5350'}}>
+     <Text>unattended </Text>
+   </View>
+   <View style={[styles.unattendview]}>
+       <Text style={{color:'#707070'}}>{exam.unattended}</Text>
+     
+   </View>
+  </View>
       </View>;
 })
 
@@ -101,25 +108,7 @@ return (
   <ScrollView style={{backgroundColor:'#FFFFFF'}}>
 
   {examList}
-   <View style={[styles.container]}>
-      <View style={{flex:1,color:'#5E3F8C',marginLeft:15}}>
-       <Text>correct
-         <Text style={{color:'#8BC34A'}}>   04</Text>
-        </Text>
-  </View>
-
-  <View style={{flex:1,color:'#5E3F8C'}}>
-    <Text>wrong
-      <Text style={{color:'#EF5350'}}>   04</Text>
-     </Text>
-  </View>
-
-   <View style={{flex:1,color:'#EF5350'}}>
-     <Text>unanswered
-       <Text style={{color:'#707070'}}>   04</Text>
-     </Text>
-   </View>
-  </View>
+   
  
 
 
@@ -202,14 +191,61 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-
-    marginTop:15
+    marginLeft:15,
+    marginTop:5,
+    marginBottom:10
   },
   line:{
         borderBottomColor: '#707070',
         borderBottomWidth: 1,
         fontWeight:'200',
         marginTop:20
+  },
+  font:{
+    fontSize:15,
+    marginTop:5
+  },
+  fontcolor:{
+    fontSize:15,
+    marginTop:5,
+    color:'#956FCE',
+    marginLeft:10
+  },
+  allotedview:{
+    backgroundColor:'#CEC76F',
+     borderWidth: .5,
+    borderColor: '#7C7676',
+    
+    marginLeft:5,
+    marginTop:30,
+    marginBottom:50,borderRadius:3
+  },
+  correctview:{
+    backgroundColor:'green',
+     borderWidth: .5,
+    borderColor: '#7C7676',
+    borderRadius:3,
+    flex:2,
+    marginBottom:5,
+    marginRight:10
+  },
+   wrongview:{
+    flex:2,
+    backgroundColor:'',
+     borderWidth: .5,
+    borderColor: '#7C7676',
+    borderRadius:3,
+    marginBottom:10,
+    marginRight:10
+  },
+   unattendview:{
+  flex:3,
+     borderWidth: .5,
+    borderColor: '#7C7676',
+    borderRadius:3,
+    marginRight:15,
+    marginBottom:10
   }
+
 
     });
