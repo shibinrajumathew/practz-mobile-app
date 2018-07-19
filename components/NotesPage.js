@@ -107,7 +107,9 @@ export class NotesPage extends Component {
    })
     : noteList = this.state.noteData.map((note)=>{
      return(
-       <View key={(note, index) => index.toString()}  style={[styles.announcementBox, styles.flexrow]}>
+       <View key={(note, index) => index.toString()} >
+         <TouchableOpacity  style={[styles.announcementBox, styles.flexrow]}
+           onPress={() => this.props.navigation.navigate('AttemptedExamDetails')}>
          <View style={[styles.flexcol, styles.innerTextBox]} >
            <Text style={[styles.topTitle]}>{note.title}</Text>
            <Text style={[styles.lightFont,styles.attemptedBox]} >Posted by <Text style={[styles.indicator]}>{note.createdBy} </Text></Text>
@@ -118,6 +120,7 @@ export class NotesPage extends Component {
          <View style={[styles.sideBotton, styles.brightBlue]} >
            <Text style={{ fontFamily: 'Avenir, Book', color: '#ffffff' }} >Science & Tech </Text>
          </View>
+       </TouchableOpacity>
        </View>
      );
    });
