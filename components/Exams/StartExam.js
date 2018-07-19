@@ -67,6 +67,58 @@ clearRadio(){
   this.setState({value:0})
   console.log('value is:',this.state.value);
 }
+componentWillMount() {
+  console.log("inside landing will mount");
+  AsyncStorage.multiGet(['userId']).then((data) => {
+  fetch(this.state.HOME+this.state.AVAILABLE_EXAM+'userId='+data[0][1]+'')
+  .then(response =>  response.json())
+  .then(responseobj => {
+  //   if(responseobj==401){
+  //   logout();
+  //   this.props.navigation.navigate('Loign');
+  // }else{
+  //     this.setState({
+  //     attempted:responseobj.data,
+  //   });
+  // }
+
+  if((responseobj.data)=== undefined ||(responseobj.data.length<1)){
+    this.setState({
+      status:'No active exams available now. Please check later.',
+      checkFlag:1,
+      view:'',
+      availableExamList:[
+        {
+            "questionPaperName": "",
+            "examProductName": "",
+            "expiryDate": "",
+            "attributes": {
+            "questionPaperName": "",
+            "examPublisherName": "",
+            "qpSections": [],
+            "republishStatus": ''
+       },
+        }
+    ],
+    eid:0,
+    eprod:'',
+    qname:'',
+    exp:'',
+    });
+  }else{
+    this.setState({
+      checkFlag:2,
+      status:'Available exams',
+      view:'View all',
+      availableExamList:responseobj.data,
+    });
+  }
+  console.log("available exam count",responseobj);
+  });
+
+
+});
+}
 
   render() {
     let img=require('../Assets/images/tick.png');
