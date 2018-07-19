@@ -86,6 +86,10 @@ export default StyleSheet.create({
     width: (Dimensions.get('window').width) - 40,
     flex: 1,
   },
+  attemptedBox: {
+    width: (Dimensions.get('window').width) - 10,
+    flex: 1,
+  },
   availableBox: {
     padding: 10,
     width: (Dimensions.get('window').width),
@@ -245,6 +249,9 @@ export default StyleSheet.create({
     height: 60,
     padding: 20,
     backgroundColor: '#5E3F8C',
+  },
+  totalWidth:{
+    width:Dimensions.get('screen').width-40,
   },
   //fonts
   topTitle: {

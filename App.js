@@ -19,15 +19,7 @@ export const SimpleApp = StackNavigator({
   StartExam:{ screen: StartExam},
   AvailableExams:{ screen:AvailableExams},
   NoteDetails:{ screen:NoteDetails},
-  ExamDetails:{ screen: ExamDetails,
-    navigationOptions: {
-      title: 'Ca 22',
-      headerTitleStyle:{
-        color:'#5e3f8c',
-        textAlign: 'center',
-        flex:1,
-      },
-    },},
+  ExamDetails:{ screen: ExamDetails},
   Dash:{ screen: Dash,
     navigationOptions: {
       headerLeft:null,

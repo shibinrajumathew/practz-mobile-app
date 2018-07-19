@@ -66,7 +66,7 @@ export default class Login extends Component {
       .then(response => response.json())
       .then(response=> {
         //close gif
-        this.refs.Load.CloseLoad();
+
         //fetch orgnization details
         if(response.success){
           fetch(this.state.home+this.state.api_authentication)
@@ -76,6 +76,18 @@ export default class Login extends Component {
               fetch(this.state.home+this.state.api_user+response.data.principal.userId)
                 .then(responseUsr => responseUsr.json())
                 .then(responseUsr=> {
+                  console.log("Inside login:");
+                  console.log("userId:",response.data.principal.userId);
+                  console.log("organizationId:",response.data.principal.parentOrganizationId);
+                  console.log("parentOrganizationId:",response.data.principal.organizationId);
+                  console.log("organizationEmail:",responseAu.data.organizationEmail);
+                  console.log("organizationDisplayName,:",responseAu.data.organizationDisplayName);
+                  console.log("UserType:",responseUsr.data.type);
+                  console.log("liveTemplate",responseAu.data.liveTemplate);
+                  console.log("logourl",responseAu.data.logoUrl);
+                  console.log("appId",responseUsr.data.appId);
+                  console.log("authority:",response.data.accessRights);
+                  console.log("Inside login: end");
                   //set session
                   AsyncStorage.multiSet([
                     ["userId",response.data.principal.userId],
@@ -88,13 +100,19 @@ export default class Login extends Component {
                     ["liveTemplate",responseAu.data.liveTemplate],
                     ["logourl",responseAu.data.logoUrl],
                     ["appId",responseUsr.data.appId],
+                    ["password",this.state.pass,],
+                    ["username",this.state.emailid],
                     // ["signUpEnabled"],
                     // ["homePageEnabled"],
                     // ["telephone1",responseUsr.data.telephone1],
               ]);
+              this.refs.Load.CloseLoad();
+            this.props.navigation.navigate('Dash');
             });
             });
-          this.props.navigation.navigate('Dash');
+
+
+
         }else{
           Alert.alert("Wrong username or password");
           }

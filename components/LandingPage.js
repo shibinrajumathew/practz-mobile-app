@@ -10,49 +10,129 @@ import {
   Dimensions,
   Text,
   Alert,
+  BackHandler,
   Button,
   StyleSheet,
   AsyncStorage,
 } from 'react-native';
+import URL from './Url';
 
 export class LandingPage extends Component {
-    componentDidMount() {
-    }
+  constructor(){
+    super();
+    // const { navigate } = this.props.navigation;
+    classthis=this;
+  this.state={
+    HOME:URL.HOME,
+    AVAILABLE_EXAM:URL.AVAILABLE_EXAM,
+    status:'',
+    view:'',
+    eid:0,
+    eprod:'',
+    qname:'',
+    exp:'',
+    checkFlag:0,
+    availableExamList:[
+      {
+          "questionPaperName": "",
+          "examProductName": "",
+          "expiryDate": "",
+          attributes:{
+            questionPaperName:""
+          }
+      }
+  ]
+  }
+  }
 
-  render() {
+    componentWillMount() {
+      console.log("inside landing will mount");
+      AsyncStorage.multiGet(['userId']).then((data) => {
+      fetch(this.state.HOME+this.state.AVAILABLE_EXAM+'userId='+data[0][1]+'')
+      .then(response =>  response.json())
+      .then(responseobj => {
+      //   if(responseobj==401){
+      //   logout();
+      //   this.props.navigation.navigate('Loign');
+      // }else{
+      //     this.setState({
+      //     attempted:responseobj.data,
+      //   });
+      // }
 
-      AsyncStorage.multiGet([
-        'userId',
-        'organizationId',
-        'parentOrganizationId',
-        'organizationEmail',
-        'organizationDisplayName',
-        'UserType',
-        'liveTemplate',
-        'logourl',
-        'appId',
-        'authority',
-      ]).then((data) => {
-        // let user = data[0][1];
-        // if (user !== null) {
-        //   this.props.navigation.navigate('Dash');
-        // } else {
-        //   this.props.navigation.navigate('Login');
-        // }
-
-        console.log("test");
-        console.log("userId:",data[0][1]);
-        console.log("organizationId:",data[1][1]);
-        console.log("parentOrganizationId:",data[2][1]);
-        console.log("organizationEmail:",data[3][1]);
-        console.log("organizationDisplayName,:",data[4][1]);
-        console.log("UserType:",data[5][1]);
-        console.log("liveTemplate",data[6][1]);
-        console.log("logourl",data[7][1]);
-        console.log("appId",data[8][1]);
-        console.log("authority:",data[9][1]);
-
+      if((responseobj.data)=== undefined ||(responseobj.data.length<1)){
+        this.setState({
+          status:'No active exams available now. Please check later.',
+          checkFlag:1,
+          view:'',
+          availableExamList:[
+            {
+                "questionPaperName": "",
+                "examProductName": "",
+                "expiryDate": "",
+                "attributes": {
+                "questionPaperName": "",
+                "examPublisherName": "",
+                "qpSections": [],
+                "republishStatus": ''
+           },
+            }
+        ],
+        eid:0,
+        eprod:'',
+        qname:'',
+        exp:'',
+        });
+      }else{
+        this.setState({
+          checkFlag:2,
+          status:'Available exams',
+          view:'View all',
+          availableExamList:responseobj.data,
+        });
+      }
+      console.log("available exam count",responseobj);
       });
+
+
+  });
+}
+componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+}
+
+
+
+handleBackButton() {
+    return BackHandler.exitApp();
+}
+  render() {
+    {
+    this.state.checkFlag==1||this.state.checkFlag==0
+    ? examList = this.state.availableExamList.map((exam) => {
+     return(<View key={(exam, index) => index.toString()} ></View>);
+   })
+    :
+    examList = this.state.availableExamList.map((exam) => {
+     return(
+       <View key={(exam, index) => index.toString()} >
+         <TouchableOpacity style={[styles.announcementBox, styles.flexrow]}
+           onPress={() => this.props.navigation.navigate('ExamDetails',{eid:exam.id,eprod:exam.examProductName,qname:exam.attributes.questionPaperName,exp:exam.expiryDate})} >
+           <View style={[styles.flexcol, styles.innerTextBox]} >
+             <Text style={[styles.topTitle]}>{exam.attributes.questionPaperName}</Text>
+             <Text style={[styles.lightFont]} >{exam.examProductName}</Text>
+             <View style={[styles.flexrow]}>
+               <Text style={[styles.totalWidth]}>Ends on {exam.expiryDate}</Text>
+             </View>
+           </View>
+           <View style={[styles.sideBotton, styles.brightBlue]} >
+             <Text style={[styles.bookFont,styles.whiteFont]} >Science & Tech </Text>
+           </View>
+         </TouchableOpacity>
+       </View>
+     );
+   });
+   }
     return (
 
       <View>
@@ -84,46 +164,20 @@ export class LandingPage extends Component {
             />
           </View>
           <View style={[styles.flexcol, styles.innerTextBox]} >
-            <Text style={{ fontFamily: 'Avenir, Heavy', fontWeight: 'bold', color: '#000' }}>Take a free test</Text>
-            <Text style={{ fontFamily: 'Avenir, Light' }} >Lorem ipsum dolor sit amet, consectetur adipisci</Text>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={{ fontWeight: 'bold', color: '#956FCE' }}>TRY NOW</Text>
+            <Text style={[styles.heavyFont,styles.boldFont,styles.blackFont]}>Take a free test</Text>
+            <Text style={[styles.lightFont]} >Lorem ipsum dolor sit amet, consectetur adipisci</Text>
+            <View style={[styles.flexrow]}>
+              <Text style={[styles.endFont]}>TRY NOW</Text>
             </View>
           </View>
         </View>
         <View style={[styles.flexrow, styles.availableBox]}>
-          <Text style={{ fontWeight: 'bold', color: '#000', flex: 3 }}>Available exams</Text>
-          <Text style={{ color: '#676262', flex: 1, }}>View all</Text>
+          <Text style={{ fontWeight: 'bold', color: '#000', flex: 3 }}>{this.state.status}</Text>
+          <Text style={{ color: '#676262', flex: 1, }}>{this.state.view}</Text>
         </View>
-        <TouchableOpacity style={[styles.announcementBox, styles.flexrow]}
-          onPress={() => this.props.navigation.navigate('ExamDetails')} >
-          <View style={[styles.flexcol, styles.innerTextBox]} >
-            <Text style={[styles.topTitle]}>Ca 22</Text>
-            <Text style={{ fontFamily: 'Avenir, Light' }} >Staff Board Exam</Text>
-            <Text style={{ fontFamily: 'Avenir, Light' }} >No of Questions <Text style={[styles.indicator]}>10 </Text>Time Allocated <Text style={[styles.indicator]}>10</Text></Text>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={[styles.endFont]}>Ends on 13 Jun 11:59 pm</Text>
-            </View>
-          </View>
-          <View style={[styles.sideBotton, styles.brightBlue]} >
-            <Text style={{ fontFamily: 'Avenir, Book', color: '#ffffff' }} >Science & Tech </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.announcementBox, styles.flexrow]}
-          onPress={() => this.props.navigation.navigate('ExamDetails')}
-        >
-          <View style={[styles.flexcol, styles.innerTextBox]} >
-            <Text style={{ fontFamily: 'Avenir, Heavy', fontWeight: 'bold', color: '#000' }}>Ca 22</Text>
-            <Text style={{ fontFamily: 'Avenir, Light' }} >Staff Board Exam</Text>
-            <Text style={{ fontFamily: 'Avenir, Light' }} >No of Questions <Text style={{ color: '#956FCE', fontWeight: '600' }}>10 </Text>Time Allocated <Text style={{ color: '#956FCE', fontWeight: '600' }}>10</Text></Text>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={[styles.endFont]}>Ends on 13 Jun 11:59 pm</Text>
-            </View>
-          </View>
-          <View style={[styles.sideBotton, styles.green]} >
-            <Text style={{ fontFamily: 'Avenir, Book', color: '#ffffff' }} >Science & Tech </Text>
-          </View>
-        </TouchableOpacity>
+
+        {examList}
+
       </View>
 
     );

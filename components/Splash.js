@@ -48,14 +48,14 @@ export default class Login extends Component {
       });
 
 
-    }, 50);
+    }, 500);
   }
 
 
-  componentWillUnmount() {
-
-    clearTimeout(this.timeoutHandle);
-  }
+  // componentWillUnmount() {
+  //
+  //   clearTimeout(this.timeoutHandle);
+  // }
   render() {
     const { navigate } = this.props.navigation;
     return (

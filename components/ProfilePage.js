@@ -2,11 +2,13 @@
 import Icon from 'react-native-ionicons';
 import ProgressBarAnimated from 'react-native-progress-bar-animated';
 import React, { Component } from 'react';
+import {logout} from './Functions';
 import styles from './Assets/Style';
 import {
   View,
   Image,
   Dimensions,
+  BackHandler,
   TouchableOpacity,
   Text,
 } from 'react-native';
@@ -20,6 +22,10 @@ export class ProfilePage extends Component {
       progressWithOnComplete: 0,
       progressCustomized: 0,
     }
+  }
+  userLogout(){
+    logout();
+    BackHandler.exitApp();
   }
   render() {
     const barWidth = (Dimensions.get('screen').width / 2) - 30;
@@ -73,9 +79,9 @@ export class ProfilePage extends Component {
         <View style={[styles.profileSetting]}>
           <Text style={{ fontWeight: '500' }}>Change Password</Text>
         </View>
-        <View style={[styles.profileSetting]}>
+        <TouchableOpacity style={[styles.profileSetting]} onPress={() => this.userLogout()}>
           <Text style={{ fontWeight: '500' }}>Logout</Text>
-        </View>
+        </TouchableOpacity>
       </View>
 
     );
