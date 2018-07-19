@@ -10,26 +10,16 @@ import Login from './components/Login';
 import Dash from './components/Home';
 import ExamDetails from './components/Exams/ExamDetails';
 import StartExam from './components/Exams/StartExam';
-import AvailableExams from './components/UI/AvailableExams';
-import NoteDetails from './components/UI/NoteDetails';
-import AttemptedExamDetails from './components/AttemptedExamDetails';
-import HistoricPattern from './components/UI/HistoricPattern';
-import MyOrders from './components/UI/MyOrders';
-import OrderDetails from './components/UI/OrderDetails';
-export const SimpleApp = StackNavigator({
 
+//author hari import starts here
+import NoteDetails from './components/NoteDetails';
+import AttemptedExamDetails from './components/AttemptedExamDetails';
+export const SimpleApp = StackNavigator({
+//author shibin navigation starts here
   Home: { screen: Splash },
   Login:{ screen: Login},
   StartExam:{ screen: StartExam},
-  AvailableExams:{ screen:AvailableExams},
-  NoteDetails:{ screen:NoteDetails},
   ExamDetails:{ screen: ExamDetails},
-
-
-  AttemptedExamDetails:{ screen: AttemptedExamDetails},
-  HistoricPattern:{ screen: HistoricPattern},
-  MyOrders:{ screen: MyOrders},
-  OrderDetails:{ screen: OrderDetails},
   Dash:{ screen: Dash,
     navigationOptions: {
       headerLeft:null,
@@ -51,7 +41,13 @@ export const SimpleApp = StackNavigator({
     },
   },
 
+  //author hari navigation starts here
+  NoteDetails:{ screen:NoteDetails},
+  AttemptedExamDetails:{ screen: AttemptedExamDetails},
+
 });
+
+//nothing to change
 export default class App extends Component<{}> {
   render() {
     return (

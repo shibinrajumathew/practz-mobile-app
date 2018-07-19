@@ -30,19 +30,19 @@ export default class AttempedExam extends Component<Props> {
   var examList = this.state.exams.map(function(exam){
   return <View>
    <View style={[styles.myview]}>
-  
+
 
   <View style={[styles.container]}>
     <View style={{flex: 2}} >
       <Text style={{marginLeft: 15,marginTop:15,color:'#413333',fontSize:20,fontWeight:'bold'}}>{exam.name}</Text>
-    </View> 
+    </View>
 
 
         <View style={{flex: 1, backgroundColor:'#00BCD4',marginTop:20,marginRight:20, alignItems: 'center'}} >
           <Text style={{fontSize:10,marginLeft:5,marginTop:2,color:'#FFFFFF'}}>Science and Tech</Text>
         </View>
   </View>
-           
+
 
             <Text style={{marginLeft: 15,color:'#000000',fontSize:10,marginTop:2}}>{exam.examType} </Text>
 
@@ -56,20 +56,20 @@ export default class AttempedExam extends Component<Props> {
                       <Text style={[styles.font]}>Total Marks</Text>
                        <Text style={{fontSize:20,color:'#956FCE',fontWeight:'bold'}}>{exam.percent}</Text>
                   </View>
-                                
-                      
+
+
                       <View>
-                         <Text style={[styles.fontcolor]}>  
+                         <Text style={[styles.fontcolor]}>
                            {exam.noQuestions} </Text>
                        <Text style={[styles.fontcolor]}>
                            {exam.timeTaken} </Text>
-                           <Text style={[styles.fontcolor]}>  
+                           <Text style={[styles.fontcolor]}>
                            4/10 </Text>
                        </View>
-                       
+
 
                        <View style={[styles.allotedview]}>
-                       <Text style ={{color:'#FFFFFF',fontSize:10,alignSelf:'center',margin:3}}> 
+                       <Text style ={{color:'#FFFFFF',fontSize:10,alignSelf:'center',margin:3}}>
                                         Alloted: {exam.allotedTime}
                                 </Text>
                        </View>
@@ -81,7 +81,7 @@ export default class AttempedExam extends Component<Props> {
          </View>
          <View style={[styles.correctview]}>
          <Text style={{color:'#8BC34A'}}> {exam.correct}</Text>
-        
+
   </View>
 
   <View style={{flex:2,color:'#5E3F8C'}}>
@@ -89,7 +89,7 @@ export default class AttempedExam extends Component<Props> {
     </View>
      <View style={[styles.wrongview]}>
       <Text style={{color:'#EF5350'}}> {exam.wrong}</Text>
-     
+
   </View>
 
    <View style={{flex:3,color:'#EF5350'}}>
@@ -97,7 +97,7 @@ export default class AttempedExam extends Component<Props> {
    </View>
    <View style={[styles.unattendview]}>
        <Text style={{color:'#707070'}}>{exam.unattended}</Text>
-     
+
    </View>
   </View>
       </View>;
@@ -108,8 +108,8 @@ return (
   <ScrollView style={{backgroundColor:'#FFFFFF'}}>
 
   {examList}
-   
- 
+
+
 
 
   <View style={[styles.myquestion]}>
@@ -118,7 +118,7 @@ return (
             <Text style={{fontWeight:'bold',marginLeft:10}}>Q3.
             </Text>
           </View>
-          
+
          <View style={{flex:9}}>
           <Text style={{color:'#413333',lineHeight:20}}>
               Which software launched by Union Home Minister Rajnath Singh to do speedy disposal of
@@ -128,7 +128,7 @@ return (
   </View>
 
   <View style={[styles.container]}>
-  <View style={{flex:4,marginLeft:25,marginRight:20}}> 
+  <View style={{flex:4,marginLeft:25,marginRight:20}}>
   <Text style={{color:'#000000',marginLeft:10}}>
   ChosenAnswer
 
@@ -145,10 +145,10 @@ return (
   explanation
   </Text>
   </View>
-  </View> 
+  </View>
 
   <View style={[styles.container]}>
-  <View style={{flex:2,marginLeft:20}}> 
+  <View style={{flex:2,marginLeft:20}}>
   <Text style={{color:'#000000',marginLeft:15}}>
   Correct Answer
 
@@ -174,14 +174,14 @@ return (
 
 
 const styles = StyleSheet.create({
-  myview: { 
+  myview: {
     borderWidth: .5,
     borderColor: '#7C7676',
     backgroundColor:'#F6F4F8',
     marginTop: 15,
     marginBottom: 15
   },
-  myquestion: { 
+  myquestion: {
     borderWidth: .5,
     borderColor: '#7C7676',
     backgroundColor:'#FFFFFF',
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     backgroundColor:'#CEC76F',
      borderWidth: .5,
     borderColor: '#7C7676',
-    
+
     marginLeft:5,
     marginTop:30,
     marginBottom:50,borderRadius:3
@@ -231,7 +231,6 @@ const styles = StyleSheet.create({
   },
    wrongview:{
     flex:2,
-    backgroundColor:'',
      borderWidth: .5,
     borderColor: '#7C7676',
     borderRadius:3,

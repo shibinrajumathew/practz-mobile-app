@@ -114,7 +114,7 @@ componentWillMount() {
      return(<View key={(exam, index) => index.toString()} ></View>);
    })
     :
-    attemptedList = this.state.attempted.map(function(exam){
+    attemptedList = this.state.attempted.map((exam) => {
      let bgcolor;
      // console.log("attemped:",this.state.attempted);
      if(exam.percentage<30){
@@ -124,8 +124,10 @@ componentWillMount() {
      }
 
      return(
-       <View key={(exam, index) => index.toString()} style={[styles.announcementBox, styles.flexrow]}>
-         <View style={[styles.flexcol, styles.innerTextBox]} >
+       <View key={(exam, index) => index.toString()}>
+          <TouchableOpacity style={[styles.announcementBox, styles.flexrow]}
+            onPress={() => this.props.navigation.navigate('AttemptedExamDetails')}>
+            <View style={[styles.flexcol, styles.innerTextBox]} >
            <Text style={[styles.heavyFont,styles.boldFont,styles.blackFont]}>{exam.examName}</Text>
 
           {exam.percentage == 100?
@@ -170,6 +172,7 @@ componentWillMount() {
          <View style={[styles.sideBotton, styles.brightBlue]} >
            <Text style={[styles.bookFont,styles.whiteFont]} >Science & Tech </Text>
          </View>
+         </TouchableOpacity>
        </View>
      );
    });
@@ -180,6 +183,7 @@ componentWillMount() {
           <Text style={[styles.boldFont,styles.blackFont,styles.lightFont],{ flex: 3 }}>Attempted Exams</Text>
         </View>
         {attemptedList}
+       
       </ScrollView>
     );
   }

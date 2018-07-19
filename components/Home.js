@@ -42,7 +42,7 @@ class Attempted extends React.Component {
   render() {
     return (
       <ScrollView style={[styles.container, styles.flexcol]} >
-        <AttemptedPage />
+        <AttemptedPage navigation={this.props.navigation} />
       </ScrollView>
     );
   }
@@ -52,7 +52,7 @@ class Notes extends React.Component {
   render() {
     return (
       <ScrollView style={[styles.container, styles.flexcol]} >
-        <NotesPage />
+        <NotesPage navigation={this.props.navigation} />
       </ScrollView>
     );
   }
@@ -61,7 +61,7 @@ class Message extends Component {
   render() {
     return (
       <ScrollView style={[styles.container, styles.flexcol]} >
-        <MessagePage />
+        <MessagePage navigation={this.props.navigation} />
       </ScrollView>
     );
   }
@@ -70,7 +70,7 @@ class Profile extends Component {
   render() {
     return (
       <ScrollView style={[styles.container, styles.flexcol]} >
-        <ProfilePage />
+        <ProfilePage navigation={this.props.navigation} />
       </ScrollView>
     );
   }

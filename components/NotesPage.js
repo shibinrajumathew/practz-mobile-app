@@ -109,7 +109,7 @@ export class NotesPage extends Component {
      return(
        <View key={(note, index) => index.toString()} >
          <TouchableOpacity  style={[styles.announcementBox, styles.flexrow]}
-           onPress={() => this.props.navigation.navigate('AttemptedExamDetails')}>
+           onPress={() => this.props.navigation.navigate('NoteDetails')}>
          <View style={[styles.flexcol, styles.innerTextBox]} >
            <Text style={[styles.topTitle]}>{note.title}</Text>
            <Text style={[styles.lightFont,styles.attemptedBox]} >Posted by <Text style={[styles.indicator]}>{note.createdBy} </Text></Text>
