@@ -12,6 +12,10 @@ import ExamDetails from './components/Exams/ExamDetails';
 import StartExam from './components/Exams/StartExam';
 import AvailableExams from './components/UI/AvailableExams';
 import NoteDetails from './components/UI/NoteDetails';
+import AttemptedExam from './components/UI/AttemptedExam';
+import HistoricPattern from './components/UI/HistoricPattern';
+import MyOrders from './components/UI/MyOrders';
+mport OrderDetails from './components/UI/OrderDetails';
 export const SimpleApp = StackNavigator({
 
   Home: { screen: Splash },
@@ -20,6 +24,21 @@ export const SimpleApp = StackNavigator({
   AvailableExams:{ screen:AvailableExams},
   NoteDetails:{ screen:NoteDetails},
   ExamDetails:{ screen: ExamDetails},
+<<<<<<< HEAD
+=======
+  AttemptedExam:{ screen: AttemptedExam},
+  HistoricPattern:{ screen: HistoricPattern},
+  MyOrders:{ screen: MyOrders},
+  OrderDetails:{ screen: OrderDetails},
+    navigationOptions: {
+      title: 'Ca 22',
+      headerTitleStyle:{
+        color:'#5e3f8c',
+        textAlign: 'center',
+        flex:1,
+      },
+    },},
+>>>>>>> react_mobile
   Dash:{ screen: Dash,
     navigationOptions: {
       headerLeft:null,

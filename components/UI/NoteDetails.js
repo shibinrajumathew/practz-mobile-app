@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-fa-icons';
 
-export default class App extends Component<Props> {
+export default class NoteDetails extends Component<Props> {
   constructor(props) {
     
        super(props)
@@ -59,7 +59,10 @@ export default class App extends Component<Props> {
                  You can use this information to persuade your boss or your design team (and perhaps even yourself) 
                  that microinteraction is flexible and an ever-changing element for designing rich interactive experiences.
       </Text>
-         
+         <Image style=
+              {{height:150,width:200,alignSelf:'center',marginTop:20}}
+                  source={require('./components/assets/images/images.jpeg')}
+        />
      <Text style ={{fontWeight:'200',alignSelf: 'center',marginTop:10}}> Img 1.1 White blood cells </Text>
           <Text style={{marginLeft:20,fontSize:15,lineHeight: 30,marginTop:15,fontWeight:'500'}}>Microinteractions show that 
                 focus  on details is a key principle for effective and powerful results Each part of the design process matters.
@@ -71,7 +74,26 @@ export default class App extends Component<Props> {
       </Text>
        <Text style={{fontStyle:'italic',marginLeft:30,marginTop:3}}> caught? Nothing?</Text>
            <Text style={{fontStyle:'italic',marginLeft:30,marginTop:3}}>Perhaps you’re not so fierce after all.</Text>
-        
+           <View style={{flex:1,flexDirection:'row',justifyContent: 'space-between',marginLeft:20,marginRight:10,marginTop:10}}>
+               <View style={{flex:1}}>
+                 <Image
+                    style={{height:50,width:75}}
+                    source={require('./components/assets/images/announcements.png')}
+                    />
+               </View>
+               <View style={{flex:1}}>
+                 <Image
+                    style={{height:50,width:75}}
+                    source={require('./components/assets/images/download.png')}
+                    />
+               </View>
+               <View style={{flex:1}}>
+                 <Image
+                    style={{height:50,width:75}}
+                    source={require('./components/assets/images/logo.png')}
+                    />
+               </View>
+           </View>
        
       </ScrollView>
     );
