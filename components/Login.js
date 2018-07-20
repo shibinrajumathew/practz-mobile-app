@@ -115,6 +115,7 @@ export default class Login extends Component {
 
         }else{
           Alert.alert("Wrong username or password");
+          this.refs.Load.CloseLoad();
           }
       }).catch((error) => {console.error(error);});
   }

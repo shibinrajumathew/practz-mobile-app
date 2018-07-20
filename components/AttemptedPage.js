@@ -183,7 +183,6 @@ componentWillMount() {
           <Text style={[styles.boldFont,styles.blackFont,styles.lightFont],{ flex: 3 }}>Attempted Exams</Text>
         </View>
         {attemptedList}
-       
       </ScrollView>
     );
   }

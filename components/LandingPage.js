@@ -91,7 +91,6 @@ export class LandingPage extends Component {
           availableExamList:responseobj.data,
         });
       }
-      console.log("available exam count",responseobj);
       });
 
 

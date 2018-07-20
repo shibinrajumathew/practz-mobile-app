@@ -55,22 +55,27 @@ export default class StartExam extends Component {
             </View>),
 };
 
-handleOnPress(value){
-    this.setState({value:value})
-}
-onActionSelected(position) {
-  if (position === 0) { // index of 'Settings'
-    showSettings();
+  handleOnPress(value){
+      this.setState({value:value})
   }
-}
-clearRadio(){
-  this.setState({value:0})
-  console.log('value is:',this.state.value);
-}
-componentWillMount() {
+
+  onActionSelected(position) {
+    if (position === 0) { // index of 'Settings'
+      showSettings();
+    }
+  }
+
+  clearRadio(){
+    this.setState({value:0})
+    console.log('value is:',this.state.value);
+  }
+
+
+  componentWillMount() {
+      console.log("Inside start exam: ");
   console.log("inside landing will mount");
-  AsyncStorage.multiGet(['userId']).then((data) => {
-  fetch(this.state.HOME+this.state.AVAILABLE_EXAM+'userId='+data[0][1]+'')
+  AsyncStorage.multiGet(['organizationId','userId']).then((data) => {
+  fetch(this.state.HOME+this.state.START_EXAM+data[1][1]+'?esid='+this.props.navigation.state.params.eid+'&orgid='+data[0][1])
   .then(response =>  response.json())
   .then(responseobj => {
   //   if(responseobj==401){
@@ -81,7 +86,7 @@ componentWillMount() {
   //     attempted:responseobj.data,
   //   });
   // }
-
+  console.log("start exam: ",responseobj);
   if((responseobj.data)=== undefined ||(responseobj.data.length<1)){
     this.setState({
       status:'No active exams available now. Please check later.',
@@ -115,8 +120,6 @@ componentWillMount() {
   }
   console.log("available exam count",responseobj);
   });
-
-
 });
 }
 
