@@ -7,9 +7,10 @@ import {
   ScrollView,
   Image
 } from 'react-native';
-import Icon from 'react-native-fa-icons';
 
-export default class NoteDetails extends Component<Props> {
+import Icon from 'react-native-ionicons';
+import styles from './Assets/Style';
+export default class NoteDetails extends Component {
   constructor(props) {
 
        super(props)
@@ -28,23 +29,29 @@ export default class NoteDetails extends Component<Props> {
 
   render() {
      var noteList = this.state.notes.map(function(note){
-                        return  <View style={[styles.myview]}>
-          <Text style={{marginLeft:20,marginTop:10,color:'#7D7776',fontWeight:'thin'}}>Posted By
-             <Text style={{marginLeft:2,color:'#956FCE',}}>  {note.postedBy}
-                <Text style={{marginLeft:20,color:'#7D7776',fontWeight:'thin'}}>      Topic
-             <Text style={{marginLeft:2,color:'#956FCE'}}> { note.topic}   </Text>
-      </Text>
+                        return <View key={(note, index) => index.toString()} > 
+                        <View style={[styles.announcementbox,styles.grey]}>
+          <Text style={[styles.margins,styles.lightFont]}>Posted By
+             <Text style={[styles.endFont]}>  {note.postedBy}  </Text>
+             <Text style ={[styles.lightFont]} >      Topic
+             <Text style={[styles.indicator]}>   { note.topic}   </Text>
+      
       </Text>
               </Text>
 
 
-      <Text style={{marginLeft:20,marginTop:10,color:'#7D7776',fontWeight:'thin'}}>Posted On: {note.postedOn} </Text>
-      <Icon name='fas fa-paperclip' style={{ fontSize: 45, color: 'green' }} />
-         <Text style={{ fontSize: 45, color: 'blue' }}>
-  <Icon name='fas fa-paperclip' allowFontScaling />
-</Text>
+      <Text style={[styles.margins,styles.lightFont]}>Posted On: {note.postedOn} </Text>
+     <View style={[styles.margins]}>
+     <Text>
+     <Icon name='ios-attach' size={25} />
+     <Text>       <Icon name='ios-image-outline'/></Text>
+     </Text>
+     </View >
+         
+    </View>
       </View>;
            })
+           
 
     return (
 
@@ -99,18 +106,4 @@ export default class NoteDetails extends Component<Props> {
     );
     }
 }
-     const styles = StyleSheet.create({
-       myview: {
-       height:100,
-       borderWidth: .5,
-       borderColor: '#7C7676',
-       shadowColor: 'black',
-       shadowOffset: { width: 0, height: 2 },
-       shadowOpacity: 0.8,
-       shadowRadius: 4,
-       elevation: 1,
-       marginTop: 20,
-       backgroundColor:'#F6F4F8'
-  }
-
-    });
+     
