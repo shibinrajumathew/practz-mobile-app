@@ -333,6 +333,12 @@ export default StyleSheet.create({
   white:{
     backgroundColor: "#ffffff",
   },
+  grey:{
+    backgroundColor:'#F6F4F8'
+  },
+  lightgreen:{
+    backgroundColor:'#8BC34A'
+  },
   //flex direction
   flexrow: {
     flexDirection: 'row',
@@ -356,8 +362,18 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: 'white',
     backgroundColor: '#b8b8b8'
-  }
-
-
+  },
+  //author hari
+  line:{
+    borderBottomColor: '#707070',
+    borderBottomWidth: 1,
+    opacity:.5,
+    marginTop:10
+},
+ margins:{
+   marginLeft:15,
+   marginTop:10,
+   marginRight:5
+ }
 
 });
