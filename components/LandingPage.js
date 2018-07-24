@@ -1,5 +1,5 @@
 /* @flow */
-
+import ProgressBarAnimated from 'react-native-progress-bar-animated';
 import React, { Component } from 'react';
 import styles from './Assets/Style';
 import {
@@ -25,6 +25,7 @@ export class LandingPage extends Component {
   this.state={
     HOME:URL.HOME,
     AVAILABLE_EXAM:URL.AVAILABLE_EXAM,
+    ONGOING_EXAM:URL.ONGOING_EXAM,
     status:'',
     view:'',
     eid:0,
@@ -32,6 +33,13 @@ export class LandingPage extends Component {
     qname:'',
     exp:'',
     checkFlag:0,
+    checkFlagProgress:0,
+    progressData: [
+      "id":" ",
+      "percentageCompleted":0,
+      "questionPaperName":"",
+
+          ],
     availableExamList:[
       {
           "questionPaperName": "",
@@ -95,6 +103,52 @@ export class LandingPage extends Component {
 
 
   });
+  //for progressing exams
+
+    console.log("inside progressing exam");
+    AsyncStorage.multiGet(['userId','organizationId']).then((data) => {
+      console.log("ongoing url",this.state.HOME+this.state.ONGOING_EXAM+'userId='+data[0][1]+'&orgId='+data[1][1]+'');
+    fetch(this.state.HOME+this.state.ONGOING_EXAM+'userId='+data[0][1]+'&orgId='+data[1][1]+'')
+    .then(response =>  response.json())
+    .then(p_responseobj => {
+    //   if(responseobj==401){
+    //   logout();
+    //   this.props.navigation.navigate('Loign');
+    // }else{
+    //     this.setState({
+    //     attempted:responseobj.data,
+    //   });
+    // }
+
+    if((p_responseobj.data)=== undefined ||(p_responseobj.data.length<1)){
+      this.setState({
+        status:'No active exams available now. Please check later.',
+        checkFlagProgress:1,
+        view:'',
+        progressData: [
+        {
+            "percentageCompleted": 0,
+            "id":"",
+            "questionPaperName": "",
+        }
+    ],
+      eid:0,
+      eprod:'',
+      qname:'',
+      exp:'',
+      });
+      console.log("No ongoing exam: ",this.state.HOME+this.state.ONGOING_EXAM+'userId='+data[0][1]+'&orgId='+data[1][1]+'');
+    }else{
+      console.log("progress response:",p_responseobj.data);
+      this.setState({
+        checkFlagProgress:2,
+        progressData:p_responseobj.data,
+      });
+    }
+    });
+
+
+});
 }
 componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
@@ -106,6 +160,12 @@ handleBackButton() {
     return BackHandler.exitApp();
 }
   render() {
+    const barWidth = Dimensions.get('screen').width - 30;
+      const progressCustomStyles = {
+        backgroundColor: 'red',
+        borderRadius: 0,
+        borderColor: 'orange',
+      };
     {
     this.state.checkFlag==1||this.state.checkFlag==0
     ? examList = this.state.availableExamList.map((exam) => {
@@ -116,7 +176,7 @@ handleBackButton() {
      return(
        <View key={(exam, index) => index.toString()} >
          <TouchableOpacity style={[styles.announcementBox, styles.flexrow]}
-           onPress={() => this.props.navigation.navigate('ExamDetails',{eid:exam.id,eprod:exam.examProductName,qname:exam.attributes.questionPaperName,exp:exam.expiryDate})} >
+           onPress={() => this.props.navigation.navigate('ExamDetails',{eid:exam.id,eprod:exam.examProductName,qname:exam.attributes.questionPaperName})} >
            <View style={[styles.flexcol, styles.innerTextBox]} >
              <Text style={[styles.topTitle]}>{exam.attributes.questionPaperName}</Text>
              <Text style={[styles.lightFont]} >{exam.examProductName}</Text>
@@ -131,10 +191,41 @@ handleBackButton() {
        </View>
      );
    });
+
+
+    this.state.checkFlagProgress==1||this.state.checkFlagProgress==0
+    ? progressList = this.state.progressData.map((exam) => {
+     return(<View key={(exam, index) => index.toString()} ></View>);
+   })
+    :
+    progressList = this.state.progressData.map((exam) => {
+     return(
+       <View style={[styles.announcementBox, styles.flexrow]} key={(exam, index) => index.toString()} >
+
+         <TouchableOpacity onPress={() => this.props.navigation.navigate('ExamDetails',{eid:exam.id,eprod:exam.questionPaperName,qname:exam.questionPaperName})} >
+         <View>
+           <Text style={[styles.bookFont,styles.blackFont,styles.boldFont]} >On progressing exam: {exam.questionPaperName}</Text>
+         </View>
+           <View >
+             <ProgressBarAnimated
+             width={barWidth}
+             value={exam.percentageCompleted}
+             backgroundColorOnComplete="#6CC644"
+             backgroundColor="#6CC644"
+           />
+           </View>
+           <View  >
+             <Text style={[styles.bookFont,styles.blackFont]} >{exam.percentageCompleted}%</Text>
+           </View>
+           <View style={[styles.sideBotton, styles.brightBlue]} ><Text style={[styles.bookFont,styles.whiteFont]} >Continue</Text></View>
+       </TouchableOpacity>
+     </View>
+     );
+   });
    }
     return (
 
-      <View>
+      <ScrollView>
         <View style={styles.flexrow}>
           <View style={[styles.topBox, styles.blue]}>
             <Text style={{ color: '#ffffff' }}>practice realtime at your convenience!</Text>
@@ -157,6 +248,8 @@ handleBackButton() {
           </View>
         </View>
 
+        {progressList}
+
         <View style={[styles.announcementBox, styles.flexrow]}>
           <View >
             <Image style={{ marginTop: 10 }} source={require('./Assets/images/announcements.png')}
@@ -177,7 +270,7 @@ handleBackButton() {
 
         {examList}
 
-      </View>
+      </ScrollView>
 
     );
   }

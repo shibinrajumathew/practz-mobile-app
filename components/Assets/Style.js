@@ -44,6 +44,11 @@ export default StyleSheet.create({
     width: (Dimensions.get('window').width) - 4,
 
   },
+  timmingBox:{
+    width: Dimensions.get('window').width,
+    padding: 10,
+
+  },
   examBox: {
     borderRadius: 5,
     borderBottomWidth: 0.8,
@@ -201,6 +206,14 @@ export default StyleSheet.create({
     height: 16,
     opacity: 1
   },
+  timmer:{
+    alignItems: 'center',
+    top: 0,
+    justifyContent: 'center',
+    width: 50,
+    height: 50,
+    opacity: 1
+  },
   shadowContainer: {
     padding: 20,
     shadowColor: "#000000",
@@ -320,6 +333,9 @@ export default StyleSheet.create({
   },
   blue: {
     backgroundColor: '#7AC0F4',
+  },
+  lightBlue:{
+    backgroundColor: '#00BCD4',
   },
   brightBlue: {
     backgroundColor: '#00BCD4',

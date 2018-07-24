@@ -12,7 +12,6 @@ import {
   Button,
   StyleSheet,
   Platform,
-  WebView,
   AsyncStorage,
 } from 'react-native';
 import URL from './Url';
@@ -40,9 +39,7 @@ export class NotesPage extends Component {
   }
 
   componentWillMount() {
-    console.log("inside landing will mount");
     AsyncStorage.multiGet(['userId','organizationId']).then((data) => {
-    console.log("Notes url",this.state.HOME+this.state.AVAILABLE_NOTES+'orgId='+data[1][1]+'&uId='+data[0][1]+'');
     fetch(this.state.HOME+this.state.AVAILABLE_NOTES+'orgId='+data[1][1]+'&uId='+data[0][1]+'')
     .then(response =>  response.json())
     .then(responseobj => {
@@ -85,13 +82,6 @@ export class NotesPage extends Component {
         });
       }
 
-    // }
-
-    // console.log("Note title:",responseobj.data[0].title);
-    // console.log("content:",responseobj.data[0].content);
-    // console.log("createdby:",responseobj.data[0].createdBy);
-    // console.log("createdDate:",responseobj.data[0].createdDate);
-    console.log("Note title full list:",responseobj.data);
     });
 
 
