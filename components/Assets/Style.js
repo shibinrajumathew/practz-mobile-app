@@ -98,7 +98,6 @@ export default StyleSheet.create({
   availableBox: {
     padding: 10,
     width: (Dimensions.get('window').width),
-    // height: 40,
   },
   sideBotton: {
     borderRadius: 8,
@@ -265,6 +264,16 @@ export default StyleSheet.create({
   },
   totalWidth:{
     width:Dimensions.get('screen').width-40,
+  },
+  buttonContainer: {
+    width:(Dimensions.get('screen').width/2)-20,
+    padding: 15,
+    marginRight: 10,
+    },
+  buttonText: {
+    textAlign: 'center',
+    color: '#fff',
+    fontWeight: 'bold',
   },
   //fonts
   topTitle: {

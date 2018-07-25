@@ -127,7 +127,7 @@ export default class ExamDetails extends Component {
             </View>
           </View>
         </ScrollView>
-        <TouchableOpacity style={[styles.submitButton]} onPress={() => this.props.navigation.navigate('StartExam',{eid:this.props.navigation.state.params.eid,api:'startQuiz'})}><Text style={[styles.lightFont, styles.whiteFont]} > Start Exam</Text></TouchableOpacity>
+        <TouchableOpacity style={[styles.submitButton]} onPress={() => this.props.navigation.navigate('StartExam',{eid:this.props.navigation.state.params.eid,examPage:'startQuiz'})}><Text style={[styles.lightFont, styles.whiteFont]} > Start Exam</Text></TouchableOpacity>
       </View>
     );
   }
