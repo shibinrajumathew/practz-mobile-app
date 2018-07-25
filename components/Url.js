@@ -12,6 +12,7 @@ const URL=
   EXAM_DETAILS:'/practz/ilearn/v1/questionpapers/schedule/data?',
   AVAILABLE_NOTES:'/practz/ilearn/v1/notes/all-for-user?',
 // /practz/ilearn/v1/questionpapers/schedule/data?
-
+// author hari
+NOTE_DETAILS:'/practz/ilearn/v1/notes/'
 };
 export default URL
