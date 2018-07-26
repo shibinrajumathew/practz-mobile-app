@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 const URL=
 {
+  //Author shibin
   HOME:'https://demo.practz.com',
   // API'S
   AUTHENTICATION:'/practz/ilearn/v1/authorization',
@@ -14,6 +15,7 @@ const URL=
   EXAM_DETAILS:'/practz/ilearn/v1/questionpapers/schedule/data?',
   AVAILABLE_NOTES:'/practz/ilearn/v1/notes/all-for-user?',
   ANSWER_STATUS:'/practz/ilearn/v1/questions/review/minimal/style/?',
+  PRODUCT:'/practz/ilearn/v1/b2c/products/series/available?',
 
 
 };

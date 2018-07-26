@@ -3,7 +3,6 @@
 import ProgressBarAnimated from 'react-native-progress-bar-animated';
 import React, { Component } from 'react';
 import styles from './Assets/Style';
-import { MessagePage } from './MessagePage';
 import { ProfilePage } from './ProfilePage';
 import { LandingPage } from './LandingPage';
 import { AttemptedPage } from './AttemptedPage';
@@ -57,15 +56,6 @@ class Notes extends React.Component {
     );
   }
 }
-class Message extends Component {
-  render() {
-    return (
-      <ScrollView style={[styles.container, styles.flexcol]} >
-        <MessagePage navigation={this.props.navigation} />
-      </ScrollView>
-    );
-  }
-}
 class Profile extends Component {
   render() {
     return (
@@ -82,7 +72,6 @@ export default TabNavigator(
     Home: { screen: Home },
     Attempted: { screen: Attempted },
     Notes: { screen: Notes },
-    Message: { screen: Message },
     Profile: { screen: Profile },
   },
   {
@@ -96,8 +85,6 @@ export default TabNavigator(
           iconName = `ios-refresh-circle${focused ? '' : '-outline'}`;
         } else if (routeName === 'Notes') {
           iconName = `ios-clipboard${focused ? '' : '-outline'}`;
-        } else if (routeName === 'Message') {
-          iconName = `ios-mail-open${focused ? '' : '-outline'}`;
         } else if (routeName === 'Profile') {
           iconName = `ios-person${focused ? '' : '-outline'}`;
         }

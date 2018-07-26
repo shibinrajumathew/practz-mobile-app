@@ -93,12 +93,12 @@ export class NotesPage extends Component {
     const scalesPageToFit = Platform.OS === 'android';
     {
     this.state.checkFlag==1||this.state.checkFlag==0
-    ? noteList = this.state.noteData.map((note)=>{
-     return(<View key={(exam, index) => index.toString()} ></View>);
+    ? noteList = this.state.noteData.map((note, index)=>{
+     return(<View key={index.toString()} ></View>);
    })
-    : noteList = this.state.noteData.map((note)=>{
+    : noteList = this.state.noteData.map((note, index)=>{
      return(
-       <View key={(note, index) => index.toString()} >
+       <View key={index.toString()} >
          <TouchableOpacity  style={[styles.announcementBox, styles.flexrow]}
            onPress={() => this.props.navigation.navigate('NoteDetails',{nid:note.id})}>
          <View style={[styles.flexcol, styles.innerTextBox]} >

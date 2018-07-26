@@ -1,5 +1,6 @@
 /* @flow */
-
+import {  StackActions, NavigationActions } from 'react-navigation';
+import {noBack} from './Functions';
 import React, { Component } from 'react';
 import {
   View,
@@ -40,7 +41,8 @@ export default class Login extends Component {
       AsyncStorage.multiGet(['UserType']).then((data) => {
         let user = data[0][1];
         if (user !== null) {
-          this.props.navigation.navigate('Dash');
+          //redirect to Dash & donot show splash screen again on back
+          noBack(this.props,'Dash');
         } else {
           this.props.navigation.navigate('Login');
         }
