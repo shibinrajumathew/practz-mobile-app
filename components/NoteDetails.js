@@ -81,8 +81,9 @@ export default class NoteDetails extends Component {
             audio:{
            " signedUrls":responseJson.data.audio[0].signedUrl 
             }
-                  
+            // if{}     
         });
+        
       }
 
       })
