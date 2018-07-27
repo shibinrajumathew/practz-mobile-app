@@ -17,6 +17,12 @@ const URL=
   ANSWER_STATUS:'/practz/ilearn/v1/questions/review/minimal/style/?',
   PRODUCT:'/practz/ilearn/v1/b2c/products/series/available?',
 
+// author hari
+NOTE_DETAILS:'/practz/ilearn/v1/notes/'
+
+ 
+
+
 
 };
 export default URL

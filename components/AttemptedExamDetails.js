@@ -115,7 +115,7 @@ export default class AttempedExam extends Component<Props> {
  
 
   
-      </View>;
+      </View>
       })
 
        var questionList = this.state.questions.map(function(question){

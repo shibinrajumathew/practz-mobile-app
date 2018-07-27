@@ -308,6 +308,9 @@ export default StyleSheet.create({
   blackFont: {
     color: '#000'
   },
+  blueFont:{
+    color:'#956FCE'
+  },
   endFont: {
     fontWeight: 'bold',
     color: '#956FCE'
