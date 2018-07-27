@@ -34,12 +34,16 @@ export default class StartExam extends Component {
       PROGRESS:URL.PROGRESS,
       EXAM_DETAILS:URL.EXAM_DETAILS,
       ANSWER_STATUS:URL.ANSWER_STATUS,
+      REVIEW:URL.REVIEW,
       value: 99,//large size for reset/clear selection
       rmMin:1,
       rmSec:1,
       minus:0,
       picTick:'../Assets/images/tick.png',
       qno:1,
+      qindex:0,
+      selectedAnswer:null,
+      qStatus:null,
       progressData: [
               {
                   "percentageCompleted": 0,
@@ -90,6 +94,13 @@ export default class StartExam extends Component {
 
       }
   }
+  reviewQuestion(qpId,qNo){
+    this.setState({
+      examPage:'review',
+      qindex:qNo,
+    });
+    this.getData(qpId);
+  }
 
 getData(qpidFn){
   AsyncStorage.multiGet(['organizationId','userId']).then((data) => {
@@ -117,6 +128,8 @@ getData(qpidFn){
       API=this.state.HOME+this.state.START_EXAM+'next/question/'+data[1][1]+'?orgid='+data[0][1]+'&qpid='+qpidFn;
     }else if(examApi=="prev"){
       API=this.state.HOME+this.state.START_EXAM+'previous/question/'+data[1][1]+'?orgid='+data[0][1]+'&qpid='+qpidFn;
+    }else if(examApi=="review"){
+      API=this.state.HOME+this.state.REVIEW+data[1][1]+'?idx='+this.state.qindex+'orgid='+data[0][1]+'&qpid='+qpidFn;
     }
   console.log("api from getData:",API);
   console.log("qpid:",qpidFn);
@@ -155,6 +168,11 @@ getData(qpidFn){
   }else{
   const regex = /(<([^>]+)>)/ig;
   const optnresult = responseobj.data.text.replace(regex, '');
+if(responseobj.data.questionStatus=="ANSWERED"){
+  this.setState({
+    value:responseobj.data.submittedAnswer,
+  })
+}
   this.setState({
     quest: optnresult,
     optn:responseobj.data.options,
@@ -230,7 +248,7 @@ static navigationOptions = ({ navigation  }) => {
     objAns= this.state.optn.map((exam,index) =>{
       return(
         <View  key={index.toString()} style={[styles.answers]}>
-        <RadioButton currentValue={this.state.value} value={index} onPress={this.handleOnPress.bind(this)}>
+        <RadioButton currentValue={this.state.value} value={exam.toString()} onPress={this.handleOnPress.bind(this)}>
         <Text> {exam.toString()}</Text>
         </RadioButton>
       </View>
@@ -242,19 +260,19 @@ static navigationOptions = ({ navigation  }) => {
          {exam.status == "ANSWERED" ?
             <View  style={[styles.questionAttended]}>
               <Image  style={[styles.tickedNumber]} source={img}/>
-              <TouchableOpacity  style={[styles.textInsideCircle]}>
+              <TouchableOpacity onPress={() =>  this.reviewQuestion(this.state.qpid,exam.questionIndex)}  style={[styles.textInsideCircle]}>
                 <Text  style={[styles.lightFont,styles.tickedNumberColor]} >{exam.questionIndex+1}</Text>
               </TouchableOpacity>
             </View>
            : (exam.status=="MARKED_FOR_REVIEW"?
            <View  style={[styles.questionForReview]}>
-             <TouchableOpacity  style={[styles.textInsideCircle]}>
+             <TouchableOpacity onPress={() =>  this.reviewQuestion(this.state.qpid,exam.questionIndex)}  style={[styles.textInsideCircle]}>
                <Text  style={[styles.lightFont,styles.whiteFont]} >{exam.questionIndex+1}</Text>
              </TouchableOpacity>
            </View>
            :
            <View  style={[styles.questionUnattended]}>
-             <TouchableOpacity  style={[styles.textInsideCircle]}>
+             <TouchableOpacity onPress={() =>  this.reviewQuestion(this.state.qpid,exam.questionIndex)}  style={[styles.textInsideCircle]}>
                <Text  style={[styles.lightFont]} >{exam.questionIndex+1}</Text>
              </TouchableOpacity>
            </View>
