@@ -16,6 +16,7 @@ import {
   AsyncStorage,
 } from 'react-native';
 import URL from './Url';
+import {sessionDestroy,noBack} from './Functions';
 
 export class LandingPage extends Component {
   constructor(){
@@ -28,6 +29,7 @@ export class LandingPage extends Component {
     AVAILABLE_EXAM:URL.AVAILABLE_EXAM,
     ONGOING_EXAM:URL.ONGOING_EXAM,
     PRODUCT:URL.PRODUCT,
+    ADDTOCART:URL.ADDTOCART,
     status:'',
     view:'',
     eid:0,
@@ -36,6 +38,7 @@ export class LandingPage extends Component {
     exp:'',
     checkFlag:0,
     checkFlagProgress:0,
+    checkFlagProduct:0,
     productData: [
       "name":" ",
       "attributes":"",
@@ -44,6 +47,7 @@ export class LandingPage extends Component {
 
           ],
     progressData: [
+      "name":"",
       "id":" ",
       "percentageCompleted":0,
       "questionPaperName":"",
@@ -68,14 +72,12 @@ export class LandingPage extends Component {
       fetch(this.state.HOME+this.state.AVAILABLE_EXAM+'userId='+data[0][1]+'')
       .then(response =>  response.json())
       .then(responseobj => {
-      //   if(responseobj==401){
-      //   logout();
-      //   this.props.navigation.navigate('Loign');
-      // }else{
-      //     this.setState({
-      //     attempted:responseobj.data,
-      //   });
-      // }
+        if("status" in responseobj){
+          if(responseobj.status==401){
+            sessionDestroy();
+            noBack(this.props,'Login');
+          }
+      }
       if((responseobj.data)=== undefined ||(responseobj.data.length<1)){
         this.setState({
           status:'No active exams available now. Please check later.',
@@ -157,10 +159,17 @@ export class LandingPage extends Component {
 fetch(this.state.HOME+this.state.PRODUCT+'GwTemplateId=catalog&userId='+data[0][1]+'&organizationId='+data[1][1]+'')
 .then(response =>  response.json())
 .then(responseProduct => {
-    this.setState({
-    productData:responseProduct,
-    })
-console.log("product buy :",responseProduct);
+      if((responseProduct.data)=== undefined ||(responseProduct.data.length<1)){
+        this.setState({
+          checkFlagProduct:1,
+        })
+      }
+      else {
+        this.setState({
+          checkFlagProduct:2,
+          productData:responseProduct.data,
+        })
+      }
   })
   //buy product ends
 
@@ -176,6 +185,17 @@ componentDidMount() {
 handleBackButton() {
     return BackHandler.exitApp();
 }
+addItemToCart(id){
+      AsyncStorage.multiGet(['userId','organizationId']).then((data) => {
+        fetch(this.state.HOME+this.state.ADDTOCART+data[0][1]+'/product/'+id+'/organization/'+data[1][1]+'')
+        .then(response => {
+          console.log("status req:",response.status);
+          if(response.status){
+            this.props.navigation.navigate('InvoicePage',{pId:id});
+          }
+        })
+      });
+}
   render() {
     const barWidth = Dimensions.get('screen').width - 30;
       const progressCustomStyles = {
@@ -184,11 +204,30 @@ handleBackButton() {
         borderColor: 'orange',
       };
     {
+      this.state.checkFlagProduct==1||this.state.checkFlagProduct==0
+      ? productList = this.state.productData.map((product, index) => {
+       return(<View key={index.toString()+"checkflag"} ></View>);
+     })
+      :
+      productList = this.state.productData.map((product, index) => {
+       return(
+         <TouchableOpacity onPress={()=>this.addItemToCart(product.id)} key={index.toString()} >
+           <View style={[styles.topBox, styles.blue]}>
+             <Text style={[styles.whiteFont,styles.boldFont]}>{product.name}</Text>
+             <Text style={[styles.whiteFont]}>Starts on: {product.startDate}</Text>
+             <Text style={[styles.whiteFont]}>Ends on: {product.endDate}</Text>
+               <Text style={[styles.whiteFont,styles.boldFont]}> {product.amountWithCurrencySymbol}</Text>
+           </View>
+         </TouchableOpacity>
+       );
+     });
+
     this.state.checkFlag==1||this.state.checkFlag==0
     ? examList = this.state.availableExamList.map((exam, index) => {
      return(<View key={index.toString()+"checkflag"} ></View>);
    })
     :
+
     examList = this.state.availableExamList.map((exam, index) => {
      return(
        <View key={index.toString()} >
@@ -243,30 +282,10 @@ handleBackButton() {
     return (
 
       <ScrollView>
-        <View style={styles.flexrow}>
-          <View style={[styles.topBox, styles.blue]}>
-            <Text style={{ color: '#ffffff' }}>practice realtime at your convenience!</Text>
-            <Text style={{ color: '#ffffff', fontWeight: 'bold' }}>Nurse Model Exams</Text>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={{ color: '#ffffff', fontWeight: 'bold' }}>	&#8377;</Text>
-              <Text style={{ color: '#ffffff', fontWeight: 'bold' }}> 350</Text>
-
-              <Text style={{ color: '#ffffff', marginLeft: 50, }}> 10 Q&A</Text>
-            </View>
-          </View>
-          <View style={[styles.topBox, styles.red]}>
-            <Text style={{ color: '#ffffff' }}>practice realtime at your convenience!</Text>
-            <Text style={{ color: '#ffffff', fontWeight: 'bold' }}>Nurse Model Exams</Text>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={{ color: '#ffffff', fontWeight: 'bold' }}>	&#8377;</Text>
-              <Text style={{ color: '#ffffff', fontWeight: 'bold' }}> 350</Text>
-              <Text style={{ color: '#ffffff', marginLeft: 50, }}> 10 Q&A</Text>
-            </View>
-          </View>
-        </View>
-
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.flexrow}>
+            {productList}
+        </ScrollView>
         {progressList}
-
         <View style={[styles.announcementBox, styles.flexrow]}>
           <View >
             <Image style={{ marginTop: 10 }} source={require('./Assets/images/announcements.png')}

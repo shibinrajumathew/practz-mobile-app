@@ -29,6 +29,7 @@ export default class StartExam extends Component {
     let questionNo;
     let totalQNo;
     this.state = {
+      isMounted: false,
       HOME:URL.HOME,
       START_EXAM:URL.START_EXAM,
       PROGRESS:URL.PROGRESS,
@@ -182,23 +183,32 @@ fetch(this.state.HOME+this.state.EXAM_DETAILS+'esid='+this.props.navigation.stat
 
 }
 componentDidMount(){
+
   this.interval = setInterval(() => {
     if(this.state.rmSec==0){
-      this.setState({
-        rmSec:59,
-        rmMin:this.state.rmMin-this.state.minus,
-      })
+      this.setState( { isMounted: true }, () => {
+        this.setState({
+          rmSec:59,
+          rmMin:this.state.rmMin-this.state.minus,
+        });
+
+        })
+
     }else{
-      this.setState({
-        rmSec:this.state.rmSec-this.state.minus
+      this.setState( { isMounted: true }, () => {
+        this.setState({
+          rmSec:this.state.rmSec-this.state.minus,
+
+        })
       })
     }
 
     if(this.state.rmMin==0){
+      this.setState( { isMounted: true }, () => {
       this.setState({
         rmSec:0,
         rmMin:0,
-      })
+      })}
       //exit from exam
 
     }
@@ -206,7 +216,9 @@ componentDidMount(){
 
   }, 1000);
 }
-
+componentWillUnmount() {
+       this.setState( { isMounted: false } )
+}
 static navigationOptions = ({ navigation  }) => {
         const {state} = navigation;
         return {

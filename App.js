@@ -8,13 +8,14 @@ import { StackNavigator } from 'react-navigation';
 import Splash from './components/Splash';
 import Login from './components/Login';
 import Dash from './components/Home';
+import InvoicePage from './components/InvoicePage';
 import ExamDetails from './components/Exams/ExamDetails';
 import StartExam from './components/Exams/StartExam';
 
 //author hari import starts here
 import NoteDetails from './components/NoteDetails';
 import AttemptedExamDetails from './components/AttemptedExamDetails';
-export const SimpleApp = StackNavigator({
+export const Practz = StackNavigator({
 //author shibin navigation starts here
   Home: { screen: Splash },
   Login:{ screen: Login},
@@ -44,6 +45,7 @@ export const SimpleApp = StackNavigator({
   //author hari navigation starts here
   NoteDetails:{ screen:NoteDetails},
   AttemptedExamDetails:{ screen: AttemptedExamDetails},
+  InvoicePage:{ screen: InvoicePage},
 
 });
 
@@ -51,7 +53,7 @@ export const SimpleApp = StackNavigator({
 export default class App extends Component<{}> {
   render() {
     return (
-      <SimpleApp />
+      <Practz />
 
     );
   }

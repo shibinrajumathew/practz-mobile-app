@@ -99,6 +99,19 @@ export default StyleSheet.create({
     padding: 10,
     width: (Dimensions.get('window').width),
   },
+  productLeftBox:{
+    borderBottomWidth: 1,
+    borderBottomColor: "#cfcfcf",
+    padding: 10,
+    marginLeft: 10,
+    flex:2,
+  },
+  productRightBox:{
+    flex:1,
+    borderBottomColor: "#cfcfcf",
+    padding: 10,
+    borderBottomWidth: 1,
+  },
   sideBotton: {
     borderRadius: 8,
     borderColor: '#ddd',
@@ -269,6 +282,10 @@ export default StyleSheet.create({
     width:(Dimensions.get('screen').width/2)-20,
     padding: 15,
     marginRight: 10,
+    },
+  buttonContainerLogin: {
+      padding: 15,
+
     },
   buttonText: {
     textAlign: 'center',
