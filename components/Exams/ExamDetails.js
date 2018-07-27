@@ -57,6 +57,7 @@ export default class ExamDetails extends Component {
     //   });
     // }
 
+
     if((responseobj.data)=== undefined ||(responseobj.data.length<1)){
       this.setState({
         status:'No active exams available now. Please check later.',
@@ -109,9 +110,6 @@ export default class ExamDetails extends Component {
                   <Text style={[styles.whiteFont]}>{this.state.negMarkPercentage}%</Text>
                 </View>
               </View>
-              <View style={[styles.flexrow]}>
-                <Text style={[styles.lightFont]}>Ends on {this.props.navigation.state.params.exp}</Text>
-              </View>
             </View>
           </View>
           <View style={{padding: 5}}>
@@ -129,7 +127,7 @@ export default class ExamDetails extends Component {
             </View>
           </View>
         </ScrollView>
-        <TouchableOpacity style={[styles.submitButton]} onPress={() => this.props.navigation.navigate('StartExam',{eid:this.props.navigation.state.params.eid})}><Text style={[styles.lightFont, styles.whiteFont]} > Start Exam</Text></TouchableOpacity>
+        <TouchableOpacity style={[styles.submitButton]} onPress={() => this.props.navigation.navigate('StartExam',{eid:this.props.navigation.state.params.eid,examPage:'startQuiz'})}><Text style={[styles.lightFont, styles.whiteFont]} > Start Exam</Text></TouchableOpacity>
       </View>
     );
   }

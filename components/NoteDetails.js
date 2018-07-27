@@ -26,27 +26,31 @@ export default class NoteDetails extends Component {
             topics:"",
             contents:"",
             topicNames:"",
-            signedUrls:"null",
+           image:{
+            "signedUrls":"",
+           },
+            
             audios:[
               {
-                
+                "audioUrl":""
               }
             ]
        }
       }
       componentWillMount() {
-        AsyncStorage.multiGet(['userId']).then((data) => {
+        AsyncStorage.multiGet(['Id']).then((data) => {
           let user = data[0][1];
           classthis.setState({
             userId:user,
           });
-          console.log("response data",this.state.HOME+this.state.NOTE_DETAILS+data[0][1]+'/detailed');
-         fetch(this.state.HOME+this.state.NOTE_DETAILS+data[0][1]+'/detailed')
+          console.log("response data",this.state.HOME+this.state.NOTE_DETAILS+this.props.navigation.state.params.nid+'/detailed');
+         fetch(this.state.HOME+this.state.NOTE_DETAILS+this.props.navigation.state.params.nid+'/detailed')
       .then((response) => response.json())
       .then((responseJson) => {                
         const regex = /(<([^>]+)>)/ig;
         const result = responseJson.data.content.replace(regex, ''); 
-        this.setState({
+        if(responseobj.data.audio.length<1){
+          this.setState({
           
           createBys: responseJson.data.createdBy,
             createdDates:responseJson.data.createdDate,
@@ -54,12 +58,33 @@ export default class NoteDetails extends Component {
             topics: responseJson.data. topic,
             contents: result ,      
             topicNames: responseJson.data.topicName,       
-            signedUrls:responseJson.data.images[0].signedUrl 
-               
-                    
+            
+            images:{
+           " signedUrls":responseJson.data.images[0].signedUrl 
+            }
+              
         });
-        console.log("response image",responseJson.data.images[0].url  );
-        console.log("response data",this.state.HOME+this.state.NOTE_DETAILS+data[0][1]+'/detailed');
+      }
+        //console.log("response image",responseJson.data.images[0].url  );
+        //console.log("response data",this.state.HOME+this.state.NOTE_DETAILS+data[0][1]+'/detailed');
+        else {
+        if(responseobj.data.image.length<1){
+          this.setState({
+          
+          createBys: responseJson.data.createdBy,
+            createdDates:responseJson.data.createdDate,
+            titles:responseJson.data.title,
+            topics: responseJson.data. topic,
+            contents: result ,      
+            topicNames: responseJson.data.topicName,       
+          
+            audio:{
+           " signedUrls":responseJson.data.audio[0].signedUrl 
+            }
+                  
+        });
+      }
+
       })
       .catch((error) =>{
         console.error(error);

@@ -4,6 +4,7 @@ import ProgressBarAnimated from 'react-native-progress-bar-animated';
 import React, { Component } from 'react';
 import RadioButton from 'radio-button-react-native';
 import styles from '../Assets/Style';
+import TimerMixin from 'react-timer-mixin';
 import ImageOverlay from "react-native-image-overlay";
 import {
   View,
@@ -19,63 +20,97 @@ import {
   StyleSheet,
   AsyncStorage,
 } from 'react-native';
-
+import URL from './../Url';
 
 export default class StartExam extends Component {
   constructor() {
     super();
     this.state = {
-      value: 0,
+      HOME:URL.HOME,
+      START_EXAM:URL.START_EXAM,
+      PROGRESS:URL.PROGRESS,
+      EXAM_DETAILS:URL.EXAM_DETAILS,
+      ANSWER_STATUS:URL.ANSWER_STATUS,
+      value: 99,//large size for reset/clear selection
+      rmMin:1,
+      rmSec:1,
+      minus:0,
       picTick:'../Assets/images/tick.png',
-      qno:3,
-      test:[{'a':'0','b':'1','c':'2'}],
-      quest:'Which software launched by Union Home Minister Rajnath Singh to do speedy disposal of appeals/Complaints?',
-      data: [
-        { 'key': 'Quando analisa','index':1 },
-        { 'key': 'Modelo de texto','index':2 },
-        { 'key': 'Parte sofreu alteraes','index':3 },
-        { 'key': 'Todos os geradores','index':4 },
-      ],
+      qno:0,
+      progressData: [
+              {
+                  "percentageCompleted": 0,
+                  "id":"",
+                  "questionPaperName": "",
+              }
+          ],
+      quest:'Please wait while question loading',
+      optn: ["","","","",],
+      examPage:'startQuiz',
 
     }
 
   }
-  static navigationOptions = {
+  //for the timmer
+  mixins: [TimerMixin];
 
-  headerRight:(<View  style={{marginRight: 10,flexDirection: 'row',}}>
-    <Text>3/10 </Text>
-    <ProgressBarAnimated
-                width={ Dimensions.get('screen').width/1.4}
-                height={20}
-                value={80}
-                backgroundColorOnComplete="#6CC644"
-                backgroundColor='#CEC76F'
-              />
-              <Text> :</Text>
-            </View>),
-};
 
   handleOnPress(value){
       this.setState({value:value})
   }
 
-  onActionSelected(position) {
-    if (position === 0) { // index of 'Settings'
-      showSettings();
-    }
-  }
-
   clearRadio(){
-    this.setState({value:0})
+    this.setState({value:99})
     console.log('value is:',this.state.value);
   }
 
-
   componentWillMount() {
-      console.log("Inside start exam: ");
-  console.log("inside landing will mount");
+    this.getData();
+  }
+
+  prevQuestion(qpId){
+    this.setState({
+      examPage:'prev',
+      qno:this.state.qno-1,
+    });
+    this.getData(qpId);
+  }
+
+  nextQuestion(qpId){
+    this.setState({
+      qno:this.state.qno+1,
+      examPage:'next'
+    });
+    this.getData(qpId);
+  }
+
+getData(qpidFn){
   AsyncStorage.multiGet(['organizationId','userId']).then((data) => {
-  fetch(this.state.HOME+this.state.START_EXAM+data[1][1]+'?esid='+this.props.navigation.state.params.eid+'&orgid='+data[0][1])
+    let examApi=this.state.examPage;
+    let API;
+    //get exam count
+    fetch(this.state.HOME+this.state.PROGRESS+data[1][1]+'/progress?orgId='+data[0][1])
+    .then(response=> response.json())
+    .then(resobj=> {
+      this.setState({
+        qno:resobj.data.attendedQuestionsCount+1,
+        total_qno:resobj.data.totalQuestionsCount,
+      })
+      //for top bar data
+      const {setParams} = this.props.navigation;
+      setParams({qno: resobj.data.attendedQuestionsCount,tqno:resobj.data.totalQuestionsCount});
+    });
+    if(examApi=="startQuiz"){
+      API=this.state.HOME+this.state.START_EXAM+'startQuiz/'+data[1][1]+'?esid='+this.props.navigation.state.params.eid+'&orgid='+data[0][1];
+    }else if(examApi=="next"){
+      API=this.state.HOME+this.state.START_EXAM+'next/question/'+data[1][1]+'?orgid='+data[0][1]+'&qpid='+qpidFn;
+    }else if(examApi=="prev"){
+      API=this.state.HOME+this.state.START_EXAM+'previous/question/'+data[1][1]+'?orgid='+data[0][1]+'&qpid='+qpidFn;
+    }
+  console.log("api from getData:",API);
+  console.log("qpid:",qpidFn);
+  //first time question fetch
+  fetch(API)
   .then(response =>  response.json())
   .then(responseobj => {
   //   if(responseobj==401){
@@ -86,121 +121,166 @@ export default class StartExam extends Component {
   //     attempted:responseobj.data,
   //   });
   // }
-  console.log("start exam: ",responseobj);
   if((responseobj.data)=== undefined ||(responseobj.data.length<1)){
     this.setState({
       status:'No active exams available now. Please check later.',
       checkFlag:1,
       view:'',
-      availableExamList:[
-        {
-            "questionPaperName": "",
-            "examProductName": "",
-            "expiryDate": "",
-            "attributes": {
-            "questionPaperName": "",
-            "examPublisherName": "",
-            "qpSections": [],
-            "republishStatus": ''
-       },
-        }
-    ],
-    eid:0,
-    eprod:'',
-    qname:'',
-    exp:'',
+      qno:0,
+      quest:'inside no data',
+      optn: [
+        { 'key': '','index':1 },
+        { 'key': '','index':2 },
+        { 'key': '','index':3 },
+        { 'key': '','index':4 },
+      ],
+      eid:0,
+      eprod:'',
+      qname:'',
+      exp:'',
+      qpid:'',
     });
   }else{
-    this.setState({
-      checkFlag:2,
-      status:'Available exams',
-      view:'View all',
-      availableExamList:responseobj.data,
-    });
-  }
-  console.log("available exam count",responseobj);
-  });
-});
+  const regex = /(<([^>]+)>)/ig;
+  const optnresult = responseobj.data.text.replace(regex, '');
+  this.setState({
+    quest: optnresult,
+    optn:responseobj.data.options,
+    minus:1,
+    rmMin:responseobj.data.remainingMinutes,
+    rmSec:responseobj.data.remainingSeconds
+  })
 }
+  });
+//get qpid
+fetch(this.state.HOME+this.state.EXAM_DETAILS+'esid='+this.props.navigation.state.params.eid)
+.then(response=> response.json())
+.then(resqpid=> {//exam status
+    fetch(this.state.HOME+this.state.ANSWER_STATUS+'orgid='+data[0][1]+'&qpid='+resqpid.data.qpId+'&userId='+data[1][1]+'')
+    .then(response=> response.json())
+    .then(resobj=> {this.setState({progressData:resobj.data})});
+    this.setState({qpid:resqpid.data.qpId});
+    });
+
+//ends session
+});
+
+}
+componentDidMount(){
+  this.interval = setInterval(() => {
+    if(this.state.rmSec==0){
+      this.setState({
+        rmSec:59,
+        rmMin:this.state.rmMin-this.state.minus,
+      })
+    }else{
+      this.setState({
+        rmSec:this.state.rmSec-this.state.minus
+      })
+    }
+
+    if(this.state.rmMin==0){
+      this.setState({
+        rmSec:0,
+        rmMin:0,
+      })
+      //exit from exam
+
+    }
+
+
+  }, 1000);
+}
+
+static navigationOptions = ({ navigation  }) => {
+        const {state} = navigation;
+        return {
+                headerRight: (
+                  <View  style={{marginRight: 10,flexDirection: 'row',}}>
+                  <Text>{state.params.qno}/{state.params.tqno} </Text>
+                  <ProgressBarAnimated
+                              width={ Dimensions.get('screen').width/1.4}
+                              height={20}
+                              value={((state.params.qno/state.params.tqno)*100)}
+                              backgroundColorOnComplete="#6CC644"
+                              backgroundColor='#CEC76F'
+                            />
+                  </View>)
+            }
+    };
 
   render() {
     let img=require('../Assets/images/tick.png');
+    let img_timmer=require('../Assets/images/timmer.png');
+    objAns= this.state.optn.map((exam,index) =>{
+      return(
+        <View  key={index.toString()} style={[styles.answers]}>
+        <RadioButton currentValue={this.state.value} value={index} onPress={this.handleOnPress.bind(this)}>
+        <Text> {exam.toString()}</Text>
+        </RadioButton>
+      </View>
+      );
+    });
+    progressNum = this.state.progressData.map((exam,index) => {
+     return(
+      <View  key={index.toString()}  style={[styles.flexrow]}>
+         {exam.status == "ANSWERED" ?
+            <View  style={[styles.questionAttended]}>
+              <Image  style={[styles.tickedNumber]} source={img}/>
+              <TouchableOpacity  style={[styles.textInsideCircle]}>
+                <Text  style={[styles.lightFont,styles.tickedNumberColor]} >{exam.questionIndex+1}</Text>
+              </TouchableOpacity>
+            </View>
+           : (exam.status=="MARKED_FOR_REVIEW"?
+           <View  style={[styles.questionForReview]}>
+             <TouchableOpacity  style={[styles.textInsideCircle]}>
+               <Text  style={[styles.lightFont,styles.whiteFont]} >{exam.questionIndex+1}</Text>
+             </TouchableOpacity>
+           </View>
+           :
+           <View  style={[styles.questionUnattended]}>
+             <TouchableOpacity  style={[styles.textInsideCircle]}>
+               <Text  style={[styles.lightFont]} >{exam.questionIndex+1}</Text>
+             </TouchableOpacity>
+           </View>
+         )
+           }
+       </View>
+     )
+   });
+
+ //1 seconds
     const { navigate } = this.props.navigation;
     return (
       <View style={{ flex: 1 }}>
-        <ToolbarAndroid            actions = {[
-              {title: "Log out", show: "always"}
-            ]}
-      onActionSelected={this.onActionSelected} />
-        <View style={{ flex: 4 }}>
+        <ScrollView style={{ flex: 4 }}>
+          <View style={[styles.timmingBox,styles.flexrow,styles.lightBlue]}>
+              <Image style={[styles.timmer]} source={img_timmer}/>
+              <View style={{padding: 10}}>
+            <Text style={[styles.heavyFont,styles.boldFont, styles.whiteFont]} >{this.state.rmMin} mins {this.state.rmSec} sec</Text>
+            </View>
+          </View>
+        {/* {question & ans starts here} */}
           <View style={[styles.questionBox,styles.flexrow]}>
-            <Text style={[styles.topTitle]}>Q{this.state.qno}. </Text>
-            <Text style={[styles.lightFont, styles.blackFont]} >{this.state.quest}</Text>
+            <Text style={[styles.topTitle]}>Q{this.state.qno} </Text>
+            <Text style={[styles.lightFont, styles.blackFont]} >{(this.state.quest).toString()}</Text>
           </View>
           <View style={[styles.examBox, styles.flexcol]}>
-            <View style={[styles.answers]}>
-            <RadioButton currentValue={this.state.value} value={this.state.data[0].index} onPress={this.handleOnPress.bind(this)}>
-            <Text>  {this.state.data[0].key}</Text>
-            </RadioButton>
-          </View>
-          <View style={[styles.answers]}>
-            <RadioButton currentValue={this.state.value} value={this.state.data[1].index} onPress={this.handleOnPress.bind(this)}>
-            <Text>  {this.state.data[1].key}</Text>
-            </RadioButton>
+            {objAns}
+            <View style={[styles.flexrow]}>
+              <TouchableOpacity style={[styles.buttonContainer, styles.brightBlue]} ><Text style={styles.buttonText} >Mark For Review</Text></TouchableOpacity>
+              <TouchableOpacity style={[styles.buttonContainer, styles.brightBlue]} ><Text style={styles.buttonText} >Go to Review page</Text></TouchableOpacity>
             </View>
-            <View style={[styles.answers]}>
-            <RadioButton currentValue={this.state.value} value={this.state.data[2].index} onPress={this.handleOnPress.bind(this)}>
-            <Text>  {this.state.data[2].key}</Text>
-            </RadioButton>
-          </View>
-            <View style={[styles.answers]}>
-            <RadioButton currentValue={this.state.value} value={this.state.data[3].index} onPress={this.handleOnPress.bind(this)}>
-            <Text>  {this.state.data[3].key}</Text>
-            </RadioButton>
-          </View>
-
           </View>
           <ScrollView horizontal={true} style={{flex:1,marginTop: 10}}>
-            <View style={[styles.flexrow]}>
-              <View style={[styles.questionUnattended]}>
-                <View style={[styles.textInsideCircle]}>
-                  <Text style={[styles.lightFont]} >1</Text>
-                </View>
-              </View>
-            <View style={[styles.questionUnattended]}>
-              <View style={[styles.textInsideCircle]}>
-                <Text style={[styles.lightFont]} >2</Text>
-              </View>
-            </View>
-            <View style={[styles.questionUnattended]}>
-              <View style={[styles.textInsideCircle]}>
-                <Text style={[styles.lightFont]} >3</Text>
-              </View>
-            </View>
-            <View style={[styles.questionUnattended]}>
-              <View style={[styles.textInsideCircle]}>
-                <Text style={[styles.lightFont]} >4</Text>
-              </View>
-            </View>
-            <View style={[styles.questionForReview]}>
-              <View style={[styles.textInsideCircle]}>
-                <Text style={[styles.lightFont,styles.whiteFont]} >5</Text>
-              </View>
-            </View>
-            <View style={[styles.questionAttended]}>
-              <Image style={[styles.tickedNumber]} source={img}/>
-              <View style={[styles.textInsideCircle]}>
-                <Text style={[styles.lightFont,styles.tickedNumberColor]} > 6</Text>
-              </View>
-            </View>
-
-            </View>
+              {progressNum}
           </ScrollView>
-        </View>
+
+        </ScrollView>
         <View style={[styles.submitButton,styles.flexrow]}>
-          <TouchableOpacity style={[styles.questionButton]}><Text style={[styles.whiteFont]}>Previous</Text></TouchableOpacity>
+          <TouchableOpacity onPress={() =>  this.prevQuestion(this.state.qpid)}  style={[styles.questionButton]}><Text style={[styles.whiteFont]}>Previous</Text></TouchableOpacity>
           <TouchableOpacity style={[styles.questionButton]} onPress={this.clearRadio.bind(this)}><Text style={[styles.whiteFont]}>Clear</Text></TouchableOpacity>
-          <TouchableOpacity style={[styles.questionButton,styles.white]}><Text style={[styles.violetFont]}>Review</Text></TouchableOpacity>
+          <TouchableOpacity onPress={() => this.nextQuestion(this.state.qpid)} style={[styles.questionButton,styles.white]}><Text style={[styles.violetFont]}>Next</Text></TouchableOpacity>
         </View>
       </View>
 
