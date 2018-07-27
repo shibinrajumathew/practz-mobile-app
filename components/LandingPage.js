@@ -20,12 +20,14 @@ import URL from './Url';
 export class LandingPage extends Component {
   constructor(){
     super();
+    this.state = {isMounted: false}
     // const { navigate } = this.props.navigation;
     classthis=this;
   this.state={
     HOME:URL.HOME,
     AVAILABLE_EXAM:URL.AVAILABLE_EXAM,
     ONGOING_EXAM:URL.ONGOING_EXAM,
+    PRODUCT:URL.PRODUCT,
     status:'',
     view:'',
     eid:0,
@@ -34,6 +36,13 @@ export class LandingPage extends Component {
     exp:'',
     checkFlag:0,
     checkFlagProgress:0,
+    productData: [
+      "name":" ",
+      "attributes":"",
+      "questionPaperName":"",
+      "amountWithCurrencySymbol":"",
+
+          ],
     progressData: [
       "id":" ",
       "percentageCompleted":0,
@@ -67,7 +76,6 @@ export class LandingPage extends Component {
       //     attempted:responseobj.data,
       //   });
       // }
-
       if((responseobj.data)=== undefined ||(responseobj.data.length<1)){
         this.setState({
           status:'No active exams available now. Please check later.',
@@ -107,7 +115,6 @@ export class LandingPage extends Component {
 
     console.log("inside progressing exam");
     AsyncStorage.multiGet(['userId','organizationId']).then((data) => {
-      console.log("ongoing url",this.state.HOME+this.state.ONGOING_EXAM+'userId='+data[0][1]+'&orgId='+data[1][1]+'');
     fetch(this.state.HOME+this.state.ONGOING_EXAM+'userId='+data[0][1]+'&orgId='+data[1][1]+'')
     .then(response =>  response.json())
     .then(p_responseobj => {
@@ -146,6 +153,16 @@ export class LandingPage extends Component {
       });
     }
     });
+//buy product
+fetch(this.state.HOME+this.state.PRODUCT+'GwTemplateId=catalog&userId='+data[0][1]+'&organizationId='+data[1][1]+'')
+.then(response =>  response.json())
+.then(responseProduct => {
+    this.setState({
+    productData:responseProduct,
+    })
+console.log("product buy :",responseProduct);
+  })
+  //buy product ends
 
 
 });
@@ -168,13 +185,13 @@ handleBackButton() {
       };
     {
     this.state.checkFlag==1||this.state.checkFlag==0
-    ? examList = this.state.availableExamList.map((exam) => {
-     return(<View key={(exam, index) => index.toString()} ></View>);
+    ? examList = this.state.availableExamList.map((exam, index) => {
+     return(<View key={index.toString()+"checkflag"} ></View>);
    })
     :
-    examList = this.state.availableExamList.map((exam) => {
+    examList = this.state.availableExamList.map((exam, index) => {
      return(
-       <View key={(exam, index) => index.toString()} >
+       <View key={index.toString()} >
          <TouchableOpacity style={[styles.announcementBox, styles.flexrow]}
            onPress={() => this.props.navigation.navigate('ExamDetails',{eid:exam.id,eprod:exam.examProductName,qname:exam.attributes.questionPaperName})} >
            <View style={[styles.flexcol, styles.innerTextBox]} >
@@ -194,13 +211,13 @@ handleBackButton() {
 
 
     this.state.checkFlagProgress==1||this.state.checkFlagProgress==0
-    ? progressList = this.state.progressData.map((exam) => {
-     return(<View key={(exam, index) => index.toString()} ></View>);
+    ? progressList = this.state.progressData.map((exam, index) => {
+     return(<View key={index.toString()} ></View>);
    })
     :
-    progressList = this.state.progressData.map((exam) => {
+    progressList = this.state.progressData.map((exam, index) => {
      return(
-       <View style={[styles.announcementBox, styles.flexrow]} key={(exam, index) => index.toString()} >
+       <View style={[styles.announcementBox, styles.flexrow]} key={index.toString()} >
 
          <TouchableOpacity onPress={() => this.props.navigation.navigate('ExamDetails',{eid:exam.id,eprod:exam.questionPaperName,qname:exam.questionPaperName})} >
          <View>

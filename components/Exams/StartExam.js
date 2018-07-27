@@ -25,6 +25,10 @@ import URL from './../Url';
 export default class StartExam extends Component {
   constructor() {
     super();
+    this.state = {isMounted: false};
+    let API;
+    let questionNo;
+    let totalQNo;
     this.state = {
       HOME:URL.HOME,
       START_EXAM:URL.START_EXAM,
@@ -36,7 +40,7 @@ export default class StartExam extends Component {
       rmSec:1,
       minus:0,
       picTick:'../Assets/images/tick.png',
-      qno:0,
+      qno:1,
       progressData: [
               {
                   "percentageCompleted": 0,
@@ -67,40 +71,51 @@ export default class StartExam extends Component {
   componentWillMount() {
     this.getData();
   }
+  componentWillUnmount() {
+       this.setState( { isMounted: false } )
+}
 
   prevQuestion(qpId){
-    this.setState({
-      examPage:'prev',
-      qno:this.state.qno-1,
-    });
-    this.getData(qpId);
+    if(this.state.qno>1){
+      this.setState({
+        examPage:'prev',
+      });
+      this.getData(qpId);
+
+    }
   }
 
   nextQuestion(qpId){
-    this.setState({
-      qno:this.state.qno+1,
-      examPage:'next'
-    });
-    this.getData(qpId);
+      if(this.state.qno<totalQNo){
+        this.setState({
+          examPage:'next'
+        });
+        this.getData(qpId);
+
+      }
   }
 
 getData(qpidFn){
   AsyncStorage.multiGet(['organizationId','userId']).then((data) => {
     let examApi=this.state.examPage;
-    let API;
+
     //get exam count
     fetch(this.state.HOME+this.state.PROGRESS+data[1][1]+'/progress?orgId='+data[0][1])
     .then(response=> response.json())
     .then(resobj=> {
+      questionNo=resobj.data.attendedQuestionsCount+1;
+      totalQNo=resobj.data.totalQuestionsCount;
+      console.log("qno",questionNo);
       this.setState({
-        qno:resobj.data.attendedQuestionsCount+1,
         total_qno:resobj.data.totalQuestionsCount,
       })
       //for top bar data
       const {setParams} = this.props.navigation;
       setParams({qno: resobj.data.attendedQuestionsCount,tqno:resobj.data.totalQuestionsCount});
     });
+
     if(examApi=="startQuiz"){
+
       API=this.state.HOME+this.state.START_EXAM+'startQuiz/'+data[1][1]+'?esid='+this.props.navigation.state.params.eid+'&orgid='+data[0][1];
     }else if(examApi=="next"){
       API=this.state.HOME+this.state.START_EXAM+'next/question/'+data[1][1]+'?orgid='+data[0][1]+'&qpid='+qpidFn;
@@ -121,12 +136,13 @@ getData(qpidFn){
   //     attempted:responseobj.data,
   //   });
   // }
+
   if((responseobj.data)=== undefined ||(responseobj.data.length<1)){
     this.setState({
       status:'No active exams available now. Please check later.',
       checkFlag:1,
       view:'',
-      qno:0,
+      qno:1,
       quest:'inside no data',
       optn: [
         { 'key': '','index':1 },
@@ -147,10 +163,13 @@ getData(qpidFn){
     quest: optnresult,
     optn:responseobj.data.options,
     minus:1,
+    qno:responseobj.data.currentIndex+1,
     rmMin:responseobj.data.remainingMinutes,
     rmSec:responseobj.data.remainingSeconds
   })
 }
+
+
   });
 //get qpid
 fetch(this.state.HOME+this.state.EXAM_DETAILS+'esid='+this.props.navigation.state.params.eid)
@@ -169,14 +188,14 @@ fetch(this.state.HOME+this.state.EXAM_DETAILS+'esid='+this.props.navigation.stat
 componentDidMount(){
   this.interval = setInterval(() => {
     if(this.state.rmSec==0){
-      this.setState({
-        rmSec:59,
-        rmMin:this.state.rmMin-this.state.minus,
-      })
+      this.setState( { isMounted: true }, () => {
+        rmSec:59;
+        rmMin:this.state.rmMin-this.state.minus;
+      });
     }else{
-      this.setState({
-        rmSec:this.state.rmSec-this.state.minus
-      })
+        this.setState( { isMounted: true }, () => {
+        rmSec:this.state.rmSec-this.state.minus;
+      });
     }
 
     if(this.state.rmMin==0){

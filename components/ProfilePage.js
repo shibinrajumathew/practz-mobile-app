@@ -2,13 +2,12 @@
 import Icon from 'react-native-ionicons';
 import ProgressBarAnimated from 'react-native-progress-bar-animated';
 import React, { Component } from 'react';
-import {logout} from './Functions';
+import {sessionDestroy,noBack} from './Functions';
 import styles from './Assets/Style';
 import {
   View,
   Image,
   Dimensions,
-  BackHandler,
   TouchableOpacity,
   Text,
 } from 'react-native';
@@ -24,8 +23,8 @@ export class ProfilePage extends Component {
     }
   }
   userLogout(){
-    logout();
-    BackHandler.exitApp();
+    sessionDestroy();
+    noBack(this.props,'Login')
   }
   render() {
     const barWidth = (Dimensions.get('screen').width / 2) - 30;

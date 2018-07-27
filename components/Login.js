@@ -2,6 +2,7 @@
 *  Author: shibin
 */
 import React, { Component } from 'react';
+import {noBack} from './Functions';
 import URL from './Url';
 import {
   View,
@@ -107,7 +108,7 @@ export default class Login extends Component {
                     // ["telephone1",responseUsr.data.telephone1],
               ]);
               this.refs.Load.CloseLoad();
-            this.props.navigation.navigate('Dash');
+            noBack(this.props,'Dash');
             });
             });
 
