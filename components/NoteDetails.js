@@ -5,112 +5,169 @@ import {
   Text,
   View,
   ScrollView,
+  AsyncStorage,
   Image
 } from 'react-native';
-import Icon from 'react-native-fa-icons';
-
-export default class NoteDetails extends Component<Props> {
+import URL from './Url';
+import Icon from 'react-native-ionicons';
+import styles from './Assets/Style';
+export default class NoteDetails extends Component {
   constructor(props) {
 
        super(props)
 
        this.state = {
-
-         notes: [
-
-           {'postedBy':'name','topic':'topic1','postedOn':'15 July 11:59 pm'}
-         ]
-
-
+        HOME:URL.HOME,
+        NOTE_DETAILS:URL.NOTE_DETAILS,
+        
+            createdBys:"",
+            createdDates:"",
+            titles:"",
+            topics:"",
+            contents:"",
+            topicNames:"",
+           image:{
+            "signedUrls":"",
+           },
+            
+            audios:[
+              {
+                "audioUrl":""
+              }
+            ]
        }
+      }
+      componentWillMount() {
+        AsyncStorage.multiGet(['Id']).then((data) => {
+          let user = data[0][1];
+          classthis.setState({
+            userId:user,
+          });
+          console.log("response data",this.state.HOME+this.state.NOTE_DETAILS+this.props.navigation.state.params.nid+'/detailed');
+         fetch(this.state.HOME+this.state.NOTE_DETAILS+this.props.navigation.state.params.nid+'/detailed')
+      .then((response) => response.json())
+      .then((responseJson) => {                
+        const regex = /(<([^>]+)>)/ig;
+        const result = responseJson.data.content.replace(regex, ''); 
+        if(responseobj.data.audio.length<1){
+          this.setState({
+          
+          createBys: responseJson.data.createdBy,
+            createdDates:responseJson.data.createdDate,
+            titles:responseJson.data.title,
+            topics: responseJson.data. topic,
+            contents: result ,      
+            topicNames: responseJson.data.topicName,       
+            
+            images:{
+           " signedUrls":responseJson.data.images[0].signedUrl 
+            }
+              
+        });
+      }
+        //console.log("response image",responseJson.data.images[0].url  );
+        //console.log("response data",this.state.HOME+this.state.NOTE_DETAILS+data[0][1]+'/detailed');
+        else {
+        if(responseobj.data.image.length<1){
+          this.setState({
+          
+          createBys: responseJson.data.createdBy,
+            createdDates:responseJson.data.createdDate,
+            titles:responseJson.data.title,
+            topics: responseJson.data. topic,
+            contents: result ,      
+            topicNames: responseJson.data.topicName,       
+          
+            audio:{
+           " signedUrls":responseJson.data.audio[0].signedUrl 
+            }
+                  
+        });
+      }
 
-     }
-
-  render() {
-     var noteList = this.state.notes.map(function(note){
-                        return  <View style={[styles.myview]}>
-          <Text style={{marginLeft:20,marginTop:10,color:'#7D7776',fontWeight:'thin'}}>Posted By
-             <Text style={{marginLeft:2,color:'#956FCE',}}>  {note.postedBy}
-                <Text style={{marginLeft:20,color:'#7D7776',fontWeight:'thin'}}>      Topic
-             <Text style={{marginLeft:2,color:'#956FCE'}}> { note.topic}   </Text>
-      </Text>
-      </Text>
-              </Text>
-
-
-      <Text style={{marginLeft:20,marginTop:10,color:'#7D7776',fontWeight:'thin'}}>Posted On: {note.postedOn} </Text>
-      <Icon name='fas fa-paperclip' style={{ fontSize: 45, color: 'green' }} />
-         <Text style={{ fontSize: 45, color: 'blue' }}>
-  <Icon name='fas fa-paperclip' allowFontScaling />
-</Text>
-      </View>;
-           })
-
-    return (
+      })
+      .catch((error) =>{
+        console.error(error);
+      });
+  });
+  
+}
+  render() { 
+       return (
 
       <ScrollView style={{backgroundColor:'#FFFFFF'}}>
-      {noteList}
-      <Text style={{marginLeft:20,fontWeight:'800',fontSize:20,marginTop:10}}>Bombay Blood </Text>
-        <Text style={{marginLeft:20,fontSize:18,fontWeight:'500',marginTop:5}}>How the rare blood type was discovered? </Text>
-           <Text style={{marginLeft:20,fontSize:15,lineHeight: 30,marginTop:15,fontWeight:'500'}}>In the first part of the article,
-                 I talked about the definitions and types of microinteractions and why they work for your product UX.
-                 Here, I will show examples of effective microinteraction. I will also explain,
-                 how they improve your UX and what is microinteractions testing.
-                 You can use this information to persuade your boss or your design team (and perhaps even yourself)
-                 that microinteraction is flexible and an ever-changing element for designing rich interactive experiences.
+       <View style={[styles.announcementbox,styles.grey]}>
+          <Text style={[styles.margins,styles.lightFont]}>Posted By
+             <Text style={[styles.endFont]}>  {this.state.createdBys}  </Text>
+             <Text style ={[styles.lightFont]} >      Topic
+             <Text style={[styles.indicator]}>   {this.state.titles}   </Text>  
+            </Text>
+          </Text>
+
+      <Text style={[styles.margins,styles.lightFont]}>Posted On: {this.state.createdDates} </Text>
+       <View style={[styles.margins]}>
+         <Text>
+       <Icon name='ios-attach' size={25} />
+             <Text>       <Icon name='ios-image-outline'/></Text>
+         </Text>
+     </View > 
+    </View>
+      
+      
+      <Text style={[styles.margins,styles.heavyFont,stylish.myview]}>{this.state.topicNames} </Text>
+        <Text style={[styles.boldFont,stylish.myview1,styles.heavyFont]}>{this.state.topics} </Text>
+           <Text style={[styles.margins,stylish.myview1]}>{this.state.contents}
       </Text>
          <Image style=
               {{height:150,width:200,alignSelf:'center',marginTop:20}}
-                  source={require('./Assets/images/announcements.png')}
-        />
-     <Text style ={{fontWeight:'200',alignSelf: 'center',marginTop:10}}> Img 1.1 White blood cells </Text>
-          <Text style={{marginLeft:20,fontSize:15,lineHeight: 30,marginTop:15,fontWeight:'500'}}>Microinteractions show that
-                focus  on details is a key principle for effective and powerful results Each part of the design process matters.
-                Impressive, useful and unforgettable details make your app stand out from the competition.
-          </Text>
-      <Text style={{fontStyle:'italic',marginLeft:20,marginTop:10}}>"
-          <Text style={{fontStyle:'italic'}}>   I caught two meaty catfish today. What have you
-          </Text>
-      </Text>
-       <Text style={{fontStyle:'italic',marginLeft:30,marginTop:3}}> caught? Nothing?</Text>
-           <Text style={{fontStyle:'italic',marginLeft:30,marginTop:3}}>Perhaps you’re not so fierce after all.</Text>
-           <View style={{flex:1,flexDirection:'row',justifyContent: 'space-between',marginLeft:20,marginRight:10,marginTop:10}}>
-               <View style={{flex:1}}>
-                 <Image
-                    style={{height:50,width:75}}
-                    source={require('./Assets/images/announcements.png')}
-                    />
-               </View>
-               <View style={{flex:1}}>
-                 <Image
-                    style={{height:50,width:75}}
-                    source={require('./Assets/images/download.png')}
-                    />
-               </View>
-               <View style={{flex:1}}>
-                 <Image
-                    style={{height:50,width:75}}
-                    source={require('./Assets/images/logo.png')}
-                    />
-               </View>
-           </View>
-
+              source = {{uri:this.state.signedUrls}} />
+        <View style={[styles.announcementbox,styles.grey]}>
+        
+        <Text>djb</Text><View style={[styles.examBox]}>
+        <Text>djb</Text>
+        </View>
+        
+        </View>
       </ScrollView>
     );
     }
 }
-     const styles = StyleSheet.create({
-       myview: {
-       height:100,
-       borderWidth: .5,
-       borderColor: '#7C7676',
-       shadowColor: 'black',
-       shadowOffset: { width: 0, height: 2 },
-       shadowOpacity: 0.8,
-       shadowRadius: 4,
-       elevation: 1,
-       marginTop: 20,
-       backgroundColor:'#F6F4F8'
+const stylish = StyleSheet.create({
+  myview:{
+   fontWeight:'bold',
+   fontSize:20
+  },
+  myview1:{
+    fontSize:15,
+    marginTop:5,
+    marginLeft:15,
+    lineHeight:30
+  },
+  italicsView:{
+    fontStyle:'italic',
+    
+  },
+  allotedview:{
+    flex:4,
+    backgroundColor:'#CEC76F',
+     borderWidth: .5,
+    borderColor: '#7C7676',
+    marginTop:35,
+    marginBottom:100,
+    marginRight:60,
+    borderRadius:2,
+    marginLeft:30
+  },
+  box:{
+    
+     borderWidth: .5,
+    borderColor: '#707070',
+    borderRadius:3,
+    flex:2,
+    marginBottom:10,
+    marginRight:30,
+    alignItems:'center'
   }
 
-    });
+});
+     

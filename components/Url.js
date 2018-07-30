@@ -21,6 +21,12 @@ const URL=
   SUBMIT_ANSWER:'/practz/ilearn/v1/questions/submitAnswer',
 
 
+// author hari
+NOTE_DETAILS:'/practz/ilearn/v1/notes/'
+
+ 
+
+
 
 };
 export default URL
