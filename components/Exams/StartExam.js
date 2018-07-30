@@ -66,6 +66,7 @@ export default class StartExam extends Component {
 
 
   handleOnPress(value){
+    console.log("the selected radio value:",value);
     this.setState({value:value})
   }
 
@@ -89,14 +90,24 @@ export default class StartExam extends Component {
   }
 
   nextQuestion(qpId){
+    console.log("qpid",qpId);
     if(this.state.qStatus=="UNANSWERED"){
-      if(this.state.value!=99){
+      if(this.state.qid==0){
+
+      }else{
+        console.log("entered submit ans");
         this.submitAnswer();
       }
+
+
+
+    }else{
+      this.setState({
+        value:99,
+      });
     }
     if(this.state.qno<totalQNo){
       this.setState({
-        value:99,
         examPage:'next',
       });
       this.getData(qpId);
@@ -123,11 +134,12 @@ export default class StartExam extends Component {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          "chosenAnswer":this.state.value,
+          "chosenAnswer":''+this.state.value+'',
           "markedForReview":false,
           "organizationId":data[0][1],
           "questionId":this.state.qid,
           "questionPaperId":this.state.qpid,
+          // "remainingMinutes":"520",
           "remainingMinutes":this.state.rmMin,
           "remainingSeconds":this.state.rmSec,
           "userId":data[1][1],
@@ -137,8 +149,14 @@ export default class StartExam extends Component {
       })
       .then(response => response.json())
       .then(responseSubmit=> {
-        console.log("value of selection:",this.state.value);
+        console.log("value of question:",this.state.qid);
+        console.log("value of qpaper:",this.state.qpid);
         console.log("resp from submitButton:",responseSubmit);
+        this.setState({
+          "qid":0,
+          value:99,
+
+        })
 
       })
     });
@@ -146,6 +164,16 @@ export default class StartExam extends Component {
   getData(qpidFn){
     AsyncStorage.multiGet(['organizationId','userId']).then((data) => {
       let examApi=this.state.examPage;
+
+      //get qpid
+      fetch(this.state.HOME+this.state.EXAM_DETAILS+'esid='+this.props.navigation.state.params.eid)
+      .then(response=> response.json())
+      .then(resqpid=> {//exam status
+        fetch(this.state.HOME+this.state.ANSWER_STATUS+'orgid='+data[0][1]+'&qpid='+resqpid.data.qpId+'&userId='+data[1][1]+'')
+        .then(response=> response.json())
+        .then(resobj=> {this.setState({progressData:resobj.data})});
+        this.setState({qpid:resqpid.data.qpId});
+      });
 
       //get exam count
       fetch(this.state.HOME+this.state.PROGRESS+data[1][1]+'/progress?orgId='+data[0][1])
@@ -224,15 +252,7 @@ export default class StartExam extends Component {
 
 
       });
-      //get qpid
-      fetch(this.state.HOME+this.state.EXAM_DETAILS+'esid='+this.props.navigation.state.params.eid)
-      .then(response=> response.json())
-      .then(resqpid=> {//exam status
-        fetch(this.state.HOME+this.state.ANSWER_STATUS+'orgid='+data[0][1]+'&qpid='+resqpid.data.qpId+'&userId='+data[1][1]+'')
-        .then(response=> response.json())
-        .then(resobj=> {this.setState({progressData:resobj.data})});
-        this.setState({qpid:resqpid.data.qpId});
-      });
+
 
       //ends session
     });
