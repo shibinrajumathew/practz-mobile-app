@@ -4,106 +4,212 @@ import {
   StyleSheet,
   Text,
   View,
+  Dimensions,
   ScrollView,
-  Image
+  Image,
 } from 'react-native';
-
-import Icon from 'react-native-ionicons';
+import ProgressBarAnimated from 'react-native-progress-bar-animated';
 import styles from './Assets/Style';
-export default class NoteDetails extends Component {
+export default class AttempedExam extends Component<Props> {
   constructor(props) {
 
-       super(props)
+    super(props)
 
-       this.state = {
+    this.state = {
 
-         notes: [
+      exams: [
+        {'name':'exam1','examSubject':'science and tech','examType':'Staff Board Exam','timeAllocated':'15 min','noQuestions':10,
+        timeTaken:'06.04min','allotedTime':'7 mins','percent':60,'correct':4,'wrong':3,'unattended':3}
 
-           {'postedBy':'name','topic':'topic1','postedOn':'15 July 11:59 pm'}
-         ]
+      ],
+      questions:[
+        {'questionNo':'Q3','question':' Which software launched by Union Home Minister  Rajnath Singh to do speedy disposal of appeals/Complaints?','chosenAnswer':' god of war', 'correctAnswer':'call of duty'}
+       
+       
+     ]
 
 
-       }
+    }
 
-     }
+  }
 
   render() {
-     var noteList = this.state.notes.map(function(note){
-                        return <View key={(note, index) => index.toString()} > 
-                        <View style={[styles.announcementbox,styles.grey]}>
-          <Text style={[styles.margins,styles.lightFont]}>Posted By
-             <Text style={[styles.endFont]}>  {note.postedBy}  </Text>
-             <Text style ={[styles.lightFont]} >      Topic
-             <Text style={[styles.indicator]}>   { note.topic}   </Text>
-      
-      </Text>
-              </Text>
-
-
-      <Text style={[styles.margins,styles.lightFont]}>Posted On: {note.postedOn} </Text>
-     <View style={[styles.margins]}>
-     <Text>
-     <Icon name='ios-attach' size={25} />
-     <Text>       <Icon name='ios-image-outline'/></Text>
-     </Text>
-     </View >
-         
-    </View>
-      </View>;
-           })
+    const barWidth = Dimensions.get('screen').width - 30;
+  var examList = this.state.exams.map(function(exam){
+  return <View key={(exam, index) => index.toString()} >
+   <View style={[styles.announcementbox,styles.grey]}>
+    <View style={[styles.flexrow]}>
+    <View style={{ flex:1}} >
+      <Text style={[styles.heavyFont,styles.boldFont,styles.blackFont,styles.margins]}>{exam.name}</Text>
+    </View> 
+         <View style={[styles.sideBotton, styles.brightBlue,styles.margins]} >
+           <Text style={[styles.bookFont,styles.whiteFont]}>{exam.examSubject}</Text>
+        
+         </View>
+  </View>
            
 
-    return (
+            <Text style={[styles.margins,styles.lightFont,stylish.mymargin]}>{exam.examType} </Text>
 
-      <ScrollView style={{backgroundColor:'#FFFFFF'}}>
-      {noteList}
-      <Text style={{marginLeft:20,fontWeight:'800',fontSize:20,marginTop:10}}>Bombay Blood </Text>
-        <Text style={{marginLeft:20,fontSize:18,fontWeight:'500',marginTop:5}}>How the rare blood type was discovered? </Text>
-           <Text style={{marginLeft:20,fontSize:15,lineHeight: 30,marginTop:15,fontWeight:'500'}}>In the first part of the article,
-                 I talked about the definitions and types of microinteractions and why they work for your product UX.
-                 Here, I will show examples of effective microinteraction. I will also explain,
-                 how they improve your UX and what is microinteractions testing.
-                 You can use this information to persuade your boss or your design team (and perhaps even yourself)
-                 that microinteraction is flexible and an ever-changing element for designing rich interactive experiences.
-      </Text>
-         <Image style=
-              {{height:150,width:200,alignSelf:'center',marginTop:20}}
-                  source={require('./Assets/images/announcements.png')}
-        />
-     <Text style ={{fontWeight:'200',alignSelf: 'center',marginTop:10}}> Img 1.1 White blood cells </Text>
-          <Text style={{marginLeft:20,fontSize:15,lineHeight: 30,marginTop:15,fontWeight:'500'}}>Microinteractions show that
-                focus  on details is a key principle for effective and powerful results Each part of the design process matters.
-                Impressive, useful and unforgettable details make your app stand out from the competition.
-          </Text>
-      <Text style={{fontStyle:'italic',marginLeft:20,marginTop:10}}>"
-          <Text style={{fontStyle:'italic'}}>   I caught two meaty catfish today. What have you
-          </Text>
-      </Text>
-       <Text style={{fontStyle:'italic',marginLeft:30,marginTop:3}}> caught? Nothing?</Text>
-           <Text style={{fontStyle:'italic',marginLeft:30,marginTop:3}}>Perhaps you’re not so fierce after all.</Text>
-           <View style={{flex:1,flexDirection:'row',justifyContent: 'space-between',marginLeft:20,marginRight:10,marginTop:10}}>
-               <View style={{flex:1}}>
-                 <Image
-                    style={{height:50,width:75}}
-                    source={require('./Assets/images/announcements.png')}
-                    />
-               </View>
-               <View style={{flex:1}}>
-                 <Image
-                    style={{height:50,width:75}}
-                    source={require('./Assets/images/download.png')}
-                    />
-               </View>
-               <View style={{flex:1}}>
-                 <Image
-                    style={{height:50,width:75}}
-                    source={require('./Assets/images/logo.png')}
-                    />
-               </View>
-           </View>
 
-      </ScrollView>
-    );
-    }
-}
+               <View style={[styles.line]}/>
+
+              <View style={[styles.flexrow]}>
+                  <View style={{flex:6}}>
+                      <Text style={[stylish.font]}>Total Questions</Text>
+                      <Text style={[stylish.font]}>Time Taken</Text>
+                      <Text style={[stylish.font]}>Total Marks</Text>
+                      <Text style={[styles.lightFont,styles.percentage,styles.margins,styles.count]}>{exam.percent}%</Text>
+                      <View style={{marginLeft:15,marginRight:15}}><ProgressBarAnimated
+            width={barWidth}
+            value={exam.percent}
+            backgroundColorOnComplete="#6CC644"
+            backgroundColor="#956FCE"
+          /></View>
+                       </View> 
+                      <View style={{flex:3}}>
+                         <Text style={[stylish.fontcolor]}>  
+                           {exam.noQuestions} </Text>
+                       <Text style={[stylish.fontcolor]}>
+                           {exam.timeTaken} </Text>
+                           <Text style={[stylish.fontcolor]}>  
+                           4/10 </Text>
+                       </View>
+                       
+
+                       <View style={[stylish.allotedview]}>
+                       <Text style ={{color:'#FFFFFF',fontSize:10,alignSelf:'center'}}> 
+                                        Alloted: {exam.allotedTime}
+                                </Text>
+                       
+                       </View>
+               </View>
+         </View>
+         <View style={[styles.flexrow,styles.margins]}>
+      <View style={{flex:4,marginLeft:15}}>
+      <Text style={[styles.violetFont]}>correct</Text>
+         </View>
+         <View style={[stylish.box,styles.lightgreen]}>
+         <Text style={[styles.whiteFont]}> {exam.correct}</Text>
+        
+  </View>
+
+  <View style={{flex:3}}>
+  <Text style={[styles.violetFont]}>wrong</Text>
+    </View>
+   <View style={[stylish.box,styles.red]}>
+   <Text style={[styles.whiteFont]}> {exam.wrong}</Text>
      
+  </View>
+
+   <View style={{flex:5}}>
+   <Text style={[styles.violetFont]}>unattended </Text>
+   </View>
+   <View style={[stylish.box]}>
+   <Text >{exam.unattended}</Text>
+     
+   </View>
+  </View>
+  <View styles={[styles.line]}/>
+
+ 
+
+  
+      </View>
+      })
+
+       var questionList = this.state.questions.map(function(question){
+        return <View key={(exam, index) => index.toString()} >
+
+ <View style={[styles.announcementBox]}>
+     <View style={[styles.flexrow]}>
+         <View style={{flex:1}}>
+            <Text style={[styles.boldFont]}>{question.questionNo}</Text>
+          </View>
+          
+         <View style={{flex:9}}>
+          <Text style={{color:'#413333',lineHeight:20}}>
+              {question.question}
+          </Text>
+          <View style={[styles.flexrow]}>
+  <View style={{flex:4}}> 
+  <Text style={{color:'#000000'}}>
+  ChosenAnswer</Text>
+  </View>
+  <View style={{flex:3}}>
+  <Text style={{color:'#000000',fontWeight:'bold'}}>
+  {question.chosenAnswer}</Text>
+  </View>
+  <View style={{flex:3,marginRight:15}}>
+  <Text style={{color:'#956FCE'}}>
+  explanation </Text>
+  </View>
+  </View> 
+
+  <View style={[styles.flexrow]}>
+  <View style={{flex:2}}> 
+  <Text style={{color:'#000000'}}>
+  Correct Answer</Text>
+  </View>
+  <View style={{flex:3}}>
+  <Text style={{color:'#000000',fontWeight:'bold'}}>
+   {question.correctAnswer}
+  </Text>
+  </View>
+  </View>
+  </View>
+        </View>
+  </View>
+
+        </View>;
+})
+
+return (
+
+  <ScrollView style={{backgroundColor:'#FFFFFF'}}>
+  {examList}
+  {questionList}
+  </ScrollView>
+
+);
+}
+}
+
+const stylish = StyleSheet.create({
+  mymargin:{
+    marginTop:2
+  },font:{
+    fontSize:15,
+    marginTop:5,
+    marginLeft:15, 
+    color: '#000'
+  },
+  fontcolor:{
+    fontSize:15,
+    marginTop:5,
+    color:'#956FCE',
+    
+  },
+  allotedview:{
+    flex:4,
+    backgroundColor:'#CEC76F',
+     borderWidth: .5,
+    borderColor: '#7C7676',
+    marginTop:35,
+    marginBottom:100,
+    marginRight:60,
+    borderRadius:2,
+    marginLeft:30
+  },
+  box:{
+    
+     borderWidth: .5,
+    borderColor: '#707070',
+    borderRadius:3,
+    flex:2,
+    marginBottom:10,
+    marginRight:30,
+    alignItems:'center'
+  }
+
+});

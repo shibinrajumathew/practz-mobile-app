@@ -13,9 +13,7 @@ import Icon from 'react-native-ionicons';
 import styles from './Assets/Style';
 export default class NoteDetails extends Component {
   constructor(props) {
-
        super(props)
-
        this.state = {
         HOME:URL.HOME,
         NOTE_DETAILS:URL.NOTE_DETAILS,
@@ -26,15 +24,8 @@ export default class NoteDetails extends Component {
             topics:"",
             contents:"",
             topicNames:"",
-           image:{
-            "signedUrls":"",
-           },
-            
-            audios:[
-              {
-                "audioUrl":""
-              }
-            ]
+            signedUrls:" ",
+            audioUrls:" "   
        }
       }
       componentWillMount() {
@@ -43,49 +34,54 @@ export default class NoteDetails extends Component {
           classthis.setState({
             userId:user,
           });
-          console.log("response data",this.state.HOME+this.state.NOTE_DETAILS+this.props.navigation.state.params.nid+'/detailed');
-         fetch(this.state.HOME+this.state.NOTE_DETAILS+this.props.navigation.state.params.nid+'/detailed')
+        // console.log("response data",this.state.HOME+this.state.NOTE_DETAILS+this.props.navigation.state.params.nid+'/detailed');
+      fetch(this.state.HOME+this.state.NOTE_DETAILS+this.props.navigation.state.params.nid+'/detailed')
       .then((response) => response.json())
       .then((responseJson) => {                
         const regex = /(<([^>]+)>)/ig;
         const result = responseJson.data.content.replace(regex, ''); 
-        if(responseobj.data.audio.length<1){
+        if(responseJson.data.audios.length<1){
           this.setState({
           
-          createBys: responseJson.data.createdBy,
+            createBys: responseJson.data.createdBy,
             createdDates:responseJson.data.createdDate,
             titles:responseJson.data.title,
             topics: responseJson.data. topic,
             contents: result ,      
-            topicNames: responseJson.data.topicName,       
-            
-            images:{
-           " signedUrls":responseJson.data.images[0].signedUrl 
-            }
-              
+            topicNames: responseJson.data.topicName, 
+            signedUrls:responseJson.data.images[0].signedUrl       
         });
       }
         //console.log("response image",responseJson.data.images[0].url  );
         //console.log("response data",this.state.HOME+this.state.NOTE_DETAILS+data[0][1]+'/detailed');
         else {
-        if(responseobj.data.image.length<1){
+        if(responseJson.data.images.length<1){
           this.setState({
           
-          createBys: responseJson.data.createdBy,
+            createdBys: responseJson.data.createdBy,
             createdDates:responseJson.data.createdDate,
             titles:responseJson.data.title,
             topics: responseJson.data. topic,
             contents: result ,      
-            topicNames: responseJson.data.topicName,       
-          
-            audio:{
-           " signedUrls":responseJson.data.audio[0].signedUrl 
-            }
-            // if{}     
+            topicNames: responseJson.data.topicName,  
+            audioUrls:responseJson.data.audios[0].signedUrl        
         });
         
       }
-
+    
+    else{
+      this.setState({
+          
+          createBys: responseJson.data.createdBy,
+          createdDates:responseJson.data.createdDate,
+          titles:responseJson.data.title,
+          topics: responseJson.data. topic,
+          contents: result ,      
+          topicNames: responseJson.data.topicName, 
+          signedUrls:responseJson.data.images[0].signedUrl,
+          audioUrls:responseJson.data.audios[0].signedUrl       
+      });
+    }}
       })
       .catch((error) =>{
         console.error(error);
@@ -125,7 +121,7 @@ export default class NoteDetails extends Component {
         <View style={[styles.announcementbox,styles.grey]}>
         
         <Text>djb</Text><View style={[styles.examBox]}>
-        <Text>djb</Text>
+        <Text>{this.state.audioUrls}</Text>
         </View>
         
         </View>
