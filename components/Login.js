@@ -67,7 +67,6 @@ export default class Login extends Component {
       .then(response => response.json())
       .then(response=> {
         //close gif
-
         //fetch orgnization details
         if(response.success){
           fetch(this.state.home+this.state.api_authentication)

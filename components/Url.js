@@ -18,6 +18,7 @@ const URL=
   REVIEW:'/practz/ilearn/v1/questions/reviewQuestion/',
   PRODUCT:'/practz/ilearn/v1/b2c/products/series/available?',
   ADDTOCART:'/practz/mozea/v1/orders/additem/user/',
+  SUBMIT_ANSWER:'/practz/ilearn/v1/questions/submitAnswer',
 
 
 
