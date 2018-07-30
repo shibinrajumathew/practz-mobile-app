@@ -15,7 +15,11 @@ const URL=
   EXAM_DETAILS:'/practz/ilearn/v1/questionpapers/schedule/data?',
   AVAILABLE_NOTES:'/practz/ilearn/v1/notes/all-for-user?',
   ANSWER_STATUS:'/practz/ilearn/v1/questions/review/minimal/style/?',
+  REVIEW:'/practz/ilearn/v1/questions/reviewQuestion/',
   PRODUCT:'/practz/ilearn/v1/b2c/products/series/available?',
+  ADDTOCART:'/practz/mozea/v1/orders/additem/user/',
+  SUBMIT_ANSWER:'/practz/ilearn/v1/questions/submitAnswer',
+
 
 // author hari
 NOTE_DETAILS:'/practz/ilearn/v1/notes/',
