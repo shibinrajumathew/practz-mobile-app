@@ -8,6 +8,7 @@ import { StackNavigator } from 'react-navigation';
 import Splash from './components/Splash';
 import Login from './components/Login';
 import Dash from './components/Home';
+import AvailableExams from './components/AvailableExams';
 import InvoicePage from './components/InvoicePage';
 import ExamDetails from './components/Exams/ExamDetails';
 import StartExam from './components/Exams/StartExam';
@@ -21,6 +22,7 @@ export const Practz = StackNavigator({
   Login:{ screen: Login},
   StartExam:{ screen: StartExam},
   ExamDetails:{ screen: ExamDetails},
+  AvailableExams:{ screen: AvailableExams},
   Dash:{ screen: Dash,
     navigationOptions: {
       headerLeft:null,

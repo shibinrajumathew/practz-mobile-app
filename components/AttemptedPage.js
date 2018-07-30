@@ -55,7 +55,6 @@ componentWillMount() {
         });
 
       fetch(this.state.HOME+this.state.ATTENDED_EXAM_PROGRESS+'GwTemplateId=exam&limit=10&sortBy=createdDate&sortDirection=desc&userId='+data[0][1]+'')
-      // fetch('http://medico.vveeo.com/searchdr.php?GwTemplateId=exam&limit=10&sortBy=createdDate&sortDirection=desc&userId='+data[0][1]+'')
       .then(response =>  response.json())
       .then(responseobj => {
         if(responseobj==401){
@@ -126,7 +125,7 @@ componentWillMount() {
      return(
        <View key={(exam, index) => index.toString()}>
           <TouchableOpacity style={[styles.announcementBox, styles.flexrow]}
-            onPress={() => this.props.navigation.navigate('AttemptedExamDetails')}>
+            onPress={() => this.props.navigation.navigate('AttemptedExamDetails',{eid:exam.examId})}>
             <View style={[styles.flexcol, styles.innerTextBox]} >
            <Text style={[styles.heavyFont,styles.boldFont,styles.blackFont]}>{exam.examName}</Text>
 

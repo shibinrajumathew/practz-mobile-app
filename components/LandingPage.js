@@ -303,7 +303,8 @@ export class LandingPage extends Component {
       </View>
       <View style={[styles.flexrow, styles.availableBox]}>
         <Text style={{ fontWeight: 'bold', color: '#000', flex: 3 }}>{this.state.status}</Text>
-        <Text style={{ color: '#676262', flex: 1, }}>{this.state.view}</Text>
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate('AvailableExams')}><Text  style={{ color: '#676262', flex: 1, }}>{this.state.view}</Text></TouchableOpacity>
       </View>
       {examList}
     </ScrollView>
