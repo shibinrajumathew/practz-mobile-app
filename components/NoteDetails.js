@@ -17,27 +17,15 @@ export default class NoteDetails extends Component {
        this.state = {
         HOME:URL.HOME,
         NOTE_DETAILS:URL.NOTE_DETAILS,
-
+        
             createdBys:"",
             createdDates:"",
             titles:"",
             topics:"",
             contents:"",
             topicNames:"",
-<<<<<<< HEAD
             signedUrls:" ",
             audioUrls:" "   
-=======
-           image:{
-            "signedUrls":"",
-           },
-
-            audios:[
-              {
-                "audioUrl":""
-              }
-            ]
->>>>>>> dd5c3a1dfdf7e29d58c3612a613d3e91c8fe1e4b
        }
       }
       componentWillMount() {
@@ -49,9 +37,8 @@ export default class NoteDetails extends Component {
         // console.log("response data",this.state.HOME+this.state.NOTE_DETAILS+this.props.navigation.state.params.nid+'/detailed');
       fetch(this.state.HOME+this.state.NOTE_DETAILS+this.props.navigation.state.params.nid+'/detailed')
       .then((response) => response.json())
-      .then((responseJson) => {
+      .then((responseJson) => {                
         const regex = /(<([^>]+)>)/ig;
-<<<<<<< HEAD
         const result = responseJson.data.content.replace(regex, ''); 
         if(responseJson.data.audios.length<1){
           this.setState({
@@ -63,23 +50,6 @@ export default class NoteDetails extends Component {
             contents: result ,      
             topicNames: responseJson.data.topicName, 
             signedUrls:responseJson.data.images[0].signedUrl       
-=======
-        const result = responseJson.data.content.replace(regex, '');
-        if(responseobj.data.audio.length<1){
-          this.setState({
-
-          createBys: responseJson.data.createdBy,
-            createdDates:responseJson.data.createdDate,
-            titles:responseJson.data.title,
-            topics: responseJson.data. topic,
-            contents: result ,
-            topicNames: responseJson.data.topicName,
-
-            images:{
-           " signedUrls":responseJson.data.images[0].signedUrl
-            }
-
->>>>>>> dd5c3a1dfdf7e29d58c3612a613d3e91c8fe1e4b
         });
       }
         //console.log("response image",responseJson.data.images[0].url  );
@@ -87,7 +57,6 @@ export default class NoteDetails extends Component {
         else {
         if(responseJson.data.images.length<1){
           this.setState({
-<<<<<<< HEAD
           
             createdBys: responseJson.data.createdBy,
             createdDates:responseJson.data.createdDate,
@@ -96,24 +65,9 @@ export default class NoteDetails extends Component {
             contents: result ,      
             topicNames: responseJson.data.topicName,  
             audioUrls:responseJson.data.audios[0].signedUrl        
-=======
-
-          createBys: responseJson.data.createdBy,
-            createdDates:responseJson.data.createdDate,
-            titles:responseJson.data.title,
-            topics: responseJson.data. topic,
-            contents: result ,
-            topicNames: responseJson.data.topicName,
-
-            audio:{
-           " signedUrls":responseJson.data.audio[0].signedUrl
-            }
-
->>>>>>> dd5c3a1dfdf7e29d58c3612a613d3e91c8fe1e4b
         });
         
       }
-<<<<<<< HEAD
     
     else{
       this.setState({
@@ -129,18 +83,13 @@ export default class NoteDetails extends Component {
       });
     }}
       })
-=======
-    }
-
-  })
->>>>>>> dd5c3a1dfdf7e29d58c3612a613d3e91c8fe1e4b
       .catch((error) =>{
         console.error(error);
       });
   });
-
+  
 }
-  render() {
+  render() { 
        return (
 
       <ScrollView style={{backgroundColor:'#FFFFFF'}}>
@@ -148,7 +97,7 @@ export default class NoteDetails extends Component {
           <Text style={[styles.margins,styles.lightFont]}>Posted By
              <Text style={[styles.endFont]}>  {this.state.createdBys}  </Text>
              <Text style ={[styles.lightFont]} >      Topic
-             <Text style={[styles.indicator]}>   {this.state.titles}   </Text>
+             <Text style={[styles.indicator]}>   {this.state.titles}   </Text>  
             </Text>
           </Text>
 
@@ -158,10 +107,10 @@ export default class NoteDetails extends Component {
        <Icon name='ios-attach' size={25} />
              <Text>       <Icon name='ios-image-outline'/></Text>
          </Text>
-     </View >
+     </View > 
     </View>
-
-
+      
+      
       <Text style={[styles.margins,styles.heavyFont,stylish.myview]}>{this.state.topicNames} </Text>
         <Text style={[styles.boldFont,stylish.myview1,styles.heavyFont]}>{this.state.topics} </Text>
            <Text style={[styles.margins,stylish.myview1]}>{this.state.contents}
@@ -170,11 +119,11 @@ export default class NoteDetails extends Component {
               {{height:150,width:200,alignSelf:'center',marginTop:20}}
               source = {{uri:this.state.signedUrls}} />
         <View style={[styles.announcementbox,styles.grey]}>
-
+        
         <Text>djb</Text><View style={[styles.examBox]}>
         <Text>{this.state.audioUrls}</Text>
         </View>
-
+        
         </View>
       </ScrollView>
     );
@@ -193,7 +142,7 @@ const stylish = StyleSheet.create({
   },
   italicsView:{
     fontStyle:'italic',
-
+    
   },
   allotedview:{
     flex:4,
@@ -207,7 +156,7 @@ const stylish = StyleSheet.create({
     marginLeft:30
   },
   box:{
-
+    
      borderWidth: .5,
     borderColor: '#707070',
     borderRadius:3,
