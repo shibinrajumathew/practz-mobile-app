@@ -419,12 +419,6 @@ export default StyleSheet.create({
    marginLeft:15,
    marginTop:10,
    marginRight:5
- },
- title:{
-   fontSize:20,
-   fontFamily: 'Avenir, Heavy',
-    fontWeight: 'bold',
-    color: '#000'
  }
 
 });
