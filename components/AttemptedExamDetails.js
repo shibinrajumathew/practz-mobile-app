@@ -48,7 +48,7 @@ export default class NoteDetails extends Component {
             userId:user,
           });
          //console.log("response data",this.state.HOME+this.state.ATTEMPTED_EXAM_DETAILS+this.props.navigation.state.params.eid);
-      fetch(this.state.HOME+this.state.ATTEMPTED_EXAM_DETAILS+this.props.navigation.state.params.eid+'?GwTemplateId=exam')
+         fetch('https://demo.practz.com/practz/ilearn/v1/questions/examSummary/secure/5b34d251068a3c0001962a4c?GwTemplateId=exam')
       .then((response) => response.json())
       .then((responseJson) => {    
         console.log("response from url",responseJson);            

@@ -36,7 +36,7 @@ export default class StartExam extends Component {
       ANSWER_STATUS:URL.ANSWER_STATUS,
       REVIEW:URL.REVIEW,
       SUBMIT_ANSWER:URL.SUBMIT_ANSWER,
-      value: 99,//large size for reset/clear selection
+      value: null,//large size for reset/clear selection
       rmMin:1,
       rmSec:1,
       minus:0,
@@ -70,47 +70,57 @@ export default class StartExam extends Component {
     this.setState({value:value})
   }
 
-  clearRadio(){
-    this.setState({value:99})
+  clearRadio(qpId,qId){
+    this.setState({value:null})
+    if(this.state.qStatus=="ANSWERED"){
+      this.submitAnswer(qpId,qId);
+    }
   }
 
   componentWillMount() {
     this.getData();
   }
 
-  prevQuestion(qpId){
+  prevQuestion(qpId,qId){
+    if(this.state.qStatus=="UNANSWERED"){
+        if(this.state.value==null){
+          this.getData(qpId);
+        }else{
+          console.log("qpid",qpId);
+          this.submitAnswer(qpId,qId);
+        }
+    }else{
+      this.setState({
+        value:null,
+      });
+      this.getData(qpId);
+    }
     if(this.state.qno>1){
       this.setState({
         examPage:'prev',
-        value:99,
       });
-      this.getData(qpId);
-
     }
   }
 
-  nextQuestion(qpId){
-    console.log("qpid",qpId);
+  nextQuestion(qpId,qId){
     if(this.state.qStatus=="UNANSWERED"){
-      if(this.state.qid==0){
-
+      if(this.state.value==null){
+        this.getData(qpId);
       }else{
-        console.log("entered submit ans");
-        this.submitAnswer();
-      }
-
-
-
+          console.log("qpid",qpId);
+          this.submitAnswer(qpId,qId);
+        }
     }else{
       this.setState({
-        value:99,
+        value:null,
       });
+      this.getData(qpId);
     }
     if(this.state.qno<totalQNo){
       this.setState({
         examPage:'next',
       });
-      this.getData(qpId);
+
 
     }
 
@@ -118,28 +128,39 @@ export default class StartExam extends Component {
 
   reviewQuestion(qpId,qNo){
     this.setState({
-      value:99,
+      value:null,
       examPage:'review',
       qindex:qNo,
     });
     this.getData(qpId);
   }
-  submitAnswer(){
+  submitAnswer(qpId,qId){
+
     AsyncStorage.multiGet(['organizationId','userId']).then((data) => {
+
+      console.log("chosenAnswer",''+this.state.value+'');
+      console.log("markedForReview",false);
+      console.log("organizationId",data[0][1]);
+      console.log("questionId",qId);
+      console.log("questionPaperId",qpId);
+      console.log("remainingMinutes",this.state.rmMin);
+      console.log("remainingSeconds",this.state.rmSec);
+      console.log("userId",data[1][1]);
+
 
       fetch(this.state.HOME+this.state.SUBMIT_ANSWER, {
         method: 'post',
         headers: {
           'Accept': 'application/json, text/plain,',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache, no-store, reload'
         },
         body: JSON.stringify({
           "chosenAnswer":''+this.state.value+'',
           "markedForReview":false,
           "organizationId":data[0][1],
-          "questionId":this.state.qid,
-          "questionPaperId":this.state.qpid,
-          // "remainingMinutes":"520",
+          "questionId":qId,
+          "questionPaperId":qpId,
           "remainingMinutes":this.state.rmMin,
           "remainingSeconds":this.state.rmSec,
           "userId":data[1][1],
@@ -149,14 +170,13 @@ export default class StartExam extends Component {
       })
       .then(response => response.json())
       .then(responseSubmit=> {
-        console.log("value of question:",this.state.qid);
-        console.log("value of qpaper:",this.state.qpid);
         console.log("resp from submitButton:",responseSubmit);
         this.setState({
           "qid":0,
-          value:99,
+          value:null,
 
         })
+        this.getData(qpId);
 
       })
     });
@@ -166,17 +186,36 @@ export default class StartExam extends Component {
       let examApi=this.state.examPage;
 
       //get qpid
-      fetch(this.state.HOME+this.state.EXAM_DETAILS+'esid='+this.props.navigation.state.params.eid)
+      fetch(this.state.HOME+this.state.EXAM_DETAILS+'esid='+this.props.navigation.state.params.eid,{
+        headers: {
+                'Accept': 'application/json, text/plain,',
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache'
+              }
+            })
       .then(response=> response.json())
       .then(resqpid=> {//exam status
-        fetch(this.state.HOME+this.state.ANSWER_STATUS+'orgid='+data[0][1]+'&qpid='+resqpid.data.qpId+'&userId='+data[1][1]+'')
+
+        fetch(this.state.HOME+this.state.ANSWER_STATUS+'orgid='+data[0][1]+'&qpid='+resqpid.data.qpId+'&userId='+data[1][1]+'',{
+          headers: {
+                  'Accept': 'application/json, text/plain,',
+                  'Content-Type': 'application/json',
+                  'Cache-Control': 'no-cache'
+                }
+              })
         .then(response=> response.json())
         .then(resobj=> {this.setState({progressData:resobj.data})});
         this.setState({qpid:resqpid.data.qpId});
       });
 
       //get exam count
-      fetch(this.state.HOME+this.state.PROGRESS+data[1][1]+'/progress?orgId='+data[0][1])
+      fetch(this.state.HOME+this.state.PROGRESS+data[1][1]+'/progress?orgId='+data[0][1],{
+        headers: {
+                'Accept': 'application/json, text/plain,',
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache'
+              }
+            })
       .then(response=> response.json())
       .then(resobj=> {
         questionNo=resobj.data.attendedQuestionsCount+1;
@@ -199,7 +238,13 @@ export default class StartExam extends Component {
         API=this.state.HOME+this.state.REVIEW+data[1][1]+'?idx='+this.state.qindex+'&orgid='+data[0][1]+'&qpid='+qpidFn;
       }
       //first time question fetch
-      fetch(API)
+      fetch(API,{
+        headers: {
+                'Accept': 'application/json, text/plain,',
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache'
+              }
+            })
       .then(response =>  response.json())
       .then(responseobj => {
         //   if(responseobj==401){
@@ -238,6 +283,8 @@ export default class StartExam extends Component {
               value:responseobj.data.submittedAnswer,
             })
           }
+          console.log("questionId",responseobj.data.questionId);
+          console.log("submited ans:",responseobj.data.submittedAnswer);
           this.setState({
             qid:responseobj.data.questionId,
             quest: optnresult,
@@ -370,9 +417,9 @@ export default class StartExam extends Component {
 
       </ScrollView>
       <View style={[styles.submitButton,styles.flexrow]}>
-        <TouchableOpacity onPress={() =>  this.prevQuestion(this.state.qpid)}  style={[styles.questionButton]}><Text style={[styles.whiteFont]}>Previous</Text></TouchableOpacity>
-        <TouchableOpacity style={[styles.questionButton]} onPress={this.clearRadio.bind(this)}><Text style={[styles.whiteFont]}>Clear</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => this.nextQuestion(this.state.qpid)} style={[styles.questionButton,styles.white]}><Text style={[styles.violetFont]}>Next</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() =>  this.prevQuestion(this.state.qpid,this.state.qid)}  style={[styles.questionButton]}><Text style={[styles.whiteFont]}>Previous</Text></TouchableOpacity>
+        <TouchableOpacity style={[styles.questionButton]} onPress={() => this.clearRadio(this.state.qpid,this.state.qid)}><Text style={[styles.whiteFont]}>Clear</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.nextQuestion(this.state.qpid,this.state.qid)} style={[styles.questionButton,styles.white]}><Text style={[styles.violetFont]}>Next</Text></TouchableOpacity>
       </View>
     </View>
 

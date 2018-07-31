@@ -8,6 +8,9 @@ import { StackNavigator } from 'react-navigation';
 import Splash from './components/Splash';
 import Login from './components/Login';
 import Dash from './components/Home';
+import AccountSetting from './components/AccountSetting';
+import HistoricPattern from './components/HistoricPattern';
+import MyOrders from './components/MyOrders';
 import AvailableExams from './components/AvailableExams';
 import InvoicePage from './components/InvoicePage';
 import ExamDetails from './components/Exams/ExamDetails';
@@ -20,6 +23,9 @@ export const Practz = StackNavigator({
 //author shibin navigation starts here
   Home: { screen: Splash },
   Login:{ screen: Login},
+  AccountSetting:{ screen: AccountSetting},
+  HistoricPattern:{ screen: HistoricPattern},
+  MyOrders:{ screen: MyOrders},
   StartExam:{ screen: StartExam},
   ExamDetails:{ screen: ExamDetails},
   AvailableExams:{ screen: AvailableExams},
