@@ -66,17 +66,20 @@ export class ProfilePage extends Component {
           }
         }}>
         </View>
+        <TouchableOpacity style={[styles.profileSetting]} onPress={() =>
+          this.props.navigation.navigate('HistoricPattern')}>
+          <Text style={{ fontWeight: '500' }} >Historic Pattern</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.profileSetting]} onPress={() =>
+          this.props.navigation.navigate('MyOrders')}>
+          <Text style={{ fontWeight: '500' }} >My Orders</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.profileSetting]} onPress={() =>
+          this.props.navigation.navigate('AccountSetting')}>
+          <Text style={{ fontWeight: '500' }} >Account Settings</Text>
+        </TouchableOpacity>
         <View style={[styles.profileSetting]}>
-          <Text style={{ fontWeight: '500' }}>Historic Pattern</Text>
-        </View>
-        <View style={[styles.profileSetting]}>
-          <Text style={{ fontWeight: '500' }}>My Orders</Text>
-        </View>
-        <View style={[styles.profileSetting]}>
-          <Text style={{ fontWeight: '500' }}>Account Settings</Text>
-        </View>
-        <View style={[styles.profileSetting]}>
-          <Text style={{ fontWeight: '500' }}>Change Password</Text>
+          <Text style={{ fontWeight: '500' }}  >Change Password</Text>
         </View>
         <TouchableOpacity style={[styles.profileSetting]} onPress={() => this.userLogout()}>
           <Text style={{ fontWeight: '500' }}>Logout</Text>
