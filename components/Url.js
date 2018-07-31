@@ -24,7 +24,7 @@ const URL=
 // author hari
 NOTE_DETAILS:'/practz/ilearn/v1/notes/'
 
- 
+
 
 
 

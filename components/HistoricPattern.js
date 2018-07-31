@@ -10,11 +10,11 @@ import {
 
 export default class AvailableExams extends Component<Props> {
   constructor(props) {
-    
+
        super(props)
-    
+
        this.state = {
-    
+
          exams: [
            {'examType':'Bank','attended':8,'passed':6,},
            {'examType':'Current Affairs','attended':4,'passed':3,},
@@ -22,14 +22,14 @@ export default class AvailableExams extends Component<Props> {
            {'examType':'MicroBiology','attended':6,'passed':5,}
     ]
        }
-    
+
      }
- 
+
   render() {
      var examList = this.state.exams.map(function(exam){
                         return <View>
                         <Text style={{marginTop:15,marginLeft:20,fontWeight:'bold',color:'#000000',fontSize:20}}>{exam.examType}</Text>
-                       
+
 
                         <View style={[styles.container]}>
         <View style={{flex:1}} >
@@ -38,7 +38,7 @@ export default class AvailableExams extends Component<Props> {
       </Text>
       </View>
         <View style={{flex: 3}} >
-        <Text style={{color:'#848484',fontWeight:'thin'}}>Passed
+        <Text style={{color:'#848484',fontWeight:'bold'}}>Passed
          <Text style={{color:'#956FCE',fontWeight:'bold'}}>  {exam.passed}</Text>
         </Text>
       </View>
@@ -51,14 +51,14 @@ export default class AvailableExams extends Component<Props> {
     return (
 
       <ScrollView style={{backgroundColor:'#FFFFFF',}}>
-      
+
       {examList}
       </ScrollView>
     );
     }
 }
 const styles = StyleSheet.create({
-  
+
   container:{
 
     flex:1,
@@ -73,5 +73,5 @@ const styles = StyleSheet.create({
     marginTop:10
 
       }
-  
+
     });
