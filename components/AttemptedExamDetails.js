@@ -4,98 +4,132 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
-  AsyncStorage,
   Dimensions,
-  Image
+  ScrollView,
+  Image,
 } from 'react-native';
-import URL from './Url';
-import Icon from 'react-native-ionicons';
 import ProgressBarAnimated from 'react-native-progress-bar-animated';
 import styles from './Assets/Style';
-const barWidth = Dimensions.get('screen').width - 30;
-export default class NoteDetails extends Component {
+export default class AttempedExam extends Component<Props> {
   constructor(props) {
-       super(props)
-       this.state = {
-        HOME:URL.HOME,
-        ATTEMPTED_EXAM_DETAILS:URL.ATTEMPTED_EXAM_DETAILS,
-        correctAnswersCounts:0,
-        partialAnswersCounts: 0,
-        wrongAnswersCounts: 0,
-        unattendedCounts: 0,
-        timeTakens: "",
-        totalMarkss: 0,
-        examNames: "",
-        durations:0, 
-        percentages:0,
-        totalQuestionss: 0,
-        totalExamMarkss:0,
-      questionss:[
-        {
-          "questionIndexs": 0,
-          "submittedAnswer": "",
-          "correctAnswer": "",
-          "questionText":""
-        } 
-      ]  
-       }
-      }
-      componentWillMount() {
-        AsyncStorage.multiGet(['Id']).then((data) => {
-          let user = data[0][1];
-          classthis.setState({
-            userId:user,
-          });
-         //console.log("response data",this.state.HOME+this.state.ATTEMPTED_EXAM_DETAILS+this.props.navigation.state.params.eid);
-      fetch(this.state.HOME+this.state.ATTEMPTED_EXAM_DETAILS+this.props.navigation.state.params.eid+'?GwTemplateId=exam')
-      .then((response) => response.json())
-      .then((responseJson) => {    
-        console.log("response from url",responseJson);            
-       //const regex = /(<([^>]+)>)/ig;
-       // const result = responseJson.data.questions.replace(regex, ''); 
-        
-        
-          this.setState({
-            
-        correctAnswersCounts: responseJson.data.correctAnswersCount,
-        partialAnswersCounts:  responseJson.data.partialAnswersCount,
-        wrongAnswersCounts:  responseJson.data. wrongAnswersCount,
-        unattendedCounts: responseJson.data.unattendedCount,
-        timeTakens:  responseJson.data.timeTaken,
-        totalMarkss:  responseJson.data.totalMarks, 
-        durations:responseJson.data.duration, 
-        examNames: responseJson.data.examName, 
-        percentages:responseJson.data.percentage,   
-        totalQuestionss:responseJson.data.totalQuestions,
-        totalExamMarkss:responseJson.data.totalExamMarks,
-        questionss:responseJson.data.questions
-        //console.log("response image",responseJson.data.images[0].url  );
-        //console.log("response data",this.state.HOME+this.state.NOTE_DETAILS+data[0][1]+'/detailed');
-   
-    
-      });
-      
-  });
-});
 
-      }
+    super(props)
+
+    this.state = {
+
+      exams: [
+        {'name':'exam1','examSubject':'science and tech','examType':'Staff Board Exam','timeAllocated':'15 min','noQuestions':10,
+        timeTaken:'06.04min','allotedTime':'7 mins','percent':60,'correct':4,'wrong':3,'unattended':3}
+
+      ],
+      questions:[
+        {'questionNo':'Q3','question':' Which software launched by Union Home Minister  Rajnath Singh to do speedy disposal of appeals/Complaints?','chosenAnswer':' god of war', 'correctAnswer':'call of duty'}
+       
+       
+     ]
+
+
+    }
+
+  }
+
   render() {
-   
-       var questionList = this.state.questionss.map(function(question){
-        const regex = /(<([^>]+)>)/ig;
-        const result = question.questionText.replace(regex, ''); 
-        return (<View key={(question, index) => index.toString()} >
+    const barWidth = Dimensions.get('screen').width - 30;
+  var examList = this.state.exams.map(function(exam){
+  return <View key={(exam, index) => index.toString()} >
+   <View style={[styles.announcementbox,styles.grey]}>
+    <View style={[styles.flexrow]}>
+    <View style={{ flex:1}} >
+      <Text style={[styles.heavyFont,styles.boldFont,styles.blackFont,styles.margins]}>{exam.name}</Text>
+    </View> 
+         <View style={[styles.sideBotton, styles.brightBlue,styles.margins]} >
+           <Text style={[styles.bookFont,styles.whiteFont]}>{exam.examSubject}</Text>
+        
+         </View>
+  </View>
+           
+
+            <Text style={[styles.margins,styles.lightFont,stylish.mymargin]}>{exam.examType} </Text>
+
+
+               <View style={[styles.line]}/>
+
+              <View style={[styles.flexrow]}>
+                  <View style={{flex:6}}>
+                      <Text style={[stylish.font]}>Total Questions</Text>
+                      <Text style={[stylish.font]}>Time Taken</Text>
+                      <Text style={[stylish.font]}>Total Marks</Text>
+                      <Text style={[styles.lightFont,styles.percentage,styles.margins,styles.count]}>{exam.percent}%</Text>
+                      <View style={{marginLeft:15,marginRight:15}}><ProgressBarAnimated
+            width={barWidth}
+            value={exam.percent}
+            backgroundColorOnComplete="#6CC644"
+            backgroundColor="#956FCE"
+          /></View>
+                       </View> 
+                      <View style={{flex:3}}>
+                         <Text style={[stylish.fontcolor]}>  
+                           {exam.noQuestions} </Text>
+                       <Text style={[stylish.fontcolor]}>
+                           {exam.timeTaken} </Text>
+                           <Text style={[stylish.fontcolor]}>  
+                           4/10 </Text>
+                       </View>
+                       
+
+                       <View style={[stylish.allotedview]}>
+                       <Text style ={{color:'#FFFFFF',fontSize:10,alignSelf:'center'}}> 
+                                        Alloted: {exam.allotedTime}
+                                </Text>
+                       
+                       </View>
+               </View>
+         </View>
+         <View style={[styles.flexrow,styles.margins]}>
+      <View style={{flex:4,marginLeft:15}}>
+      <Text style={[styles.violetFont]}>correct</Text>
+         </View>
+         <View style={[stylish.box,styles.lightgreen]}>
+         <Text style={[styles.whiteFont]}> {exam.correct}</Text>
+        
+  </View>
+
+  <View style={{flex:3}}>
+  <Text style={[styles.violetFont]}>wrong</Text>
+    </View>
+   <View style={[stylish.box,styles.red]}>
+   <Text style={[styles.whiteFont]}> {exam.wrong}</Text>
+     
+  </View>
+
+   <View style={{flex:5}}>
+   <Text style={[styles.violetFont]}>unattended </Text>
+   </View>
+   <View style={[stylish.box]}>
+   <Text >{exam.unattended}</Text>
+     
+   </View>
+  </View>
+  <View styles={[styles.line]}/>
+
+ 
+
+  
+      </View>
+      })
+
+       var questionList = this.state.questions.map(function(question){
+        return <View key={(exam, index) => index.toString()} >
 
  <View style={[styles.announcementBox]}>
      <View style={[styles.flexrow]}>
          <View style={{flex:1}}>
-            <Text style={[styles.boldFont]}>{question.questionIndex}</Text>
+            <Text style={[styles.boldFont]}>{question.questionNo}</Text>
           </View>
           
          <View style={{flex:9}}>
           <Text style={{color:'#413333',lineHeight:20}}>
-              {result}
+              {question.question}
           </Text>
           <View style={[styles.flexrow]}>
   <View style={{flex:4}}> 
@@ -104,7 +138,7 @@ export default class NoteDetails extends Component {
   </View>
   <View style={{flex:3}}>
   <Text style={{color:'#000000',fontWeight:'bold'}}>
-   {question.submittedAnswer}</Text>
+  {question.chosenAnswer}</Text>
   </View>
   <View style={{flex:3,marginRight:15}}>
   <Text style={{color:'#956FCE'}}>
@@ -118,7 +152,8 @@ export default class NoteDetails extends Component {
   Correct Answer</Text>
   </View>
   <View style={{flex:3}}>
-  <Text style={{color:'#000000',fontWeight:'bold'}}>{question.correctAnswer}
+  <Text style={{color:'#000000',fontWeight:'bold'}}>
+   {question.correctAnswer}
   </Text>
   </View>
   </View>
@@ -126,90 +161,13 @@ export default class NoteDetails extends Component {
         </View>
   </View>
 
-       </View>);
+        </View>;
 })
 
 return (
 
   <ScrollView style={{backgroundColor:'#FFFFFF'}}>
-   
- 
- 
-  <View style={[styles.announcementbox,styles.grey]}>
-   <View style={[styles.flexrow]}>
-   <View style={{ flex:1}} >
-     <Text style={[styles.heavyFont,styles.boldFont,styles.blackFont,styles.margins]}>{this.state.examNames}</Text>
-   </View> 
-        <View style={[styles.sideBotton, styles.brightBlue,styles.margins]} >
-          <Text style={[styles.bookFont,styles.whiteFont]}>Science and Tech</Text>
-       
-        </View>
- </View>
-          
-
-           <Text style={[styles.margins,styles.lightFont,stylish.mymargin]}> Staff Board Exam</Text>
-
-
-              <View style={[styles.line]}/>
-
-             <View style={[styles.flexrow]}>
-                 <View style={{flex:6}}>
-                     <Text style={[stylish.font]}>Total Questions</Text>
-                     <Text style={[stylish.font]}>Time Taken</Text>
-                     <Text style={[stylish.font]}>Total Marks</Text>
-                     <Text style={[styles.lightFont,styles.percentage,styles.margins,styles.count]}>{this.state.percentages}%</Text>
-                     <View style={{marginLeft:15,marginRight:15}}><ProgressBarAnimated
-           width={barWidth}
-           value={this.state.percentages}
-           backgroundColorOnComplete="#6CC644"
-           backgroundColor="#956FCE"
-         /></View>
-                      </View> 
-                     <View style={{flex:3}}>
-                        <Text style={[stylish.fontcolor]}>  
-                          {this.state.totalQuestionss} </Text>
-                      <Text style={[stylish.fontcolor]}>
-                          {this.state.timeTakens} </Text>
-                          <Text style={[stylish.fontcolor]}>  
-                         {this.state.totalMarkss}/{this.state.totalExamMarkss} </Text>
-                      </View>
-                      
-
-                      <View style={[stylish.allotedview]}>
-                      <Text style ={{color:'#FFFFFF',fontSize:10,alignSelf:'center'}}> 
-                                       Alloted: {this.state.durations}
-                               </Text>
-                      
-                      </View>
-              </View>
-        </View>
-        <View style={[styles.flexrow,styles.margins]}>
-     <View style={{flex:4,marginLeft:15}}>
-     <Text style={[styles.violetFont]}>correct</Text>
-        </View>
-        <View style={[stylish.box,styles.lightgreen]}>
-        <Text style={[styles.whiteFont]}> {this.state.correctAnswersCounts}</Text>
-       
- </View>
-
- <View style={{flex:3}}>
- <Text style={[styles.violetFont]}>wrong</Text>
-   </View>
-  <View style={[stylish.box,styles.red]}>
-  <Text style={[styles.whiteFont]}> {this.state.wrongAnswersCounts}</Text>
-    
- </View>
-
-  <View style={{flex:5}}>
-  <Text style={[styles.violetFont]}>unattended </Text>
-  </View>
-  <View style={[stylish.box]}>
-  <Text >{this.state.unattendedCounts}</Text>
-    
-  </View>
- </View>
- <View styles={[styles.line]}/>
-
+  {examList}
   {questionList}
   </ScrollView>
 
