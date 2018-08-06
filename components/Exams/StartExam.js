@@ -63,13 +63,10 @@ export default class StartExam extends Component {
       quest:'Please wait while question loading',
       optn: ["","","","",],
       examPage:'startQuiz',
-
     }
-
   }
   //for the timmer
   mixins: [TimerMixin];
-
 
   handleOnPress(value){
     console.log("the selected radio value:",value);
@@ -78,9 +75,7 @@ export default class StartExam extends Component {
 
   clearRadio(qpId,qId){
     this.setState({value:null})
-    if(this.state.qStatus=="ANSWERED"){
-      this.submitAnswer(qpId,qId);
-    }
+    this.submitAnswer(qpId,qId);
   }
 
   componentWillMount() {
@@ -88,51 +83,19 @@ export default class StartExam extends Component {
   }
 
   prevQuestion(qpId,qId){
-    this.setState({
-      buttonDisable:true,
-    })
+    this.setState({buttonDisable:true})
     if(this.state.qno >1){
-      this.setState({
-        examPage:'prev',
-      });
-          if(this.state.qStatus=="UNANSWERED"){
-              if(this.state.value==null){
-                this.getData(qpId);
-              }else{
-                this.submitAnswer(qpId,qId);
-              }
-          }else{
-            this.setState({
-              value:null,
-            });
-            this.getData(qpId);
-          }
-
+      this.setState({examPage:'prev'});
+      this.submitAnswer(qpId,qId);
     }
   }
 
   nextQuestion(qpId,qId){
-    this.setState({
-      buttonDisable:true,
-    })
-    if(this.state.qStatus=="UNANSWERED"){
-      if(this.state.value==null){
-        this.getData(qpId);
-      }else{
-          this.submitAnswer(qpId,qId);
-        }
-    }else{
-      this.setState({
-        value:null,
-      });
-      this.getData(qpId);
-    }
+    this.setState({buttonDisable:true})
     if(this.state.qno<totalQNo){
-      this.setState({
-        examPage:'next',
-      });
+      this.setState({examPage:'next'});
     }
-
+    this.submitAnswer(qpId,qId);
   }
 
   reviewQuestion(qpId,qNo){
@@ -143,10 +106,19 @@ export default class StartExam extends Component {
     });
     this.getData(qpId);
   }
+
+  goToReview(qpId,qId){
+    this.setState({
+      buttonDisable:true,
+      examPage:'gotoreview',
+    })
+
+    this.submitAnswer(qpId,qId);
+  }
+
   submitAnswer(qpId,qId){
 
     AsyncStorage.multiGet(['organizationId','userId']).then((data) => {
-
       console.log("chosenAnswer",''+this.state.value+'');
       console.log("markedForReview",this.state.checked);
       console.log("organizationId",data[0][1]);
@@ -155,7 +127,6 @@ export default class StartExam extends Component {
       console.log("remainingMinutes",this.state.rmMin);
       console.log("remainingSeconds",this.state.rmSec);
       console.log("userId",data[1][1]);
-
 
       fetch(this.state.HOME+this.state.SUBMIT_ANSWER, {
         method: 'post',
@@ -173,8 +144,6 @@ export default class StartExam extends Component {
           "remainingMinutes":this.state.rmMin,
           "remainingSeconds":this.state.rmSec,
           "userId":data[1][1],
-
-
         })
       })
       .then(response => response.json())
@@ -184,13 +153,16 @@ export default class StartExam extends Component {
           "qid":0,
           value:null,
           checked:false,
-
         })
-        this.getData(qpId);
-
+        if(this.state.examPage=='gotoreview'){
+        return this.props.navigation.navigate("ExamDetails");
+        }else{
+          this.getData(qpId);
+        }
       })
     });
   }
+
   getData(qpidFn){
     AsyncStorage.multiGet(['organizationId','userId']).then((data) => {
       let examApi=this.state.examPage;
@@ -204,8 +176,8 @@ export default class StartExam extends Component {
               }
             })
       .then(response=> response.json())
-      .then(resqpid=> {//exam status
-
+      .then(resqpid=> {
+        //exam status
         fetch(this.state.HOME+this.state.ANSWER_STATUS+'orgid='+data[0][1]+'&qpid='+resqpid.data.qpId+'&userId='+data[1][1]+'',{
           headers: {
                   'Accept': 'application/json, text/plain,',
@@ -217,7 +189,6 @@ export default class StartExam extends Component {
         .then(resobj=> {this.setState({progressData:resobj.data})});
         this.setState({qpid:resqpid.data.qpId});
       });
-
       //get exam count
       fetch(this.state.HOME+this.state.PROGRESS+data[1][1]+'/progress?orgId='+data[0][1],{
         headers: {
@@ -237,7 +208,6 @@ export default class StartExam extends Component {
         const {setParams} = this.props.navigation;
         setParams({qno: resobj.data.attendedQuestionsCount,tqno:resobj.data.totalQuestionsCount});
       });
-
       if(examApi=="startQuiz"){
           //first time question fetch
         API=this.state.HOME+this.state.START_EXAM+'startQuiz/'+data[1][1]+'?esid='+this.props.navigation.state.params.eid+'&orgid='+data[0][1];
@@ -289,13 +259,7 @@ export default class StartExam extends Component {
         }else{
           const regex = /(<([^>]+)>|&nbsp;)/ig;
           const optnresult = ''+responseobj.data.text.replace(regex, ' ')+'';
-          if(responseobj.data.questionStatus=="ANSWERED"){
-            this.setState({
-              value:responseobj.data.submittedAnswer,
-            })
-          }
-          console.log("questionId",responseobj.data.questionId);
-          console.log("submited ans:",responseobj.data.submittedAnswer);
+
           if(examApi=="startQuiz"){
             this.setState({
               rmMin:responseobj.data.remainingMinutes,
@@ -303,6 +267,7 @@ export default class StartExam extends Component {
             })
           }
           this.setState({
+            value:responseobj.data.submittedAnswer,
             buttonDisable:false,
             qid:responseobj.data.questionId,
             quest: optnresult,
@@ -314,15 +279,11 @@ export default class StartExam extends Component {
             qno:responseobj.data.currentIndex+1,
           })
         }
-
-
       });
-
-
       //ends session
     });
-
   }
+
   componentDidMount(){
     this.interval = setInterval(() => {
       if(this.state.rmSec==0){
@@ -349,7 +310,7 @@ export default class StartExam extends Component {
     //to save memory we've to clear interval
     this.interval && clearInterval(this.interval);
     this.interval = false;
-}
+  }
 
   static navigationOptions = ({ navigation  }) => {
     const {state} = navigation;
@@ -370,20 +331,16 @@ export default class StartExam extends Component {
 
     onClick(data){
       if(data==false){
-        this.setState({
-          checked:true,
-        })
+        this.setState({checked:true})
       }else{
-        this.setState({
-          checked:false,
-        })
+        this.setState({checked:false})
       }
     }
 
     render() {
       let img=require('../Assets/images/tick.png');
       let img_timmer=require('../Assets/images/timmer.png');
-      let test;
+
       objAns= this.state.optn.map((exam,index) =>{
         return(
           <View  key={index.toString()} style={[styles.answers]}>
@@ -393,6 +350,7 @@ export default class StartExam extends Component {
           </View>
         );
       });
+
       progressNum = this.state.progressData.map((exam,index) => {
         return(
           <View  key={index.toString()}  style={[styles.flexrow]}>
@@ -421,7 +379,6 @@ export default class StartExam extends Component {
       </View>
     )
   });
-
   //1 seconds
   const { navigate } = this.props.navigation;
   return (
@@ -454,7 +411,6 @@ export default class StartExam extends Component {
             />
           :
           <Text> </Text>
-
         }
           {objAns}
           <View style={[styles.flexrow]}>
@@ -465,41 +421,32 @@ export default class StartExam extends Component {
             leftText={"Mark For Review"}
             checkBoxColor="#4d90fe"
             />
-
-            {/* <TouchableOpacity style={[styles.buttonContainer, styles.brightBlue]} ><Text style={styles.buttonText} >Mark For Review</Text></TouchableOpacity>*/}
-            <TouchableOpacity style={[styles.buttonContainer, styles.brightBlue]} ><Text style={styles.buttonText} >Go to Review page</Text></TouchableOpacity>
+            <TouchableOpacity style={[styles.buttonContainer, styles.brightBlue]} onPress={() => this.goToReview(this.state.qpid,this.state.qid)} ><Text style={styles.buttonText} >Go to Review page</Text></TouchableOpacity>
           </View>
         </View>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex:1,marginTop: 10, marginBottom: 10}}>
           {progressNum}
         </ScrollView>
-
       </ScrollView>
       <View style={[styles.submitButton,styles.flexrow]}>
-
-        {
-          1 < this.state.qno ?
-            <TouchableOpacity disabled={this.state.buttonDisable} onPress={() =>  this.prevQuestion(this.state.qpid,this.state.qid)}  style={[styles.questionButton,styles.white]}><Text style={[styles.violetFont]}>Previous</Text></TouchableOpacity>
+      {
+        1 < this.state.qno ?
+          <TouchableOpacity disabled={this.state.buttonDisable} onPress={() =>  this.prevQuestion(this.state.qpid,this.state.qid)}  style={[styles.questionButton,styles.white]}><Text style={[styles.violetFont]}>Previous</Text></TouchableOpacity>
         :
-        <TouchableOpacity
-          // onPress={() => this.nextQuestion(this.state.qpid,this.state.qid)}
+          <TouchableOpacity
+          onPress={() => this.goToReview(this.state.qpid,this.state.qid)}
           style={[styles.questionButton,styles.white]}><Text style={[styles.violetFont]}>Review</Text></TouchableOpacity>
       }
-        <TouchableOpacity disabled={this.state.buttonDisable} onPress={() => this.clearRadio(this.state.qpid,this.state.qid)} style={[styles.questionButton]}  ><Text style={[styles.whiteFont]}>Clear</Text></TouchableOpacity>
-        {
-          this.state.qno < this.props.navigation.state.params.tqno ?
-                  <TouchableOpacity disabled={this.state.buttonDisable} onPress={() => this.nextQuestion(this.state.qpid,this.state.qid)} style={[styles.questionButton,styles.white]}><Text style={[styles.violetFont]}>Next</Text></TouchableOpacity>
-          :
-                  <TouchableOpacity
-                    // onPress={() => this.nextQuestion(this.state.qpid,this.state.qid)}
-                    style={[styles.questionButton,styles.white]}><Text style={[styles.violetFont]}>Review</Text></TouchableOpacity>
-
-        }
-
+          <TouchableOpacity disabled={this.state.buttonDisable} onPress={() => this.clearRadio(this.state.qpid,this.state.qid)} style={[styles.questionButton]}  ><Text style={[styles.whiteFont]}>Clear</Text></TouchableOpacity>
+      {
+        this.state.qno < this.props.navigation.state.params.tqno ?
+          <TouchableOpacity disabled={this.state.buttonDisable} onPress={() => this.nextQuestion(this.state.qpid,this.state.qid)} style={[styles.questionButton,styles.white]}><Text style={[styles.violetFont]}>Next</Text></TouchableOpacity>
+        :
+          <TouchableOpacity disabled={this.state.buttonDisable} onPress={() => this.goToReview(this.state.qpid,this.state.qid)}
+          style={[styles.questionButton,styles.white]}><Text style={[styles.violetFont]}>Review</Text></TouchableOpacity>
+      }
       </View>
     </View>
-
-
   );
 }
 }

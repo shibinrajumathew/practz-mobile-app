@@ -110,9 +110,7 @@ export default class Login extends Component {
             noBack(this.props,'Dash');
             });
             });
-
-
-
+            
         }else{
           Alert.alert("Wrong username or password");
           this.refs.Load.CloseLoad();
