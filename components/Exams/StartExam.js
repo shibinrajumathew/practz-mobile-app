@@ -6,6 +6,7 @@ import RadioButton from 'radio-button-react-native';
 import styles from '../Assets/Style';
 import TimerMixin from 'react-timer-mixin';
 import ImageOverlay from "react-native-image-overlay";
+import CheckBox from 'react-native-check-box';
 import {
   View,
   ScrollView,
@@ -36,7 +37,11 @@ export default class StartExam extends Component {
       ANSWER_STATUS:URL.ANSWER_STATUS,
       REVIEW:URL.REVIEW,
       SUBMIT_ANSWER:URL.SUBMIT_ANSWER,
+      buttonDisable:false,
       value: null,//large size for reset/clear selection
+      imageFilePath:null,
+      hint:null,
+      checked:false,
       rmMin:1,
       rmSec:1,
       minus:0,
@@ -50,6 +55,7 @@ export default class StartExam extends Component {
       progressData: [
         {
           "percentageCompleted": 0,
+          "questionIndex":0,
           "id":"",
           "questionPaperName": "",
         }
@@ -82,32 +88,37 @@ export default class StartExam extends Component {
   }
 
   prevQuestion(qpId,qId){
-    if(this.state.qStatus=="UNANSWERED"){
-        if(this.state.value==null){
-          this.getData(qpId);
-        }else{
-          console.log("qpid",qpId);
-          this.submitAnswer(qpId,qId);
-        }
-    }else{
-      this.setState({
-        value:null,
-      });
-      this.getData(qpId);
-    }
-    if(this.state.qno>1){
+    this.setState({
+      buttonDisable:true,
+    })
+    if(this.state.qno >1){
       this.setState({
         examPage:'prev',
       });
+          if(this.state.qStatus=="UNANSWERED"){
+              if(this.state.value==null){
+                this.getData(qpId);
+              }else{
+                this.submitAnswer(qpId,qId);
+              }
+          }else{
+            this.setState({
+              value:null,
+            });
+            this.getData(qpId);
+          }
+
     }
   }
 
   nextQuestion(qpId,qId){
+    this.setState({
+      buttonDisable:true,
+    })
     if(this.state.qStatus=="UNANSWERED"){
       if(this.state.value==null){
         this.getData(qpId);
       }else{
-          console.log("qpid",qpId);
           this.submitAnswer(qpId,qId);
         }
     }else{
@@ -120,8 +131,6 @@ export default class StartExam extends Component {
       this.setState({
         examPage:'next',
       });
-
-
     }
 
   }
@@ -139,7 +148,7 @@ export default class StartExam extends Component {
     AsyncStorage.multiGet(['organizationId','userId']).then((data) => {
 
       console.log("chosenAnswer",''+this.state.value+'');
-      console.log("markedForReview",false);
+      console.log("markedForReview",this.state.checked);
       console.log("organizationId",data[0][1]);
       console.log("questionId",qId);
       console.log("questionPaperId",qpId);
@@ -156,8 +165,8 @@ export default class StartExam extends Component {
           'Cache-Control': 'no-cache, no-store, reload'
         },
         body: JSON.stringify({
-          "chosenAnswer":''+this.state.value+'',
-          "markedForReview":false,
+          "chosenAnswer":this.state.value,
+          "markedForReview":this.state.checked,
           "organizationId":data[0][1],
           "questionId":qId,
           "questionPaperId":qpId,
@@ -174,6 +183,7 @@ export default class StartExam extends Component {
         this.setState({
           "qid":0,
           value:null,
+          checked:false,
 
         })
         this.getData(qpId);
@@ -229,6 +239,7 @@ export default class StartExam extends Component {
       });
 
       if(examApi=="startQuiz"){
+          //first time question fetch
         API=this.state.HOME+this.state.START_EXAM+'startQuiz/'+data[1][1]+'?esid='+this.props.navigation.state.params.eid+'&orgid='+data[0][1];
       }else if(examApi=="next"){
         API=this.state.HOME+this.state.START_EXAM+'next/question/'+data[1][1]+'?orgid='+data[0][1]+'&qpid='+qpidFn;
@@ -237,7 +248,7 @@ export default class StartExam extends Component {
       }else if(examApi=="review"){
         API=this.state.HOME+this.state.REVIEW+data[1][1]+'?idx='+this.state.qindex+'&orgid='+data[0][1]+'&qpid='+qpidFn;
       }
-      //first time question fetch
+
       fetch(API,{
         headers: {
                 'Accept': 'application/json, text/plain,',
@@ -276,8 +287,8 @@ export default class StartExam extends Component {
             qpid:'',
           });
         }else{
-          const regex = /(<([^>]+)>)/ig;
-          const optnresult = responseobj.data.text.replace(regex, '');
+          const regex = /(<([^>]+)>|&nbsp;)/ig;
+          const optnresult = ''+responseobj.data.text.replace(regex, ' ')+'';
           if(responseobj.data.questionStatus=="ANSWERED"){
             this.setState({
               value:responseobj.data.submittedAnswer,
@@ -285,15 +296,22 @@ export default class StartExam extends Component {
           }
           console.log("questionId",responseobj.data.questionId);
           console.log("submited ans:",responseobj.data.submittedAnswer);
+          if(examApi=="startQuiz"){
+            this.setState({
+              rmMin:responseobj.data.remainingMinutes,
+              rmSec:responseobj.data.remainingSeconds
+            })
+          }
           this.setState({
+            buttonDisable:false,
             qid:responseobj.data.questionId,
             quest: optnresult,
+            imageFilePath:responseobj.data.imageFilePath,
+            hint:responseobj.data.hint,
             qStatus:responseobj.data.questionStatus,
             optn:responseobj.data.options,
             minus:1,
             qno:responseobj.data.currentIndex+1,
-            rmMin:responseobj.data.remainingMinutes,
-            rmSec:responseobj.data.remainingSeconds
           })
         }
 
@@ -317,19 +335,21 @@ export default class StartExam extends Component {
           rmSec:this.state.rmSec-this.state.minus
         })
       }
-
       if(this.state.rmMin==0){
         this.setState({
           rmSec:0,
           rmMin:0,
         })
         //exit from exam
-
       }
-
-
     }, 1000);
   }
+
+  componentWillUnmount () {
+    //to save memory we've to clear interval
+    this.interval && clearInterval(this.interval);
+    this.interval = false;
+}
 
   static navigationOptions = ({ navigation  }) => {
     const {state} = navigation;
@@ -348,9 +368,22 @@ export default class StartExam extends Component {
       }
     };
 
+    onClick(data){
+      if(data==false){
+        this.setState({
+          checked:true,
+        })
+      }else{
+        this.setState({
+          checked:false,
+        })
+      }
+    }
+
     render() {
       let img=require('../Assets/images/tick.png');
       let img_timmer=require('../Assets/images/timmer.png');
+      let test;
       objAns= this.state.optn.map((exam,index) =>{
         return(
           <View  key={index.toString()} style={[styles.answers]}>
@@ -371,6 +404,7 @@ export default class StartExam extends Component {
               </TouchableOpacity>
             </View>
             : (exam.status=="MARKED_FOR_REVIEW"?
+
             <View  style={[styles.questionForReview]}>
               <TouchableOpacity onPress={() =>  this.reviewQuestion(this.state.qpid,exam.questionIndex)}  style={[styles.textInsideCircle]}>
                 <Text  style={[styles.lightFont,styles.whiteFont]} >{exam.questionIndex+1}</Text>
@@ -392,7 +426,7 @@ export default class StartExam extends Component {
   const { navigate } = this.props.navigation;
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView style={{ flex: 4 }}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 4}}>
         <View style={[styles.timmingBox,styles.flexrow,styles.lightBlue]}>
           <Image style={[styles.timmer]} source={img_timmer}/>
           <View style={{padding: 10}}>
@@ -405,21 +439,63 @@ export default class StartExam extends Component {
           <Text style={[styles.lightFont, styles.blackFont]} >{(this.state.quest).toString()}</Text>
         </View>
         <View style={[styles.examBox, styles.flexcol]}>
+          {
+            this.state.hint!=null?
+            <Text style={[styles.lightFont]}>hint(s):this.state.hint</Text>
+            :
+            <Text></Text>
+          }
+          {
+            this.state.imageFilePath!=null?
+            <Image
+              resizeMode="contain"
+              source={{uri: ''+this.state.imageFilePath+''}}
+              style={{flex:1, width: Dimensions.get('window').width-90, height: Dimensions.get('window').width-90}}
+            />
+          :
+          <Text> </Text>
+
+        }
           {objAns}
           <View style={[styles.flexrow]}>
-            <TouchableOpacity style={[styles.buttonContainer, styles.brightBlue]} ><Text style={styles.buttonText} >Mark For Review</Text></TouchableOpacity>
+            <CheckBox
+             style={[styles.buttonContainer]}
+            onClick={()=>this.onClick(this.state.checked)}
+            isChecked={this.state.checked}
+            leftText={"Mark For Review"}
+            checkBoxColor="#4d90fe"
+            />
+
+            {/* <TouchableOpacity style={[styles.buttonContainer, styles.brightBlue]} ><Text style={styles.buttonText} >Mark For Review</Text></TouchableOpacity>*/}
             <TouchableOpacity style={[styles.buttonContainer, styles.brightBlue]} ><Text style={styles.buttonText} >Go to Review page</Text></TouchableOpacity>
           </View>
         </View>
-        <ScrollView horizontal={true} style={{flex:1,marginTop: 10}}>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex:1,marginTop: 10, marginBottom: 10}}>
           {progressNum}
         </ScrollView>
 
       </ScrollView>
       <View style={[styles.submitButton,styles.flexrow]}>
-        <TouchableOpacity onPress={() =>  this.prevQuestion(this.state.qpid,this.state.qid)}  style={[styles.questionButton]}><Text style={[styles.whiteFont]}>Previous</Text></TouchableOpacity>
-        <TouchableOpacity style={[styles.questionButton]} onPress={() => this.clearRadio(this.state.qpid,this.state.qid)}><Text style={[styles.whiteFont]}>Clear</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => this.nextQuestion(this.state.qpid,this.state.qid)} style={[styles.questionButton,styles.white]}><Text style={[styles.violetFont]}>Next</Text></TouchableOpacity>
+
+        {
+          1 < this.state.qno ?
+            <TouchableOpacity disabled={this.state.buttonDisable} onPress={() =>  this.prevQuestion(this.state.qpid,this.state.qid)}  style={[styles.questionButton,styles.white]}><Text style={[styles.violetFont]}>Previous</Text></TouchableOpacity>
+        :
+        <TouchableOpacity
+          // onPress={() => this.nextQuestion(this.state.qpid,this.state.qid)}
+          style={[styles.questionButton,styles.white]}><Text style={[styles.violetFont]}>Review</Text></TouchableOpacity>
+      }
+        <TouchableOpacity disabled={this.state.buttonDisable} onPress={() => this.clearRadio(this.state.qpid,this.state.qid)} style={[styles.questionButton]}  ><Text style={[styles.whiteFont]}>Clear</Text></TouchableOpacity>
+        {
+          this.state.qno < this.props.navigation.state.params.tqno ?
+                  <TouchableOpacity disabled={this.state.buttonDisable} onPress={() => this.nextQuestion(this.state.qpid,this.state.qid)} style={[styles.questionButton,styles.white]}><Text style={[styles.violetFont]}>Next</Text></TouchableOpacity>
+          :
+                  <TouchableOpacity
+                    // onPress={() => this.nextQuestion(this.state.qpid,this.state.qid)}
+                    style={[styles.questionButton,styles.white]}><Text style={[styles.violetFont]}>Review</Text></TouchableOpacity>
+
+        }
+
       </View>
     </View>
 
