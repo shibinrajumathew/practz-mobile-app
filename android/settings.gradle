@@ -1,3 +1,4 @@
 rootProject.name = 'Practz'
 
+
 include ':app'

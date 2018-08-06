@@ -2,6 +2,8 @@
 *  Author: shibin
 */
 import React, { Component } from 'react';
+import {noBack} from './Functions';
+import URL from './Url';
 import {
   View,
   ScrollView,
@@ -23,6 +25,9 @@ export default class Login extends Component {
   constructor() {
     super();
     this.state = {
+      home:URL.HOME,
+      api_authentication:URL.AUTHENTICATION,
+      api_user:URL.USER,
       emailid: '',
       pass: '',
     }
@@ -41,10 +46,12 @@ export default class Login extends Component {
   };
 
 
-  checkUser() {
+  isAuthenticated() {
     console.log("onCheck user:");
+    //start gif load
     this.refs.Load.OpenLoad();
-    fetch('https://demoreg.practz.com/login', {
+    //authentication
+    fetch(this.state.home+'/login', {
       method: 'post',
       headers: {
         'Accept': 'application/json, text/plain,',
@@ -53,47 +60,64 @@ export default class Login extends Component {
       body: JSON.stringify({
         "username": this.state.emailid,
         "password": this.state.pass,
-        // "username" :"demo_reg_admin@practz.com",
-        // "password":"Demoadmin",
         "appId": "ILEARN",
-        "domainName": "demoreg.practz.com"
+        "domainName": "demo.practz.com"
+        })
       })
-    })
       .then(response => response.json())
-      .then(responseobj => {
-        this.refs.Load.CloseLoad();
-        this.setState({
-
-        });
-        if (responseobj["status"] != undefined) {
-          if (responseobj["error"] == "Unauthorized") {
-            console.log("wrong user");
-            Alert.alert("Wrong username or password");
-          } else {
-            console.log("another error");
-          }
-        } else if ((responseobj.data.principal.authorities[0].authority) == "ROLE_EF_CRT_ORG_ADMN") {
-
-          AsyncStorage.multiSet([["authority", "ROLE_EF_CRT_ORG_ADMN"]]);
-          console.log("done");
-          this.props.navigation.navigate('Dash');
-        }
-        else {
+      .then(response=> {
+        //close gif
+        //fetch orgnization details
+        if(response.success){
+          fetch(this.state.home+this.state.api_authentication)
+            .then(responseAu => responseAu.json())
+            .then(responseAu=> {
+              //fetch user details
+              fetch(this.state.home+this.state.api_user+response.data.principal.userId)
+                .then(responseUsr => responseUsr.json())
+                .then(responseUsr=> {
+                  console.log("Inside login:");
+                  console.log("userId:",response.data.principal.userId);
+                  console.log("organizationId:",response.data.principal.parentOrganizationId);
+                  console.log("parentOrganizationId:",response.data.principal.organizationId);
+                  console.log("organizationEmail:",responseAu.data.organizationEmail);
+                  console.log("organizationDisplayName,:",responseAu.data.organizationDisplayName);
+                  console.log("UserType:",responseUsr.data.type);
+                  console.log("liveTemplate",responseAu.data.liveTemplate);
+                  console.log("logourl",responseAu.data.logoUrl);
+                  console.log("appId",responseUsr.data.appId);
+                  console.log("authority:",response.data.accessRights);
+                  console.log("Inside login: end");
+                  //set session
+                  AsyncStorage.multiSet([
+                    ["userId",response.data.principal.userId],
+                    ["organizationId",response.data.principal.organizationId],
+                    ["parentOrganizationId",response.data.principal.parentOrganizationId],
+                    ["organizationEmail",responseAu.data.organizationEmail],
+                    ["organizationDisplayName",responseAu.data.organizationDisplayName],
+                    ["UserType",responseUsr.data.type],
+                    ["authority", response.data.accessRights],
+                    ["liveTemplate",responseAu.data.liveTemplate],
+                    ["logourl",responseAu.data.logoUrl],
+                    ["appId",responseUsr.data.appId],
+                    ["password",this.state.pass,],
+                    ["username",this.state.emailid],
+                    // ["signUpEnabled"],
+                    // ["homePageEnabled"],
+                    // ["telephone1",responseUsr.data.telephone1],
+              ]);
+              this.refs.Load.CloseLoad();
+            noBack(this.props,'Dash');
+            });
+            });
+            
+        }else{
           Alert.alert("Wrong username or password");
-          console.log("Something out of control");
-          console.log("you are logged in status:", responseobj.data.principal.authorities[0].authority);
-        }
-
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+          this.refs.Load.CloseLoad();
+          }
+      }).catch((error) => {console.error(error);});
   }
 
-  //redirect function for future need
-  //reDirect(){
-  //  //body to reDirect
-  //}
 
   componentDidMount() {
     //internet connection check
@@ -101,13 +125,10 @@ export default class Login extends Component {
       console.log('First, is ' + (isConnected ? 'online' : 'offline'));
       if (isConnected) {
         this.setState({ btn: false })
-      }
-      else {
+      }else {
         Alert.alert("Net info alert", "Please connnect to internet for further app use");
-
       }
     });
-
   }
 
   render() {
@@ -156,7 +177,7 @@ export default class Login extends Component {
             placeholder="Password"
           />
           <TouchableOpacity
-            onPress={() => this.checkUser()}
+            onPress={() => this.isAuthenticated()}
             title="Home" style={styles.buttonContainer}
           >
             <Text style={styles.buttonText}  >Let me in</Text>
@@ -187,7 +208,6 @@ const styles = StyleSheet.create({
     width: (Dimensions.get('window').width / 2),
     height: (Dimensions.get('window').height) / 6,
     resizeMode: 'contain',
-
   },
   logoContainer: {
     width: Dimensions.get('window').width,

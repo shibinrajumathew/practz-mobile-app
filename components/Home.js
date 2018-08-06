@@ -3,7 +3,6 @@
 import ProgressBarAnimated from 'react-native-progress-bar-animated';
 import React, { Component } from 'react';
 import styles from './Assets/Style';
-import { MessagePage } from './MessagePage';
 import { ProfilePage } from './ProfilePage';
 import { LandingPage } from './LandingPage';
 import { AttemptedPage } from './AttemptedPage';
@@ -25,7 +24,9 @@ import {
 
 
 class Home extends Component {
+
   render() {
+
     const { navigate } = this.props.navigation;
 
     return (
@@ -40,7 +41,7 @@ class Attempted extends React.Component {
   render() {
     return (
       <ScrollView style={[styles.container, styles.flexcol]} >
-        <AttemptedPage />
+        <AttemptedPage navigation={this.props.navigation} />
       </ScrollView>
     );
   }
@@ -50,16 +51,7 @@ class Notes extends React.Component {
   render() {
     return (
       <ScrollView style={[styles.container, styles.flexcol]} >
-        <NotesPage />
-      </ScrollView>
-    );
-  }
-}
-class Message extends Component {
-  render() {
-    return (
-      <ScrollView style={[styles.container, styles.flexcol]} >
-        <MessagePage />
+        <NotesPage navigation={this.props.navigation} />
       </ScrollView>
     );
   }
@@ -68,7 +60,7 @@ class Profile extends Component {
   render() {
     return (
       <ScrollView style={[styles.container, styles.flexcol]} >
-        <ProfilePage />
+        <ProfilePage navigation={this.props.navigation} />
       </ScrollView>
     );
   }
@@ -80,7 +72,6 @@ export default TabNavigator(
     Home: { screen: Home },
     Attempted: { screen: Attempted },
     Notes: { screen: Notes },
-    Message: { screen: Message },
     Profile: { screen: Profile },
   },
   {
@@ -94,8 +85,6 @@ export default TabNavigator(
           iconName = `ios-refresh-circle${focused ? '' : '-outline'}`;
         } else if (routeName === 'Notes') {
           iconName = `ios-clipboard${focused ? '' : '-outline'}`;
-        } else if (routeName === 'Message') {
-          iconName = `ios-mail-open${focused ? '' : '-outline'}`;
         } else if (routeName === 'Profile') {
           iconName = `ios-person${focused ? '' : '-outline'}`;
         }

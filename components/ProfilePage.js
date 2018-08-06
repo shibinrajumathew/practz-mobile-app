@@ -2,6 +2,7 @@
 import Icon from 'react-native-ionicons';
 import ProgressBarAnimated from 'react-native-progress-bar-animated';
 import React, { Component } from 'react';
+import {sessionDestroy,noBack} from './Functions';
 import styles from './Assets/Style';
 import {
   View,
@@ -20,6 +21,10 @@ export class ProfilePage extends Component {
       progressWithOnComplete: 0,
       progressCustomized: 0,
     }
+  }
+  userLogout(){
+    sessionDestroy();
+    noBack(this.props,'Login')
   }
   render() {
     const barWidth = (Dimensions.get('screen').width / 2) - 30;
@@ -61,21 +66,24 @@ export class ProfilePage extends Component {
           }
         }}>
         </View>
+        <TouchableOpacity style={[styles.profileSetting]} onPress={() =>
+          this.props.navigation.navigate('HistoricPattern')}>
+          <Text style={{ fontWeight: '500' }} >Historic Pattern</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.profileSetting]} onPress={() =>
+          this.props.navigation.navigate('MyOrders')}>
+          <Text style={{ fontWeight: '500' }} >My Orders</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.profileSetting]} onPress={() =>
+          this.props.navigation.navigate('AccountSetting')}>
+          <Text style={{ fontWeight: '500' }} >Account Settings</Text>
+        </TouchableOpacity>
         <View style={[styles.profileSetting]}>
-          <Text style={{ fontWeight: '500' }}>Historic Pattern</Text>
+          <Text style={{ fontWeight: '500' }}  >Change Password</Text>
         </View>
-        <View style={[styles.profileSetting]}>
-          <Text style={{ fontWeight: '500' }}>My Orders</Text>
-        </View>
-        <View style={[styles.profileSetting]}>
-          <Text style={{ fontWeight: '500' }}>Account Settings</Text>
-        </View>
-        <View style={[styles.profileSetting]}>
-          <Text style={{ fontWeight: '500' }}>Change Password</Text>
-        </View>
-        <View style={[styles.profileSetting]}>
+        <TouchableOpacity style={[styles.profileSetting]} onPress={() => this.userLogout()}>
           <Text style={{ fontWeight: '500' }}>Logout</Text>
-        </View>
+        </TouchableOpacity>
       </View>
 
     );

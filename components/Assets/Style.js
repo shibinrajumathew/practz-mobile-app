@@ -44,6 +44,11 @@ export default StyleSheet.create({
     width: (Dimensions.get('window').width) - 4,
 
   },
+  timmingBox:{
+    width: Dimensions.get('window').width,
+    padding: 10,
+
+  },
   examBox: {
     borderRadius: 5,
     borderBottomWidth: 0.8,
@@ -61,6 +66,16 @@ export default StyleSheet.create({
     backgroundColor: '#ffffff',
 
   },
+  questionButton:{
+    borderWidth: 1,
+    borderColor: 'white',
+    padding: 10,
+    width: Dimensions.get('screen').width/3.5,
+    alignItems: 'center',
+    borderRadius: 5,
+    marginRight: 10,
+    marginLeft: 10,
+  },
   questionBox:{
     padding: 10,
     width: (Dimensions.get('window').width) - 40,
@@ -76,10 +91,26 @@ export default StyleSheet.create({
     width: (Dimensions.get('window').width) - 40,
     flex: 1,
   },
+  attemptedBox: {
+    width: (Dimensions.get('window').width) - 10,
+    flex: 1,
+  },
   availableBox: {
     padding: 10,
     width: (Dimensions.get('window').width),
-    height: 35,
+  },
+  productLeftBox:{
+    borderBottomWidth: 1,
+    borderBottomColor: "#cfcfcf",
+    padding: 10,
+    marginLeft: 10,
+    flex:2,
+  },
+  productRightBox:{
+    flex:1,
+    borderBottomColor: "#cfcfcf",
+    padding: 10,
+    borderBottomWidth: 1,
   },
   sideBotton: {
     borderRadius: 8,
@@ -179,6 +210,22 @@ export default StyleSheet.create({
     marginLeft: 5,
     marginRight: 5,
   },
+  tickedNumber:{
+    alignItems: 'center',
+    top: 0,
+    justifyContent: 'center',
+    width: 16,
+    height: 16,
+    opacity: 1
+  },
+  timmer:{
+    alignItems: 'center',
+    top: 0,
+    justifyContent: 'center',
+    width: 50,
+    height: 50,
+    opacity: 1
+  },
   shadowContainer: {
     padding: 20,
     shadowColor: "#000000",
@@ -228,6 +275,23 @@ export default StyleSheet.create({
     padding: 20,
     backgroundColor: '#5E3F8C',
   },
+  totalWidth:{
+    width:Dimensions.get('screen').width-40,
+  },
+  buttonContainer: {
+    width:(Dimensions.get('screen').width/2)-20,
+    padding: 15,
+    marginRight: 10,
+    },
+  buttonContainerLogin: {
+      padding: 15,
+
+    },
+  buttonText: {
+    textAlign: 'center',
+    color: '#fff',
+    fontWeight: 'bold',
+  },
   //fonts
   topTitle: {
     fontFamily: 'Avenir, Heavy',
@@ -237,6 +301,7 @@ export default StyleSheet.create({
   lightFont: {
     fontFamily: 'Avenir, Light'
   },
+
   heavyFont: {
     fontFamily: 'Avenir, Heavy'
   },
@@ -249,16 +314,19 @@ export default StyleSheet.create({
   },
   percentage: {
     fontWeight: '500',
-    color: 'blue' 
-  }
+    color: 'blue'
+  },
   boldFont: {
     fontWeight: 'bold',
-  }
+  },
   whiteFont: {
     color: '#ffffff'
   },
   blackFont: {
     color: '#000'
+  },
+  blueFont:{
+    color:'#956FCE'
   },
   endFont: {
     fontWeight: 'bold',
@@ -276,13 +344,27 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
+  tickedNumberColor:{
+    color: "rgba(255, 255, 255, 0.82)"
+  },
+  whiteFont: {
+    color: '#ffffff'
+  },
+  blackFont: {
+    color: '#000'
+  },
+  violetFont:{
+    color: '#5E3F8C',
+  },
   // colors
   red: {
     backgroundColor: '#F97157',
   },
   blue: {
     backgroundColor: '#7AC0F4',
+  },
+  lightBlue:{
+    backgroundColor: '#00BCD4',
   },
   brightBlue: {
     backgroundColor: '#00BCD4',
@@ -292,6 +374,15 @@ export default StyleSheet.create({
   },
   orange: {
     backgroundColor: '#ed7f7d',
+  },
+  white:{
+    backgroundColor: "#ffffff",
+  },
+  grey:{
+    backgroundColor:'#F6F4F8'
+  },
+  lightgreen:{
+    backgroundColor:'#8BC34A'
   },
   //flex direction
   flexrow: {
@@ -316,8 +407,18 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: 'white',
     backgroundColor: '#b8b8b8'
-  }
-
-
+  },
+  //author hari
+  line:{
+    borderBottomColor: '#707070',
+    borderBottomWidth: 1,
+    opacity:.5,
+    marginTop:10
+},
+ margins:{
+   marginLeft:15,
+   marginTop:10,
+   marginRight:5
+ }
 
 });

@@ -11,55 +11,118 @@ import {
   Alert,
   Button,
   StyleSheet,
+  Platform,
   AsyncStorage,
 } from 'react-native';
+import URL from './Url';
 
 export class NotesPage extends Component {
+  constructor(){
+    super();
+    let noteList;
+    this.state={
+    HOME:URL.HOME,
+    AVAILABLE_EXAM:URL.AVAILABLE_EXAM,
+    AVAILABLE_NOTES:URL.AVAILABLE_NOTES,
+    status:'',
+    view:'',
+    checkFlag:0,
+    noteData: [
+      {
+          "title": "",
+          "content": "",
+          "createdby": "",
+          "createdDate": "",
+      }
+    ]
+  }
+  }
+
+  componentWillMount() {
+    AsyncStorage.multiGet(['userId','organizationId']).then((data) => {
+      console.log("note page api:",this.state.HOME+this.state.AVAILABLE_NOTES+'orgId='+data[1][1]+'&uId='+data[0][1]+'');
+    fetch(this.state.HOME+this.state.AVAILABLE_NOTES+'orgId='+data[1][1]+'&uId='+data[0][1]+'')
+    .then(response =>  response.json())
+    .then(responseobj => {
+    //   if(responseobj==401){
+    //     this.setState({
+    //       noteList: [
+    //         {
+    //             "title": "",
+    //             "content": "",
+    //             "createdby": "",
+    //             "createdDate": "",
+    //         }
+    //       ]
+    //   });
+    //     logout();
+    //     this.props.navigation.navigate('Loign');
+    //   }else{
+    if((responseobj.data).length<1)
+      {
+        this.setState({
+          checkFlag:1,
+          view:'',
+          status:'No Notes available now. Please check later.',
+          noteData: [
+            {
+                "title": "",
+                "content": "",
+                "createdby": "",
+                "createdDate": "",
+
+            }
+          ]
+              });
+            }else{
+        this.setState({
+          status:'Latest Notes',
+          checkFlag:2,
+          view:'View All',
+          noteData:responseobj.data,
+        });
+      }
+
+    });
+
+
+});
+}
+
   render() {
-    return (<ScrollView style={[styles.container, styles.flexcol]} >
+    const scalesPageToFit = Platform.OS === 'android';
+    {
+    this.state.checkFlag==1||this.state.checkFlag==0
+    ? noteList = this.state.noteData.map((note, index)=>{
+     return(<View key={index.toString()} ></View>);
+   })
+    : noteList = this.state.noteData.map((note, index)=>{
+     return(
+       <View key={index.toString()} >
+         <TouchableOpacity  style={[styles.announcementBox, styles.flexrow]}
+           onPress={() => this.props.navigation.navigate('NoteDetails',{nid:note.id})}>
+         <View style={[styles.flexcol, styles.innerTextBox]} >
+           <Text style={[styles.topTitle]}>{note.title}</Text>
+           <Text style={[styles.lightFont,styles.attemptedBox]} >Posted by <Text style={[styles.indicator]}>{note.createdBy} </Text></Text>
+           <View style={[styles.flexrow,styles.attemptedBox]}>
+             <Text style={[styles.lightFont]} >Posted on <Text style={[styles.endFont]}>{note.createdDate}</Text></Text>
+           </View>
+         </View>
+         <View style={[styles.sideBotton, styles.brightBlue]} >
+           <Text style={{ fontFamily: 'Avenir, Book', color: '#ffffff' }} >Science & Tech </Text>
+         </View>
+       </TouchableOpacity>
+       </View>
+     );
+   });
+ }
+    return (
+      <ScrollView style={[styles.container, styles.flexcol]} >
       <View style={[styles.flexrow, styles.availableBox]}>
-        <Text style={{ fontWeight: 'bold', color: '#000', flex: 3 }}>Latest Notes</Text>
-        <Text style={{ color: '#676262', flex: 1, }}>View all</Text>
+        <Text style={{ fontWeight: 'bold', color: '#000', flex: 3 }}>{this.state.status}</Text>
+        <Text style={{ color: '#676262', flex: 1, }}>{this.state.view}</Text>
       </View>
-      <View style={[styles.announcementBox, styles.flexrow]}>
-        <View style={[styles.flexcol, styles.innerTextBox]} >
-          <Text style={[styles.topTitle]}>Ca 22</Text>
-          <Text style={[styles.lightFont]}>Staff Board Exam</Text>
-          <Text style={{ fontFamily: 'Avenir, Light' }} >No of Questions <Text style={{ color: '#956FCE', fontWeight: '600' }}>10 </Text>Time Allocated <Text style={{ color: '#956FCE', fontWeight: '600' }}>10</Text></Text>
-          <View style={{ flexDirection: 'row' }}>
-            <Text style={[styles.endFont]}>Ends on 13 Jun 11:59 pm</Text>
-          </View>
-        </View>
-        <View style={[styles.sideBotton, styles.brightBlue]} >
-          <Text style={{ fontFamily: 'Avenir, Book', color: '#ffffff' }} >Science & Tech </Text>
-        </View>
-      </View>
-      <View style={[styles.announcementBox, styles.flexrow]}>
-        <View style={[styles.flexcol, styles.innerTextBox]} >
-          <Text style={[styles.topTitle]}>Ca 22</Text>
-          <Text style={[styles.lightFont]}>text</Text>
-          <Text style={{ fontFamily: 'Avenir, Light' }} >No of Questions <Text style={{ color: '#956FCE', fontWeight: '600' }}>10 </Text>Time Allocated <Text style={{ color: '#956FCE', fontWeight: '600' }}>10</Text></Text>
-          <View style={{ flexDirection: 'row' }}>
-            <Text style={[styles.endFont]}>Ends on 13 Jun 11:59 pm</Text>
-          </View>
-        </View>
-        <View style={[styles.sideBotton, styles.green]} >
-          <Text style={{ fontFamily: 'Avenir, Book', color: '#ffffff' }} >Science & Tech </Text>
-        </View>
-      </View>
-      <View style={[styles.announcementBox, styles.flexrow]}>
-        <View style={[styles.flexcol, styles.innerTextBox]} >
-          <Text style={[styles.topTitle]}>Ca 22</Text>
-          <Text style={[styles.lightFont]} >Staff Board Exam</Text>
-          <Text style={{ fontFamily: 'Avenir, Light' }} >No of Questions <Text style={{ color: '#956FCE', fontWeight: '600' }}>10 </Text>Time Allocated <Text style={{ color: '#956FCE', fontWeight: '600' }}>10</Text></Text>
-          <View style={{ flexDirection: 'row' }}>
-            <Text style={[styles.endFont]}>Ends on 13 Jun 11:59 pm</Text>
-          </View>
-        </View>
-        <View style={[styles.sideBotton, styles.green]} >
-          <Text style={{ fontFamily: 'Avenir, Book', color: '#ffffff' }} >Science & Tech </Text>
-        </View>
-      </View>
+      {noteList}
     </ScrollView>
 
     );

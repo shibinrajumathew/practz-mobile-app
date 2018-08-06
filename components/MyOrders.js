@@ -38,7 +38,7 @@ export default class MyOrders extends Component<Props> {
             <View style={[styles.container]}>
                 <View style={{flex: 1}} >
       <Text style={{marginLeft: 15,fontSize:12,fontWeight:'400',color:'#413333'}}>Order No  {order.orderNo}</Text>
-                 </View> 
+                 </View>
 
 
                 <View style={{flex: 1 }} >
@@ -53,7 +53,7 @@ export default class MyOrders extends Component<Props> {
                       <Text style={{fontSize:15,marginLeft:15,fontWeight:'bold',color:'#413333'}}>{order.orderName}</Text>
                       <Text style={{fontSize:15,fontSize:15,marginLeft:15,color:'#000000'}}>{order.examType}</Text>
                   </View>
-                                
+
                       <View style={{flex: 1}} >
                          <Text style={{fontSize:20,marginTop:10,color:'#00BCD4'}}>  {'\u20B9'}
                            {order.amount} </Text>
@@ -61,10 +61,10 @@ export default class MyOrders extends Component<Props> {
                        </View>
                </View>
 
-                       
-                            
-                           <Text style={{marginLeft:15,marginTop:5}}> 
-                           Order Status 
+
+
+                           <Text style={{marginLeft:15,marginTop:5}}>
+                           Order Status
                            <Text style={{color:'#413333'}}>  {order.orderStatus} </Text>
                            </Text>
 
@@ -76,7 +76,7 @@ return (
   <ScrollView style={{backgroundColor:'#FFFFFF'}}>
 
   {orderList}
-   
+
   </ScrollView>
 
 );
@@ -90,26 +90,26 @@ return (
 
 
 const styles = StyleSheet.create({
-  myview: { 
+  myview: {
     borderWidth: .5,
     borderColor: '#7C7676',
-    
+
     marginTop: 15,
     marginBottom:15,
     marginLeft:10,
     marginRight:10
   },
-  
+
   container: {
     flex: 1,
     flexDirection: 'row',
     marginTop:10
   },
   line:{
-       
+
        fontWeight:'100',
         borderBottomWidth: 0.5,
-        fontWeight:'thin',
+        fontWeight:'bold',
         marginTop:20
   }
 
