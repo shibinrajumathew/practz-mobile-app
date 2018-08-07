@@ -17,6 +17,7 @@ const barWidth = Dimensions.get('screen').width - 30;
 export default class NoteDetails extends Component {
   constructor(props) {
        super(props)
+       classthis=this;
        this.state = {
         HOME:URL.HOME,
         ATTEMPTED_EXAM_DETAILS:URL.ATTEMPTED_EXAM_DETAILS,
@@ -26,19 +27,19 @@ export default class NoteDetails extends Component {
         unattendedCounts: 0,
         timeTakens: "",
         totalMarkss: 0,
-        examNames: "",
-        durations:0, 
+        examNames: "test",
+        durations:0,
         percentages:0,
         totalQuestionss: 0,
         totalExamMarkss:0,
-      questionss:[
-        {
-          "questionIndexs": 0,
-          "submittedAnswer": "",
-          "correctAnswer": "",
-          "questionText":""
-        } 
-      ]  
+        questionss:[
+         {
+           "questionIndexs": 0,
+           "submittedAnswer": "",
+           "correctAnswer": "",
+           "questionText":""
+         }
+      ]
        }
       }
       componentWillMount() {
@@ -47,44 +48,53 @@ export default class NoteDetails extends Component {
           classthis.setState({
             userId:user,
           });
-         //console.log("response data",this.state.HOME+this.state.ATTEMPTED_EXAM_DETAILS+this.props.navigation.state.params.eid);
+        // console.log("response data",this.state.HOME+this.state.ATTEMPTED_EXAM_DETAILS+this.props.navigation.state.params.eid+'?GwTemplateId=exam');
       fetch(this.state.HOME+this.state.ATTEMPTED_EXAM_DETAILS+this.props.navigation.state.params.eid+'?GwTemplateId=exam')
       .then((response) => response.json())
-      .then((responseJson) => {    
-        console.log("response from url",responseJson);            
+      .then((responseJson) => {
+        console.log("response from url",responseJson);
        //const regex = /(<([^>]+)>)/ig;
-       // const result = responseJson.data.questions.replace(regex, ''); 
-        
-        
+       // const result = responseJson.data.questions.replace(regex, '');
+       const {setParams} = this.props.navigation;
+       setParams({examNames: responseJson.data.examName});
           this.setState({
-            
+
         correctAnswersCounts: responseJson.data.correctAnswersCount,
         partialAnswersCounts:  responseJson.data.partialAnswersCount,
         wrongAnswersCounts:  responseJson.data. wrongAnswersCount,
         unattendedCounts: responseJson.data.unattendedCount,
         timeTakens:  responseJson.data.timeTaken,
-        totalMarkss:  responseJson.data.totalMarks, 
-        durations:responseJson.data.duration, 
-        examNames: responseJson.data.examName, 
-        percentages:responseJson.data.percentage,   
+        totalMarkss:  responseJson.data.totalMarks,
+        durations:responseJson.data.duration,
+        examNames: responseJson.data.examName,
+
+        percentages:responseJson.data.percentage,
         totalQuestionss:responseJson.data.totalQuestions,
         totalExamMarkss:responseJson.data.totalExamMarks,
         questionss:responseJson.data.questions
         //console.log("response image",responseJson.data.images[0].url  );
         //console.log("response data",this.state.HOME+this.state.NOTE_DETAILS+data[0][1]+'/detailed');
-   
-    
+
+
       });
-      
+
   });
 });
 
       }
+      static navigationOptions = ({ navigation  }) => {
+        const {state} = navigation;
+        return {title: state.params.examNames,
+        headerTitleStyle:{
+          color:'#5e3f8c',
+          textAlign: 'center',
+        },
+      };}
   render() {
-   
+
        var questionList = this.state.questionss.map(function(question){
         const regex = /(<([^>]+)>)/ig;
-        const result = question.questionText.replace(regex, ''); 
+        const result = question.questionText.replace(regex, '');
         return (<View key={(question, index) => index.toString()} >
 
  <View style={[styles.announcementBox]}>
@@ -92,67 +102,50 @@ export default class NoteDetails extends Component {
          <View style={{flex:1}}>
             <Text style={[styles.boldFont]}>{question.questionIndex}</Text>
           </View>
-          
+
          <View style={{flex:9}}>
-          <Text style={{color:'#413333',lineHeight:20}}>
-              {result}
-          </Text>
+          <Text style={{color:'#413333',lineHeight:20}}>  {result}  </Text>
           <View style={[styles.flexrow]}>
-  <View style={{flex:4}}> 
-  <Text style={{color:'#000000'}}>
-  ChosenAnswer</Text>
-  </View>
-  <View style={{flex:3}}>
-  <Text style={{color:'#000000',fontWeight:'bold'}}>
-   {question.submittedAnswer}</Text>
-  </View>
-  <View style={{flex:3,marginRight:15}}>
-  <Text style={{color:'#956FCE'}}>
-  explanation </Text>
-  </View>
-  </View> 
+               <View style={{flex:4}}>
+                    <Text style={{color:'#000000'}}>ChosenAnswer</Text>
+               </View>
+            <View style={{flex:3}}>
+               <Text style={{color:'#000000',fontWeight:'bold'}}> {question.submittedAnswer}</Text>
+           </View>
+           <View style={{flex:3,marginRight:15}}>
+              <Text style={{color:'#956FCE'}}>explanation </Text>
+           </View>
+    </View>
 
-  <View style={[styles.flexrow]}>
-  <View style={{flex:2}}> 
-  <Text style={{color:'#000000'}}>
-  Correct Answer</Text>
+   <View style={[styles.flexrow]}>
+         <View style={{flex:2}}>
+            <Text style={{color:'#000000'}}>Correct Answer</Text>
+         </View>
+         <View style={{flex:3}}>
+             <Text style={{color:'#000000',fontWeight:'bold'}}>{question.correctAnswer}</Text>
+         </View>
+   </View>
   </View>
-  <View style={{flex:3}}>
-  <Text style={{color:'#000000',fontWeight:'bold'}}>{question.correctAnswer}
-  </Text>
+</View>
   </View>
-  </View>
-  </View>
-        </View>
-  </View>
-
        </View>);
 })
 
 return (
 
   <ScrollView style={{backgroundColor:'#FFFFFF'}}>
-   
- 
- 
   <View style={[styles.announcementbox,styles.grey]}>
    <View style={[styles.flexrow]}>
-   <View style={{ flex:1}} >
-     <Text style={[styles.heavyFont,styles.boldFont,styles.blackFont,styles.margins]}>{this.state.examNames}</Text>
-   </View> 
-        <View style={[styles.sideBotton, styles.brightBlue,styles.margins]} >
-          <Text style={[styles.bookFont,styles.whiteFont]}>Science and Tech</Text>
-       
-        </View>
- </View>
-          
-
+              <View style={{ flex:1}} >
+                     <Text style={[styles.heavyFont,styles.boldFont,styles.blackFont,styles.margins]}>{this.state.examNames}</Text>
+              </View>
+                    <View style={[styles.sideBotton, styles.brightBlue,styles.margins]} >
+                      <Text style={[styles.bookFont,styles.whiteFont]}>Science and Tech</Text>
+                    </View>
+     </View>
            <Text style={[styles.margins,styles.lightFont,stylish.mymargin]}> Staff Board Exam</Text>
-
-
               <View style={[styles.line]}/>
-
-             <View style={[styles.flexrow]}>
+              <View style={[styles.flexrow]}>
                  <View style={{flex:6}}>
                      <Text style={[stylish.font]}>Total Questions</Text>
                      <Text style={[stylish.font]}>Time Taken</Text>
@@ -164,22 +157,22 @@ return (
            backgroundColorOnComplete="#6CC644"
            backgroundColor="#956FCE"
          /></View>
-                      </View> 
+                      </View>
                      <View style={{flex:3}}>
-                        <Text style={[stylish.fontcolor]}>  
+                        <Text style={[stylish.fontcolor]}>
                           {this.state.totalQuestionss} </Text>
                       <Text style={[stylish.fontcolor]}>
                           {this.state.timeTakens} </Text>
-                          <Text style={[stylish.fontcolor]}>  
+                          <Text style={[stylish.fontcolor]}>
                          {this.state.totalMarkss}/{this.state.totalExamMarkss} </Text>
                       </View>
-                      
+
 
                       <View style={[stylish.allotedview]}>
-                      <Text style ={{color:'#FFFFFF',fontSize:10,alignSelf:'center'}}> 
+                      <Text style ={{color:'#FFFFFF',fontSize:10,alignSelf:'center'}}>
                                        Alloted: {this.state.durations}
                                </Text>
-                      
+
                       </View>
               </View>
         </View>
@@ -189,7 +182,7 @@ return (
         </View>
         <View style={[stylish.box,styles.lightgreen]}>
         <Text style={[styles.whiteFont]}> {this.state.correctAnswersCounts}</Text>
-       
+
  </View>
 
  <View style={{flex:3}}>
@@ -197,7 +190,7 @@ return (
    </View>
   <View style={[stylish.box,styles.red]}>
   <Text style={[styles.whiteFont]}> {this.state.wrongAnswersCounts}</Text>
-    
+
  </View>
 
   <View style={{flex:5}}>
@@ -205,7 +198,7 @@ return (
   </View>
   <View style={[stylish.box]}>
   <Text >{this.state.unattendedCounts}</Text>
-    
+
   </View>
  </View>
  <View styles={[styles.line]}/>
@@ -223,14 +216,14 @@ const stylish = StyleSheet.create({
   },font:{
     fontSize:15,
     marginTop:5,
-    marginLeft:15, 
+    marginLeft:15,
     color: '#000'
   },
   fontcolor:{
     fontSize:15,
     marginTop:5,
     color:'#956FCE',
-    
+
   },
   allotedview:{
     flex:4,
@@ -244,7 +237,7 @@ const stylish = StyleSheet.create({
     marginLeft:30
   },
   box:{
-    
+
      borderWidth: .5,
     borderColor: '#707070',
     borderRadius:3,
