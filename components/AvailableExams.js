@@ -31,20 +31,22 @@ export default class AvailableExams extends Component<Props> {
   componentWillMount() {
     AsyncStorage.multiGet(['Id']).then((data) => {
       let user = data[0][1];
-      classthis.setState({
-        userId:user,
-      });
       fetch('https://demo.practz.com/practz/ilearn/v1/questions/active-exams/?GwTemplateId=exam&userId=5901479f14f5ea0001865aa2')
       .then((response) => response.json())
-      .then((responseJson) => { 
+      .then((responseJson) => {
         this.setState({
           availableExamList:responseJson.data
         });
       });
     });
   }
-         
-      
+  static navigationOptions = {
+    title: "All Available Exams",
+    headerTitleStyle:{
+      color:'#5e3f8c',
+      textAlign: 'center',
+    },
+};
   render() {
      var examList = this.state.availableExamList.map(function(exam){
       return (<View key={(question, index) => index.toString()} >
@@ -57,8 +59,8 @@ export default class AvailableExams extends Component<Props> {
               </View>
       </View>
       <Text style={[stylish.myview]}>Staff Board Exam </Text>
-    
-     
+
+
      <Text style={[stylish.myview]}>No of Question
       <Text style={[styles.count]}> {exam.totalExamMarks}  </Text>
             <Text style={[stylish.myview]}>        Time Allocated
@@ -66,7 +68,7 @@ export default class AvailableExams extends Component<Props> {
 </Text>
 </Text>
   <Text style={[stylish.container]}>End on {exam.expiryDate}</Text>
-   
+
           </View>
           </View>);
            })
@@ -88,14 +90,14 @@ const stylish = StyleSheet.create({
     marginTop:4,
     color:'black'
   },
-  
+
   container: {
     color:'#000000',
     marginLeft:15,
     fontSize:7,
     marginTop:7
     ,marginBottom:10
-    
+
   }
 
     });
