@@ -24,7 +24,7 @@ const URL=
 // author hari
 
 NOTE_DETAILS:'/practz/ilearn/v1/notes/',
-ATTEMPTED_EXAM_DETAILS:'/ilearn/v1/questions/examSummary/secure/5b34d251068a3c0001962a4c?GwTemplateId=exam',
+ATTEMPTED_EXAM_DETAILS:'/practz/ilearn/v1/questions/examSummary/secure/',
 AVAILABLE_EXAMS:'/practz/ilearn/v1/questions/active-exams/?GwTemplateId=exam&userId=5901479f14f5ea0001865aa2'
 
 
