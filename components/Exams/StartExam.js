@@ -301,7 +301,8 @@ export default class StartExam extends Component {
           rmSec:0,
           rmMin:0,
         })
-        //exit from exam
+        //exit from exam on timeout
+        this.props.navigation.navigate("AttemptedExamDetails");
       }
     }, 1000);
   }
