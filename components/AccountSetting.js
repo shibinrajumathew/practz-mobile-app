@@ -96,7 +96,6 @@ componentWillMount() {
                 districts:responseJson.data.addresses[0].district,
                 states:responseJson.data.addresses[0].state,
                 countrys:responseJson.data.addresses[0].country,
-
             });
         });
     });
@@ -114,105 +113,100 @@ static navigationOptions = ({ navigation  }) => {
     return(
       <ScrollView style={[styles.white]}>
           <Text style={[styles.margins,styles.brownFont,{fontSize:20}]}>Personal Details</Text>
-<View style={[styles.pink,{marginTop:10}]}>
-          <View style={[styles.flexrow,styles.margins]}>
-                <View elevation={2} style={styles.profileView}>
-                    <Image source={require('./Assets/users_images/1.jpg')} style={[styles.profileDP]} />
+          <View style={[styles.pink,{marginTop:10}]}>
+               <View style={[styles.flexrow,styles.margins]}>
+                        <View elevation={2} style={styles.profileView}>
+                             <Image source={require('./Assets/users_images/1.jpg')} style={[styles.profileDP]} />
+                      </View>
+                      <View style={{flex:3}}>
+                            <TextInput
+                              style={styles.blackFont, stylish.mymargin }
+                              value={this.state.names}
+                                onChangeText={(text) => this.setState({ names: text })}/>
+                          <Text style={[,styles.margins]}></Text>
+                          <Text style={[styles.blackFont, stylish.mymargin]}>{this.state.usernames}</Text>
+                          <Text style={[,styles.margins,styles.line]}></Text>
+                      </View>
                 </View>
-                <View style={{flex:3}}>
-                  <TextInput
-                    style={styles.blackFont, stylish.mymargin }
-                    value={this.state.names}
-                      onChangeText={(text) => this.setState({ names: text })}/>
-                  <Text style={[,styles.margins]}></Text>
-                  <Text style={[styles.blackFont, stylish.mymargin]}>{this.state.usernames}</Text>
-                  <Text style={[,styles.margins,styles.line]}></Text>
-                </View>
+                           <DatePicker
+                                 style={{width: 400,marginTop:10}}
+                                 date={this.state.dobs}
+                                 mode="date"
+                                 format="DD-MM-YYYY"
+                                 minDate="01-01-1975"
+                                 maxDate="01-01-2015"
+                                 confirmBtnText="Confirm"
+                                 cancelBtnText="Cancel"
+                                 customStyles={{
+                                   dateIcon: {
+                                     position: 'absolute',
+                                     right: 2,
+                                     top: 4,
+
+                                   },
+                                   dateInput: {
+                                     borderWidth: 0,
+                                   alignItems: "flex-start",
+                                   justifyContent: "flex-start",
+                                   marginLeft:15,
+                                   marginTop:40
+
+                                   }
+                                 }}
+                                 onDateChange={(date) => {this.setState({dobs: date})}}
+                               />
+                               <Text style={[,styles.margins,styles.line]}></Text>
+                               <Text style={[,styles.margins]}></Text>
+                               <View style={[styles.flexrow,styles.margins, {marginTop:15,marginBottom:10}]}>
+                                     <RadioButton currentValue={this.state.gender} value="male" onPress={this.handleOnPress.bind(this)}>
+                                        <Text>male</Text>
+                                     </RadioButton>
+                                     <RadioButton currentValue={this.state.gender} value="female" onPress={this.handleOnPress.bind(this)}>
+                                         <Text>female</Text>
+                                      </RadioButton>
+                                </View>
           </View>
-          <DatePicker
-            style={{width: 400,marginTop:10}}
-            date={this.state.dobs}
-            mode="date"
-            format="DD-MM-YYYY"
-            minDate="01-01-1975"
-            maxDate="01-01-2015"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            customStyles={{
-              dateIcon: {
-                position: 'absolute',
-                right: 2,
-                top: 4,
-
-              },
-              dateInput: {
-                borderWidth: 0,
-              alignItems: "flex-start",
-              justifyContent: "flex-start",
-              marginLeft:15,
-              marginTop:40
-
-              }
-            }}
-            onDateChange={(date) => {this.setState({dobs: date})}}
-          />
-          <Text style={[,styles.margins,styles.line]}></Text>
-              <Text style={[,styles.margins]}></Text>
-    <View style={[styles.flexrow,styles.margins, {marginTop:15,marginBottom:10}]}>
-    <RadioButton currentValue={this.state.gender} value="male" onPress={this.handleOnPress.bind(this)}>
-                    <Text>male</Text>
-                     </RadioButton>
-
-                     <RadioButton currentValue={this.state.gender} value="female" onPress={this.handleOnPress.bind(this)}>
-                     <Text>female</Text>
-                     </RadioButton>
-
-
-    </View>
-</View>
-  <Text style={[styles.brownFont,styles.margins,{fontSize:20}]}>Contact Info</Text>
-  <View style={[styles.pink,{marginTop:10}]}>
-         <TextInput
-           style={styles.blackFont, stylish.mymargin }
-           value={this.state.telephones1}
-             onChangeText={(text) => this.setState({ telephones1: text })}/>
-       <Text style={[,styles.margins]}></Text>
-       <TextInput
-         style={styles.blackFont, stylish.mymargin }
-         value={this.state.addressLines1}
-           onChangeText={(text) => this.setState({ addressLines1: text })}/>
-       <Text style={[,styles.margins]}></Text>
-       <TextInput
-         style={styles.blackFont, stylish.mymargin }
-         value={this.state.addressLines2}
-           onChangeText={(text) => this.setState({ addressLines2: text })}/>
-       <Text style={[,styles.margins]}></Text>
-       <TextInput
-         style={styles.blackFont, stylish.mymargin }
-         value={this.state.postCodes}
-           onChangeText={(text) => this.setState({ postCodes: text })}/>
-       <Text style={[,styles.margins]}></Text>
-       <TextInput
-         style={styles.blackFont, stylish.mymargin }
-         value={this.state.districts}
-           onChangeText={(text) => this.setState({ districts: text })}/>
-       <Text style={[,styles.margins]}></Text>
-
-       <TextInput
-         style={styles.blackFont, stylish.mymargin }
-         value={this.state.states}
-           onChangeText={(text) => this.setState({ states: text })}/>
-       <Text style={[,styles.margins]}></Text>
-       <TextInput
-         style={styles.blackFont, stylish.mymargin }
-         value={this.state.countrys}
-           onChangeText={(text) => this.setState({ countrys: text })}/>
-       <Text style={[,styles.margins]}></Text>
-    </View>
-    <TouchableOpacity style={[styles.violet,styles.submitButton,{marginBottom:20,marginRight:20}]} onPress={() => this.update()}>
-      <Text style={{ fontWeight: '500' ,fontSize:20,  alignSelf: 'center',color:'white'}}>update</Text>
-    </TouchableOpacity>
-
+           <Text style={[styles.brownFont,styles.margins,{fontSize:20}]}>Contact Info</Text>
+            <View style={[styles.pink,{marginTop:10}]}>
+                  <TextInput
+                        style={styles.blackFont, stylish.mymargin }
+                        value={this.state.telephones1}
+                         onChangeText={(text) => this.setState({ telephones1: text })}/>
+                  <Text style={[,styles.margins]}></Text>
+                  <TextInput
+                        style={styles.blackFont, stylish.mymargin }
+                        value={this.state.addressLines1}
+                        onChangeText={(text) => this.setState({ addressLines1: text })}/>
+                  <Text style={[,styles.margins]}></Text>
+                  <TextInput
+                        style={styles.blackFont, stylish.mymargin }
+                        value={this.state.addressLines2}
+                        onChangeText={(text) => this.setState({ addressLines2: text })}/>
+                  <Text style={[,styles.margins]}></Text>
+                  <TextInput
+                       style={styles.blackFont, stylish.mymargin }
+                       value={this.state.postCodes}
+                       onChangeText={(text) => this.setState({ postCodes: text })}/>
+                  <Text style={[,styles.margins]}></Text>
+                  <TextInput
+                       style={styles.blackFont, stylish.mymargin }
+                       value={this.state.districts}
+                       onChangeText={(text) => this.setState({ districts: text })}/>
+                  <Text style={[,styles.margins]}></Text>
+                  <TextInput
+                       style={styles.blackFont, stylish.mymargin }
+                       value={this.state.states}
+                       onChangeText={(text) => this.setState({ states: text })}/>
+                  <Text style={[,styles.margins]}></Text>
+                  <TextInput
+                       style={styles.blackFont, stylish.mymargin }
+                       value={this.state.countrys}
+                       onChangeText={(text) => this.setState({ countrys: text })}/>
+                  <Text style={[,styles.margins]}></Text>
+            </View>
+            <TouchableOpacity style={[styles.violet,styles.submitButton,{marginBottom:20,marginRight:20}]} onPress={() => this.update()}>
+                 <Text style={{ fontWeight: '500' ,fontSize:20,  alignSelf: 'center',color:'white'}}>update</Text>
+            </TouchableOpacity>
       </ScrollView>
     );
   }

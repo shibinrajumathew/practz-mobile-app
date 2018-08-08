@@ -62,7 +62,7 @@ export default class AvailableExams extends Component<Props> {
               <View style={[styles.sideBotton, styles.brightBlue]} >
                  <Text style={[styles.bookFont,styles.whiteFont]} >Science & Tech </Text>
               </View>
-           </View>
+          </View>
               <Text style={[stylish.myview]}>Staff Board Exam </Text>
               <Text style={[stylish.myview]}>No of Question <Text style={[styles.count]}> {exam.totalExamMarks}  </Text><Text style={[stylish.myview]}>        Time Allocated<Text style={[styles.count]}>  {exam.duration} </Text></Text></Text>
               <Text style={[stylish.container]}>End on {exam.expiryDate}</Text>
