@@ -328,6 +328,9 @@ export default StyleSheet.create({
   blueFont:{
     color:'#956FCE'
   },
+  brownFont:{
+    color:'#868686'
+  },
   endFont: {
     fontWeight: 'bold',
     color: '#956FCE'
@@ -357,6 +360,9 @@ export default StyleSheet.create({
     color: '#5E3F8C',
   },
   // colors
+  violet:{
+    backgroundColor: '#5E3F8C'
+  },
   red: {
     backgroundColor: '#F97157',
   },
@@ -380,6 +386,10 @@ export default StyleSheet.create({
   },
   grey:{
     backgroundColor:'#F6F4F8'
+  },
+  pink:{
+    backgroundColor:'#FBF7FD',
+    opacity:.75
   },
   lightgreen:{
     backgroundColor:'#8BC34A'
