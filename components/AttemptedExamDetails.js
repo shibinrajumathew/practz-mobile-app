@@ -48,11 +48,11 @@ export default class NoteDetails extends Component {
           classthis.setState({
             userId:user,
           });
-        // console.log("response data",this.state.HOME+this.state.ATTEMPTED_EXAM_DETAILS+this.props.navigation.state.params.eid+'?GwTemplateId=exam');
+         //console.log("response data",this.state.HOME+this.state.ATTEMPTED_EXAM_DETAILS+this.props.navigation.state.params.eid+'?GwTemplateId=exam');
       fetch(this.state.HOME+this.state.ATTEMPTED_EXAM_DETAILS+this.props.navigation.state.params.eid+'?GwTemplateId=exam')
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log("response from url",responseJson);
+        //console.log("response from url",responseJson);
        //const regex = /(<([^>]+)>)/ig;
        // const result = responseJson.data.questions.replace(regex, '');
        const {setParams} = this.props.navigation;
@@ -210,7 +210,7 @@ return (
 }
 }
 
-const stylish = StyleSheet.create({
+ const stylish = StyleSheet.create({
   mymargin:{
     marginTop:2
   },font:{

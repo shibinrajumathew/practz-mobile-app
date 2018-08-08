@@ -29,9 +29,13 @@ export default class AvailableExams extends Component<Props> {
     }
   }
   componentWillMount() {
-    AsyncStorage.multiGet(['Id']).then((data) => {
+    AsyncStorage.multiGet(['userId']).then((data) => {
       let user = data[0][1];
-      fetch('https://demo.practz.com/practz/ilearn/v1/questions/active-exams/?GwTemplateId=exam&userId=5901479f14f5ea0001865aa2')
+      classthis.setState({
+        userId:user,
+      });//demo.practz.com/practz/ilearn/v1/questions/active-exams/?GwTemplateId=exam&userId=5901479f14f5ea0001865aa2
+      console.log("response data",this.state.HOME+this.state.AVAILABLE_EXAMS+data[0][1]);
+      fetch(this.state.HOME+this.state.AVAILABLE_EXAMS+data[0][1])
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({
@@ -49,7 +53,7 @@ export default class AvailableExams extends Component<Props> {
 };
   render() {
      var examList = this.state.availableExamList.map(function(exam){
-      return (<View key={(question, index) => index.toString()} >
+      return (<View key={(exam, index) => index.toString()} >
        <View style={[styles.announcementBox]}>
    <View style={[styles.flexrow]}>
         <View style={{flex: 2}} >
@@ -76,7 +80,7 @@ export default class AvailableExams extends Component<Props> {
     return (
 
       <ScrollView style={{backgroundColor:'#FFFFFF',}}>
-      <Text style={{fontSize:15,color:'#000000',marginLeft:50}}>Available Exams</Text>
+      <Text style={{fontSize:15,color:'#000000',marginLeft:50,marginTop:15,marginBottom:10}}>Available Exams</Text>
       {examList}
       </ScrollView>
     );
