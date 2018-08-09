@@ -26,9 +26,9 @@ const URL=
 
 NOTE_DETAILS:'/practz/ilearn/v1/notes/',
 ATTEMPTED_EXAM_DETAILS:'/practz/ilearn/v1/questions/examSummary/secure/',
-AVAILABLE_EXAMS:'/practz/ilearn/v1/questions/active-exams/?GwTemplateId=exam&userId=5901479f14f5ea0001865aa2'
-
-
+AVAILABLE_EXAMS:'/practz/ilearn/v1/questions/active-exams/?GwTemplateId=exam&userId=',
+ACCOUNT_SETTINGS:'/practz/v1/users/',
+UPDATE:'/practz/ilearn/v2/users/my-account/update'
 
 };
 export default URL
