@@ -13,6 +13,7 @@ import HistoricPattern from './components/HistoricPattern';
 import MyOrders from './components/MyOrders';
 import AvailableExams from './components/AvailableExams';
 import InvoicePage from './components/InvoicePage';
+import ChangePassword from './components/ChangePassword';
 import ExamDetails from './components/Exams/ExamDetails';
 import StartExam from './components/Exams/StartExam';
 import Review from './components/Exams/Review';
@@ -27,6 +28,7 @@ export const Practz = createStackNavigator({
   AccountSetting:{ screen: AccountSetting},
   HistoricPattern:{ screen: HistoricPattern},
   MyOrders:{ screen: MyOrders},
+  ChangePassword:{ screen: ChangePassword},
   StartExam:{ screen: StartExam},
   Review:{
     screen: Review,

@@ -78,9 +78,9 @@ export class ProfilePage extends Component {
           this.props.navigation.navigate('AccountSetting')}>
           <Text style={{ fontWeight: '500' }} >Account Settings</Text>
         </TouchableOpacity>
-        <View style={[styles.profileSetting]}>
-          <Text style={{ fontWeight: '500' }}  >Change Password</Text>
-        </View>
+        <TouchableOpacity style={[styles.profileSetting]}>
+          <Text style={{ fontWeight: '500' }}  onPress={() => this.props.navigation.navigate('ChangePassword')}>Change Password</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={[styles.profileSetting]} onPress={() => this.userLogout()}>
           <Text style={{ fontWeight: '500' }}>Logout</Text>
         </TouchableOpacity>
