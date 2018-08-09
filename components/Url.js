@@ -19,6 +19,7 @@ const URL=
   PRODUCT:'/practz/ilearn/v1/b2c/products/series/available?',
   ADDTOCART:'/practz/mozea/v1/orders/additem/user/',
   SUBMIT_ANSWER:'/practz/ilearn/v1/questions/submitAnswer',
+  REVIEW_EXAM:'/practz/ilearn/v1/questions/reviewExam/',
 
 
 // author hari

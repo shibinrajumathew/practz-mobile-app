@@ -8,7 +8,7 @@ import { LandingPage } from './LandingPage';
 import { AttemptedPage } from './AttemptedPage';
 import { NotesPage } from './NotesPage';
 import Icon from 'react-native-ionicons';
-import { StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
+import { createMaterialTopTabNavigator, createBottomTabNavigator } from 'react-navigation';
 import {
   View,
   ScrollView,
@@ -67,7 +67,8 @@ class Profile extends Component {
 }
 
 
-export default TabNavigator(
+
+export default createMaterialTopTabNavigator(
   {
     Home: { screen: Home },
     Attempted: { screen: Attempted },
@@ -91,16 +92,34 @@ export default TabNavigator(
         return <Icon name={iconName} size={25} color={tintColor} />;
       },
     }),
-    tabBarComponent: TabBarBottom,
+    initialRouteName: 'Home',
     tabBarPosition: 'bottom',
-    tabBarOptions: {
-      activeTintColor: '#c9d9da',
-      inactiveTintColor: 'white',
-      style: {
-        backgroundColor: '#5e3f8c',
-      },
-    },
-    animationEnabled: true,
     swipeEnabled: true,
+    animationEnabled: true,
+    tabBarOptions: {
+      showIcon: true ,
+      activeTintColor: '#ffffff',
+      inactiveTintColor: '#dff6f6',
+      upperCaseLabel:false,
+      allowFontScaling:false,
+      tabStyle: {
+        height: 50,
+      },
+      style: {
+        backgroundColor:'#5E3F8C',
+        height: 50,
+      },
+      labelStyle:{
+        margin:0,
+        fontSize:10,
+      },
+      indicatorStyle:{
+        backgroundColor:'#2196F3',
+        top:0,
+        height:3,
+
+
+      }
+     }
   }
 );

@@ -37,7 +37,7 @@ export default class StartExam extends Component {
       ANSWER_STATUS:URL.ANSWER_STATUS,
       REVIEW:URL.REVIEW,
       SUBMIT_ANSWER:URL.SUBMIT_ANSWER,
-      buttonDisable:false,
+      buttonDisable:true,
       value: null,//large size for reset/clear selection
       imageFilePath:null,
       hint:null,
@@ -155,7 +155,7 @@ export default class StartExam extends Component {
           checked:false,
         })
         if(this.state.examPage=='gotoreview'){
-        return this.props.navigation.navigate("ExamDetails");
+        return this.props.navigation.navigate("Review",{qpid:qpId,eid:this.props.navigation.state.params.eid});
         }else{
           this.getData(qpId);
         }
@@ -167,7 +167,7 @@ export default class StartExam extends Component {
     AsyncStorage.multiGet(['organizationId','userId']).then((data) => {
       let examApi=this.state.examPage;
 
-      //get qpid
+      //get qpid [only for first load, need session thus written here]
       fetch(this.state.HOME+this.state.EXAM_DETAILS+'esid='+this.props.navigation.state.params.eid,{
         headers: {
                 'Accept': 'application/json, text/plain,',
@@ -302,7 +302,7 @@ export default class StartExam extends Component {
           rmMin:0,
         })
         //exit from exam on timeout
-        this.props.navigation.navigate("AttemptedExamDetails");
+        this.props.navigation.navigate("Review",{qpid:this.state.qpid,eid:this.props.navigation.state.params.eid});
       }
     }, 1000);
   }
@@ -422,7 +422,7 @@ export default class StartExam extends Component {
             leftText={"Mark For Review"}
             checkBoxColor="#4d90fe"
             />
-            <TouchableOpacity style={[styles.buttonContainer, styles.brightBlue]} onPress={() => this.goToReview(this.state.qpid,this.state.qid)} ><Text style={styles.buttonText} >Go to Review page</Text></TouchableOpacity>
+            <TouchableOpacity disabled={this.state.buttonDisable} style={[styles.buttonContainer, styles.brightBlue]} onPress={() => this.goToReview(this.state.qpid,this.state.qid)} ><Text style={styles.buttonText} >Go to Review page</Text></TouchableOpacity>
           </View>
         </View>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex:1,marginTop: 10, marginBottom: 10}}>
@@ -434,7 +434,7 @@ export default class StartExam extends Component {
         1 < this.state.qno ?
           <TouchableOpacity disabled={this.state.buttonDisable} onPress={() =>  this.prevQuestion(this.state.qpid,this.state.qid)}  style={[styles.questionButton,styles.white]}><Text style={[styles.violetFont]}>Previous</Text></TouchableOpacity>
         :
-          <TouchableOpacity
+          <TouchableOpacity disabled={this.state.buttonDisable}
           onPress={() => this.goToReview(this.state.qpid,this.state.qid)}
           style={[styles.questionButton,styles.white]}><Text style={[styles.violetFont]}>Review</Text></TouchableOpacity>
       }

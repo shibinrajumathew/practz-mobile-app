@@ -4,7 +4,7 @@ import Icon from 'react-native-ionicons';
 import {
   Platform,StyleSheet,Text,View,Image,Button,KeyboardAvoidingView,Dimensions
 } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import Splash from './components/Splash';
 import Login from './components/Login';
 import Dash from './components/Home';
@@ -15,11 +15,12 @@ import AvailableExams from './components/AvailableExams';
 import InvoicePage from './components/InvoicePage';
 import ExamDetails from './components/Exams/ExamDetails';
 import StartExam from './components/Exams/StartExam';
+import Review from './components/Exams/Review';
 
 //author hari import starts here
 import NoteDetails from './components/NoteDetails';
 import AttemptedExamDetails from './components/AttemptedExamDetails';
-export const Practz = StackNavigator({
+export const Practz = createStackNavigator({
 //author shibin navigation starts here
   Home: { screen: Splash },
   Login:{ screen: Login},
@@ -27,6 +28,17 @@ export const Practz = StackNavigator({
   HistoricPattern:{ screen: HistoricPattern},
   MyOrders:{ screen: MyOrders},
   StartExam:{ screen: StartExam},
+  Review:{
+    screen: Review,
+    navigationOptions: {
+      title: 'Review Exam',
+      headerTitleStyle:{
+        color:'#5e3f8c',
+        textAlign: 'center',
+        flex:1,
+      },
+    },
+  },
   ExamDetails:{ screen: ExamDetails},
   AvailableExams:{ screen: AvailableExams},
   Dash:{ screen: Dash,

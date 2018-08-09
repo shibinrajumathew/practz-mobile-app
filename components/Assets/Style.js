@@ -348,10 +348,10 @@ export default StyleSheet.create({
     color: "rgba(255, 255, 255, 0.82)"
   },
   whiteFont: {
-    color: '#ffffff'
+    color: '#ffffff',
   },
   blackFont: {
-    color: '#000'
+    color: '#000',
   },
   violetFont:{
     color: '#5E3F8C',
