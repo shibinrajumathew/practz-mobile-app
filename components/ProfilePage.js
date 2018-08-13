@@ -52,7 +52,7 @@ export class ProfilePage extends Component {
               size={100}
               letterSize={28}
               letter={(this.state.name).charAt(0).toUpperCase()}
-              shapeColor={"#FFC107"}
+              shapeColor={"#FF9800"}
               />
             <Text style={[styles.lightTitle]}>{(this.state.name).charAt(0)}</Text>
 
