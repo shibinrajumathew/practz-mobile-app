@@ -108,11 +108,14 @@ export class LandingPage extends Component {
             view:'View all',
             availableExamList:responseobj.data,
           });
+
         }
       });
 
 
     });
+
+
     //for progressing exams
 
     console.log("inside progressing exam");
@@ -173,6 +176,7 @@ export class LandingPage extends Component {
       })
       //buy product ends
     });
+
   }
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
@@ -228,7 +232,9 @@ export class LandingPage extends Component {
       examList = this.state.availableExamList.map((exam, index) => {
         return(
           <View key={index.toString()} >
-            <TouchableOpacity style={[styles.announcementBox, styles.flexrow]}
+          {
+            (this.state.checkFlagProgress==1||this.state.checkFlagProgress==0)
+            ?<TouchableOpacity style={[styles.announcementBox, styles.flexrow]}
               onPress={() => this.props.navigation.navigate('ExamDetails',{eid:exam.id,eprod:exam.examProductName,qname:exam.attributes.questionPaperName})} >
               <View style={[styles.flexcol, styles.innerTextBox]} >
                 <Text style={[styles.topTitle]}>{exam.attributes.questionPaperName}</Text>
@@ -241,6 +247,21 @@ export class LandingPage extends Component {
                 <Text style={[styles.bookFont,styles.whiteFont]} >Science & Tech </Text>
               </View>
             </TouchableOpacity>
+            :
+            <TouchableOpacity style={[styles.announcementBox, styles.flexrow]} disabled={true} >
+              <View style={[styles.flexcol, styles.innerTextBox]} >
+                <Text style={[styles.topTitle]}>{exam.attributes.questionPaperName}</Text>
+                <Text style={[styles.lightFont]} >{exam.examProductName}</Text>
+                <View style={[styles.flexrow]}>
+                  <Text style={[styles.totalWidth]}>Ends on {exam.expiryDate}</Text>
+                </View>
+              </View>
+              <View style={[styles.sideBotton, styles.brightBlue]} >
+                <Text style={[styles.bookFont,styles.whiteFont]} >Science & Tech </Text>
+              </View>
+            </TouchableOpacity>
+          }
+
           </View>
         );
       });
@@ -301,7 +322,7 @@ export class LandingPage extends Component {
       <View style={[styles.flexrow, styles.availableBox]}>
         <Text style={{ fontWeight: 'bold', color: '#000', flex: 3 }}>{this.state.status}</Text>
         <TouchableOpacity
-          onPress={() => this.props.navigation.navigate('AvailableExams')}><Text  style={{ color: '#676262', flex: 1, }}>{this.state.view}</Text></TouchableOpacity>
+          onPress={() => this.props.navigation.navigate('AvailableExams',{checkFlag:this.state.checkFlagProgress})}><Text  style={{ color: '#676262', flex: 1, }}>{this.state.view}</Text></TouchableOpacity>
       </View>
       {examList}
     </ScrollView>
