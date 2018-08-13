@@ -80,14 +80,7 @@ export default class StartExam extends Component {
   }
 
   componentWillMount() {
-    if(this.props.navigation.state.params.examPage=="fromReview"){
-          this.state = {
-            examPage:'fromReview',
-          }
-      this.getData(this.props.navigation.state.params.qpid);
-    }else{
       this.getData();
-    }
   }
 
   prevQuestion(qpId,qId){
@@ -156,14 +149,19 @@ export default class StartExam extends Component {
       })
       .then(response => response.json())
       .then(responseSubmit=> {
-        console.log("resp from submitButton:",responseSubmit);
         this.setState({
           "qid":0,
           value:null,
           checked:false,
         })
         if(this.state.examPage=='gotoreview'){
-        return this.props.navigation.navigate("ReviewPage",{qpid:qpId,eid:this.props.navigation.state.params.eid,rmMin:this.state.rmMin,rmSec:this.state.rmSec});
+        return(
+          this.props.navigation.state.params.getData(),
+          console.log("props:",this.props),
+          console.log("props state",this.props.navigation.state.params),
+          this.props.navigation.navigate("ReviewPage",{qpid:qpId,eid:this.props.navigation.state.params.eid,rmMin:this.state.rmMin,rmSec:this.state.rmSec})
+
+      )
         }else{
           this.getData(qpId);
         }
@@ -216,17 +214,20 @@ export default class StartExam extends Component {
         const {setParams} = this.props.navigation;
         setParams({qno: resobj.data.attendedQuestionsCount,tqno:resobj.data.totalQuestionsCount});
       });
-      if(examApi=="startQuiz"){
-          //first time question fetch
-        API=this.state.HOME+this.state.START_EXAM+'startQuiz/'+data[1][1]+'?esid='+this.props.navigation.state.params.eid+'&orgid='+data[0][1];
-      }else if(examApi=="next"){
-        API=this.state.HOME+this.state.START_EXAM+'next/question/'+data[1][1]+'?orgid='+data[0][1]+'&qpid='+qpidFn;
-      }else if(examApi=="prev"){
-        API=this.state.HOME+this.state.START_EXAM+'previous/question/'+data[1][1]+'?orgid='+data[0][1]+'&qpid='+qpidFn;
-      }else if(examApi=="review"){
-        API=this.state.HOME+this.state.REVIEW+data[1][1]+'?idx='+this.state.qindex+'&orgid='+data[0][1]+'&qpid='+qpidFn;
-      }else if(examApi=="fromReview"){
-        API=this.state.HOME+this.state.REVIEW+data[1][1]+'?idx='+this.props.navigation.state.params.qindex+'&orgid='+data[0][1]+'&qpid='+qpidFn;
+      if(this.props.navigation.state.params.examPage=="fromReview"){
+        API=this.state.HOME+this.state.REVIEW+data[1][1]+'?idx='+this.props.navigation.state.params.qindex+'&orgid='+data[0][1]+'&qpid='+this.props.navigation.state.params.qpid;
+        this.props.navigation.state.params.examPage=null;
+      }else {
+        if(examApi=="startQuiz"){
+            //first time question fetch
+          API=this.state.HOME+this.state.START_EXAM+'startQuiz/'+data[1][1]+'?esid='+this.props.navigation.state.params.eid+'&orgid='+data[0][1];
+        }else if(examApi=="next"){
+          API=this.state.HOME+this.state.START_EXAM+'next/question/'+data[1][1]+'?orgid='+data[0][1]+'&qpid='+qpidFn;
+        }else if(examApi=="prev"){
+          API=this.state.HOME+this.state.START_EXAM+'previous/question/'+data[1][1]+'?orgid='+data[0][1]+'&qpid='+qpidFn;
+        }else if(examApi=="review"){
+          API=this.state.HOME+this.state.REVIEW+data[1][1]+'?idx='+this.state.qindex+'&orgid='+data[0][1]+'&qpid='+qpidFn;
+        }
       }
 
       fetch(API,{
@@ -321,6 +322,7 @@ export default class StartExam extends Component {
     //to save memory we've to clear interval
     this.interval && clearInterval(this.interval);
     this.interval = false;
+
   }
 
   static navigationOptions = ({ navigation  }) => {

@@ -16,7 +16,8 @@ import InvoicePage from './components/InvoicePage';
 import ChangePassword from './components/ChangePassword';
 import ExamDetails from './components/Exams/ExamDetails';
 import StartExam from './components/Exams/StartExam';
-import Review from './components/Exams/Review';
+import SecondExam from './components/Exams/SecondExam';
+import ReviewPage from './components/Exams/ReviewPage';
 
 //author hari import starts here
 import NoteDetails from './components/NoteDetails';
@@ -30,9 +31,11 @@ export const Practz = createStackNavigator({
   MyOrders:{ screen: MyOrders},
   ChangePassword:{ screen: ChangePassword},
   StartExam:{ screen: StartExam},
-  Review:{
-    screen: Review,
+  SecondExam:{ screen: SecondExam},
+  ReviewPage:{
+    screen: ReviewPage,
     navigationOptions: {
+      headerLeft:null,
       title: 'Review Exam',
       headerTitleStyle:{
         color:'#5e3f8c',

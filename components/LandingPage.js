@@ -172,8 +172,6 @@ export class LandingPage extends Component {
         }
       })
       //buy product ends
-
-
     });
   }
   componentDidMount() {
@@ -291,7 +289,6 @@ export class LandingPage extends Component {
           <View >
             <Image style={{ marginTop: 10 }} source={require('./Assets/images/announcements.png')}
               />
-
         </View>
         <View style={[styles.flexcol, styles.innerTextBox]} >
           <Text style={[styles.heavyFont,styles.boldFont,styles.blackFont]}>Take a free test</Text>

@@ -44,7 +44,6 @@ export default class ExamDetails extends Component {
 
   }
   componentWillMount() {
-    console.log("inside landing will mount");
     fetch(this.state.HOME+this.state.EXAM_DETAILS+'esid='+this.props.navigation.state.params.eid+'')
     .then(response =>  response.json())
     .then(responseobj => {
@@ -79,7 +78,6 @@ export default class ExamDetails extends Component {
         negMarkPercentage:responseobj.data.negMarkPercentage,
       });
     }
-    console.log("available exam count",responseobj);
     });
 
 
