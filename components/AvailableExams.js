@@ -5,6 +5,7 @@ import {
   Text,
   View,
   AsyncStorage,
+  TouchableOpacity,
   ScrollView
 } from 'react-native';
 import URL from './Url';
@@ -15,6 +16,9 @@ export default class AvailableExams extends Component<Props> {
     this.state = {
       HOME:URL.HOME,
       AVAILABLE_EXAMS:URL.AVAILABLE_EXAMS,
+      eid:"",
+      eprod:"",
+      qname:"",
       availableExamList:[
       {
         "questionPaperName": "",
@@ -33,7 +37,7 @@ export default class AvailableExams extends Component<Props> {
       let user = data[0][1];
       classthis.setState({
         userId:user,
-      });//demo.practz.com/practz/ilearn/v1/questions/active-exams/?GwTemplateId=exam&userId=5901479f14f5ea0001865aa2
+      });
       console.log("response data",this.state.HOME+this.state.AVAILABLE_EXAMS+data[0][1]);
       fetch(this.state.HOME+this.state.AVAILABLE_EXAMS+data[0][1])
       .then((response) => response.json())
@@ -52,9 +56,10 @@ export default class AvailableExams extends Component<Props> {
     },
   };
   render() {
-    var examList = this.state.availableExamList.map(function(exam){
+    var examList = this.state.availableExamList.map((exam)=>{
       return (<View key={(exam, index) => index.toString()} >
-        <View style={[styles.announcementBox]}>
+        <TouchableOpacity style={[styles.announcementBox]}
+          onPress={() => this.props.navigation.navigate('ExamDetails',{eid:exam.id,eprod:exam.examProductName,qname:exam.attributes.questionPaperName})} >
           <View style={[styles.flexrow]}>
             <View style={{flex: 2}} >
               <Text style={[styles.title,styles.margins]}>{exam.attributes.questionPaperName}</Text>
@@ -66,7 +71,7 @@ export default class AvailableExams extends Component<Props> {
           <Text style={[stylish.myview]}>Staff Board Exam </Text>
           <Text style={[stylish.myview]}>No of Question <Text style={[styles.count]}> {exam.totalExamMarks}  </Text><Text style={[stylish.myview]}>        Time Allocated<Text style={[styles.count]}>  {exam.duration} </Text></Text></Text>
           <Text style={[stylish.container]}>End on {exam.expiryDate}</Text>
-        </View>
+        </TouchableOpacity>
       </View>);
     })
     return (

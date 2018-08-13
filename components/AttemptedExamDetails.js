@@ -14,7 +14,7 @@ import Icon from 'react-native-ionicons';
 import ProgressBarAnimated from 'react-native-progress-bar-animated';
 import styles from './Assets/Style';
 const barWidth = Dimensions.get('screen').width - 30;
-export default class NoteDetails extends Component {
+export default class AttemptedExamDetails extends Component {
   constructor(props) {
     super(props)
       classthis=this;
@@ -98,15 +98,13 @@ export default class NoteDetails extends Component {
             <View style={{flex:9}}>
               <Text style={{color:'#413333',lineHeight:20}}>  {result}  </Text>
                  <View style={[styles.flexrow]}>
-                    <View style={{flex:4}}>
+                    <View style={{flex:2}}>
                       <Text style={{color:'#000000'}}>ChosenAnswer</Text>
                     </View>
                     <View style={{flex:3}}>
-                       <Text style={{color:'#000000',fontWeight:'bold'}}> {question.submittedAnswer}</Text>
+                       <Text style={{color:'#000000',fontWeight:'bold'}}>{question.submittedAnswer}</Text>
                     </View>
-                    <View style={{flex:3,marginRight:15}}>
-                        <Text style={{color:'#956FCE'}}>explanation </Text>
-                   </View>
+
                </View>
               <View style={[styles.flexrow]}>
                 <View style={{flex:2}}>
@@ -132,7 +130,7 @@ return (
           <Text style={[styles.bookFont,styles.whiteFont]}>Science and Tech</Text>
         </View>
       </View>
-      <Text style={[styles.margins,styles.lightFont,stylish.mymargin]}> Staff Board Exam</Text>
+      <Text style={[styles.margins,styles.lightFont,stylish.mymargin]}>Staff Board Exam</Text>
       <View style={[styles.line]}/>
         <View style={[styles.flexrow]}>
           <View style={{flex:6}}>

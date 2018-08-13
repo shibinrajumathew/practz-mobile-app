@@ -166,39 +166,39 @@ export default class AccountSetting extends Component {
         <Text style={[styles.brownFont,styles.margins,{fontSize:20}]}>Contact Info</Text>
           <View style={[styles.pink,{marginTop:10}]}>
             <TextInput
-              style={styles.blackFont, stylish.mymargin }
+              style={styles.blackFont, stylish.mymargin}
               value={this.state.telephones1}
-              onChangeText={(text) => this.setState({ telephones1: text })}/>
+              onChangeText={(text) =>this.setState({ telephones1: text })}/>
             <Text style={[,styles.margins]}></Text>
             <TextInput
               style={styles.blackFont, stylish.mymargin }
               value={this.state.addressLines1}
-              onChangeText={(text) => this.setState({ addressLines1: text })}/>
+              onChangeText={(text) =>this.setState({ addressLines1: text })}/>
             <Text style={[,styles.margins]}></Text>
             <TextInput
               style={styles.blackFont, stylish.mymargin }
               value={this.state.addressLines2}
-              onChangeText={(text) => this.setState({ addressLines2: text })}/>
+              onChangeText={(text) =>this.setState({ addressLines2: text })}/>
             <Text style={[,styles.margins]}></Text>
             <TextInput
               style={styles.blackFont, stylish.mymargin }
               value={this.state.postCodes}
-              onChangeText={(text) => this.setState({ postCodes: text })}/>
+              onChangeText={(text) =>this.setState({ postCodes: text })}/>
             <Text style={[,styles.margins]}></Text>
             <TextInput
               style={styles.blackFont, stylish.mymargin }
               value={this.state.districts}
-              onChangeText={(text) => this.setState({ districts: text })}/>
+              onChangeText={(text) =>this.setState({ districts: text })}/>
             <Text style={[,styles.margins]}></Text>
             <TextInput
-              style={styles.blackFont, stylish.mymargin }
+              style={styles.blackFont, stylish.mymargin}
               value={this.state.states}
-              onChangeText={(text) => this.setState({ states: text })}/>
+              onChangeText={(text) =>this.setState({ states: text })}/>
             <Text style={[,styles.margins]}></Text>
             <TextInput
               style={styles.blackFont, stylish.mymargin }
               value={this.state.countrys}
-              onChangeText={(text) => this.setState({ countrys: text })}/>
+              onChangeText={(text) =>this.setState({ countrys: text })}/>
             <Text style={[,styles.margins]}></Text>
             </View>
             <TouchableOpacity style={[styles.violet,styles.submitButton,{marginBottom:20,marginRight:20}]} onPress={() => this.update()}>

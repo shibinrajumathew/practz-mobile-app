@@ -4,74 +4,147 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView
+  Dimensions,
+  ScrollView,
+  AsyncStorage
 } from 'react-native';
-
-
-export default class AvailableExams extends Component<Props> {
+import Chart from 'react-native-chartjs';
+// var chartConfiguration = {
+//   type: 'bar',
+//     data: {
+//       labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+//       datasets: [{
+//         label: '# of Votes',
+//         data: [],
+//     backgroundColor: [
+//       'rgba(255, 99, 132, 0.2)',
+//       'rgba(54, 162, 235, 0.2)',
+//       'rgba(255, 206, 86, 0.2)',
+//       'rgba(75, 192, 192, 0.2)',
+//       'rgba(153, 102, 255, 0.2)',
+//       'rgba(255, 159, 64, 0.2)'
+//       ],
+//     borderColor: [
+//       'rgba(255,99,132,1)',
+//       'rgba(54, 162, 235, 1)',
+//       'rgba(255, 206, 86, 1)',
+//       'rgba(75, 192, 192, 1)',
+//       'rgba(153, 102, 255, 1)',
+//       'rgba(255, 159, 64, 1)'
+//       ],
+//     borderWidth: 1
+//    }]
+//   },
+//   options: {
+//     maintainAspectRatio : false,
+//     scales: {
+//       yAxes: [{
+//         ticks: {
+//           suggestedMax:100,
+//           beginAtZero: true
+//         }
+//       }],
+//       xAxes:[{
+//         barPercentage:.1
+//       }]
+//     }
+//   }
+//
+// };
+export default class HistoricPattern extends Component<Props> {
   constructor(props) {
+  super(props);
+  this.state = {
+    HOME:URL.HOME,
+    HISTORIC_PATTERN:URL.HISTORIC_PATTERN,
+    datas:"",
+  /*  examName:"",
+    percentage:"",
+    submittedDate:"",*/
 
-       super(props)
+    };
+    var values=[];
+    var chartConfiguration = {
+      type: 'bar',
+        data: {
+          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+          datasets: [{
+            label: '# of Votes',
+            data:values,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+          ],
+        borderColor: [
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+          ],
+        borderWidth: 1
+       }]
+      },
+      options: {
+        maintainAspectRatio : false,
+        scales: {
+          yAxes: [{
+            ticks: {
+              suggestedMax:100,
+              suggestedMin:-100,
+              beginAtZero: true
+            }
+          }],
+          xAxes:[{
+            barPercentage:.1
+          }]
+        }
+      }
 
-       this.state = {
+    };
+  }
+  componentWillMount() {
+    this.setState({
+    });
+    //  console.log("response data",this.state.HOME+this.state.HISTORIC_PATTERN)
+    fetch('https://demo.practz.com/practz/ilearn/v1/reports/graphs')
+    .then((response) => response.json())
+    .then((responseJson) => {
+      this.setState({
+        data:responseJson.data
+      });
+      console.log("responsearrays",this.state.data);
+      var index = 0;
+      Object.keys(this.state.data).forEach((key)=> {
+      console.log("key ",key);
+      console.log("index",index);
+      //console.log("value ",this.state.data[key]);
+      var mapData = this.state.data[key];
+      for (var i = 0; i < mapData.length; i++) {
+        console.log("percentage ",mapData[i].percentage);
+        values.push([mapData[i].percentage])
+        //values[index][i] = mapData[i].percentage;
 
-         exams: [
-           {'examType':'Bank','attended':8,'passed':6,},
-           {'examType':'Current Affairs','attended':4,'passed':3,},
-           {'examType':'Chemistry','attended':8,'passed':5,},
-           {'examType':'MicroBiology','attended':6,'passed':5,}
-    ]
-       }
-
-     }
-
+        console.log("values",values[index][i]);
+        }
+        index++;
+      });
+      console.log("array values",values);
+    });
+  }
   render() {
-     var examList = this.state.exams.map(function(exam){
-                        return <View>
-                        <Text style={{marginTop:15,marginLeft:20,fontWeight:'bold',color:'#000000',fontSize:20}}>{exam.examType}</Text>
-
-
-                        <View style={[styles.container]}>
-        <View style={{flex:1}} >
-      <Text style={{color:'#848484'}}>Attended
-        <Text style={{color:'#956FCE',fontWeight:'bold'}}>  {exam.attended}</Text>
-      </Text>
-      </View>
-        <View style={{flex: 3}} >
-        <Text style={{color:'#848484',fontWeight:'bold'}}>Passed
-         <Text style={{color:'#956FCE',fontWeight:'bold'}}>  {exam.passed}</Text>
-        </Text>
-      </View>
-      </View>
-<View style={[styles.line]}>
-</View>
-          </View>;
-           })
-
-    return (
-
-      <ScrollView style={{backgroundColor:'#FFFFFF',}}>
-
-      {examList}
-      </ScrollView>
+    return(
+      <View style = {{ flex : 1 }}>
+        <Chart chartConfiguration = {
+          this.state.chartConfiguration
+          }
+        defaultFontSize={20}/>
+        </View>
     );
     }
 }
-const styles = StyleSheet.create({
-
-  container:{
-
-    flex:1,
-    flexDirection:'row',
-   marginTop:5,
-   marginLeft:20
-  },
-   line:{
-    color: '#707070',
-    borderBottomWidth: 1,
-    fontWeight:'200',
-    marginTop:10
-
-      }
-
-    });
