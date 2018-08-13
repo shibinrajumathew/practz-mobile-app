@@ -87,6 +87,7 @@ export default class Login extends Component {
                   console.log("logourl",responseAu.data.logoUrl);
                   console.log("appId",responseUsr.data.appId);
                   console.log("authority:",response.data.accessRights);
+                  console.log("name:",responseUsr.data.name);
                   console.log("Inside login: end");
                   //set session
                   AsyncStorage.multiSet([
@@ -102,6 +103,7 @@ export default class Login extends Component {
                     ["appId",responseUsr.data.appId],
                     ["password",this.state.pass,],
                     ["username",this.state.emailid],
+                    ["name",responseUsr.data.name],
                     // ["signUpEnabled"],
                     // ["homePageEnabled"],
                     // ["telephone1",responseUsr.data.telephone1],
@@ -110,7 +112,7 @@ export default class Login extends Component {
             noBack(this.props,'Dash');
             });
             });
-            
+
         }else{
           Alert.alert("Wrong username or password");
           this.refs.Load.CloseLoad();
