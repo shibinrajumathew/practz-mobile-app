@@ -1,116 +1,71 @@
-import React, { Component } from 'react';
+import React, {
+  Component
+} from 'react';
 import {
   Platform,
   StyleSheet,
   Text,
-  View,
-  ScrollView
+  View
 } from 'react-native';
 
-
-export default class MyOrders extends Component<Props> {
-  constructor(props) {
-
-    super(props)
-
-    this.state = {
-
-      orders: [
-        {'orderNo':'PZINCO00406','date':'08 March 2018 07:25 PM','orderName':'CLAT Coaching, Law',
-        'examType':'Staff Board Exam','orderStatus':'sucessfull','amount':'240'},
-         {'orderNo':'PZINCO00406','date':'08 March 2018 07:25 PM','orderName':'CLAT Coaching, Law',
-        'examType':'Staff Board Exam','orderStatus':'sucessfull','amount':'240'},
-         {'orderNo':'PZINCO00406','date':'08 March 2018 07:25 PM','orderName':'CLAT Coaching, Law',
-        'examType':'Staff Board Exam','orderStatus':'sucessfull','amount':'240'},
-         {'orderNo':'PZINCO00406','date':'08 March 2018 07:25 PM','orderName':'CLAT Coaching, Law',
-        'examType':'Staff Board Exam','orderStatus':'sucessfull','amount':'240'},{'orderNo':'PZINCO00406','date':'08 March 2018 07:25 PM','orderName':'CLAT Coaching, Law',
-        'examType':'Staff Board Exam','orderStatus':'sucessfull','amount':'240'}
-              ]
-
-
+import Chart from 'react-native-chartjs';
+var datas=[12, 19, 3, 5, 2, 3];
+var chartConfiguration = {
+    type: 'bar',
+    data: {
+      labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+      datasets: [{
+        label: '# of Votes',
+        data: datas,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      maintainAspectRatio : false,
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
     }
 
+};
+export default class App extends Component < {} > {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      chartConfiguration : chartConfiguration
+    };
   }
 
   render() {
-  var orderList = this.state.orders.map(function(order){
-  return  <View style={[styles.myview]}>
-            <View style={[styles.container]}>
-                <View style={{flex: 1}} >
-      <Text style={{marginLeft: 15,fontSize:12,fontWeight:'400',color:'#413333'}}>Order No  {order.orderNo}</Text>
-                 </View>
 
-
-                <View style={{flex: 1 }} >
-                  <Text style={{fontSize:10,marginRight:5,fontWeight:'300',marginLeft:15,color:'#000000'}}>{order.date}</Text>
-               </View>
-            </View>
-
-           <View style={[styles.line]}/>
-
-              <View style={[styles.container]}>
-                  <View style={{flex: 4}} >
-                      <Text style={{fontSize:15,marginLeft:15,fontWeight:'bold',color:'#413333'}}>{order.orderName}</Text>
-                      <Text style={{fontSize:15,fontSize:15,marginLeft:15,color:'#000000'}}>{order.examType}</Text>
-                  </View>
-
-                      <View style={{flex: 1}} >
-                         <Text style={{fontSize:20,marginTop:10,color:'#00BCD4'}}>  {'\u20B9'}
-                           {order.amount} </Text>
-
-                       </View>
-               </View>
-
-
-
-                           <Text style={{marginLeft:15,marginTop:5}}>
-                           Order Status
-                           <Text style={{color:'#413333'}}>  {order.orderStatus} </Text>
-                           </Text>
-
-      </View>;
-})
-
-return (
-
-  <ScrollView style={{backgroundColor:'#FFFFFF'}}>
-
-  {orderList}
-
-  </ScrollView>
-
-);
-}
-}
-
-
-
-
-
-
-
-const styles = StyleSheet.create({
-  myview: {
-    borderWidth: .5,
-    borderColor: '#7C7676',
-
-    marginTop: 15,
-    marginBottom:15,
-    marginLeft:10,
-    marginRight:10
-  },
-
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    marginTop:10
-  },
-  line:{
-
-       fontWeight:'100',
-        borderBottomWidth: 0.5,
-        fontWeight:'bold',
-        marginTop:20
+    return (
+      <View style = {{ flex : 1 }}>
+          <Chart chartConfiguration = {
+            this.state.chartConfiguration
+          }
+	   defaultFontSize={20}/>
+      </View>
+    );
   }
-
-    });
+}
