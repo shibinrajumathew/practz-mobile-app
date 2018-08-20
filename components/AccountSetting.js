@@ -18,6 +18,8 @@ import RadioButton from 'radio-button-react-native';
 import DatePicker from 'react-native-datepicker';
 import Icon from 'react-native-ionicons';
 import styles from './Assets/Style';
+import IconBadge from 'react-native-icon-badge';
+import RNMaterialLetterIcon from 'react-native-material-letter-icon';
 export default class AccountSetting extends Component {
   constructor(props) {
     super(props)
@@ -116,8 +118,17 @@ export default class AccountSetting extends Component {
         <View style={[styles.pink,{marginTop:10}]}>
           <View style={[styles.flexrow,styles.margins]}>
             <View elevation={2} style={styles.profileView}>
-              <Image source={require('./Assets/users_images/1.jpg')} style={[styles.profileDP]} />
+              <RNMaterialLetterIcon
+                size={100}
+                letterSize={28}
+                letter={(this.state.names).charAt(0).toUpperCase()}
+                shapeColor={"#FF9800"}
+                />
+              <Text style={[styles.lightTitle]}>{(this.state.names).charAt(0)}</Text>
+
+              {/* <Image source={require('./Assets/users_images/1.jpg')} style={[styles.profileDP]} /> */}
             </View>
+
             <View style={{flex:3}}>
               <TextInput
                 style={styles.blackFont, stylish.mymargin }
@@ -158,6 +169,7 @@ export default class AccountSetting extends Component {
            <RadioButton currentValue={this.state.gender} value="male" onPress={this.handleOnPress.bind(this)}>
              <Text>male</Text>
            </RadioButton>
+           <Text style ={{marginLeft:10}}></Text>
            <RadioButton currentValue={this.state.gender} value="female" onPress={this.handleOnPress.bind(this)}>
              <Text>female</Text>
            </RadioButton>

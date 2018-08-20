@@ -120,7 +120,7 @@ export default class AttemptedExamDetails extends Component {
  </View>);
 })
 return (
-  <ScrollView style={{backgroundColor:'#FFFFFF'}}>
+  <ScrollView style={{backgroundColor:'#FFFFFF'}}  showsVerticalScrollIndicator={false}>
     <View style={[styles.announcementbox,styles.grey]}>
       <View style={[styles.flexrow]}>
         <View style={{ flex:1}} >
@@ -130,7 +130,7 @@ return (
           <Text style={[styles.bookFont,styles.whiteFont]}>Science and Tech</Text>
         </View>
       </View>
-      <Text style={[styles.margins,styles.lightFont,stylish.mymargin]}>Staff Board Exam</Text>
+      <Text style={[styles.margins,styles.lightFont,stylish.mymargin]}> Staff Board Exam</Text>
       <View style={[styles.line]}/>
         <View style={[styles.flexrow]}>
           <View style={{flex:6}}>

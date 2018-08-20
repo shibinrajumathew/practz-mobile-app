@@ -107,6 +107,7 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
     }
+
     splits {
         abi {
             reset()
@@ -119,6 +120,7 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            
         }
     }
     // applicationVariants are e.g. debug, release

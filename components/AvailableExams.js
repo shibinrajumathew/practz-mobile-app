@@ -19,6 +19,7 @@ export default class AvailableExams extends Component<Props> {
       eid:"",
       eprod:"",
       qname:"",
+      checkFlag:0,
       availableExamList:[
       {
         "questionPaperName": "",
@@ -37,6 +38,8 @@ export default class AvailableExams extends Component<Props> {
       let user = data[0][1];
       classthis.setState({
         userId:user,
+        checkFlag:this.props.navigation.state.params.checkFlag,
+        
       });
       console.log("response data",this.state.HOME+this.state.AVAILABLE_EXAMS+data[0][1]);
       fetch(this.state.HOME+this.state.AVAILABLE_EXAMS+data[0][1])
@@ -58,20 +61,38 @@ export default class AvailableExams extends Component<Props> {
   render() {
     var examList = this.state.availableExamList.map((exam)=>{
       return (<View key={(exam, index) => index.toString()} >
-        <TouchableOpacity style={[styles.announcementBox]}
-          onPress={() => this.props.navigation.navigate('ExamDetails',{eid:exam.id,eprod:exam.examProductName,qname:exam.attributes.questionPaperName})} >
-          <View style={[styles.flexrow]}>
-            <View style={{flex: 2}} >
-              <Text style={[styles.title,styles.margins]}>{exam.attributes.questionPaperName}</Text>
+        {(this.state.checkFlag==0 || this.state.checkFlag==1)?
+          <TouchableOpacity style={[styles.announcementBox]}
+            disable={true} >
+            <View style={[styles.flexrow]}>
+              <View style={{flex: 2}} >
+                <Text style={[styles.title,styles.margins]}>{exam.attributes.questionPaperName}</Text>
+              </View>
+              <View style={[styles.sideBotton, styles.brightBlue]} >
+                <Text style={[styles.bookFont,styles.whiteFont]} >Science & Tech </Text>
+              </View>
             </View>
-            <View style={[styles.sideBotton, styles.brightBlue]} >
-              <Text style={[styles.bookFont,styles.whiteFont]} >Science & Tech </Text>
+            <Text style={[stylish.myview]}>Staff Board Exam </Text>
+            <Text style={[stylish.myview]}>No of Question <Text style={[styles.count]}> {exam.totalExamMarks}  </Text><Text style={[stylish.myview]}>        Time Allocated<Text style={[styles.count]}>  {exam.duration} </Text></Text></Text>
+            <Text style={[stylish.container]}>End on {exam.expiryDate}</Text>
+          </TouchableOpacity>
+          :
+          <TouchableOpacity style={[styles.announcementBox]}
+            onPress={() => this.props.navigation.navigate('ExamDetails',{eid:exam.id,eprod:exam.examProductName,qname:exam.attributes.questionPaperName})} >
+            <View style={[styles.flexrow]}>
+              <View style={{flex: 2}} >
+                <Text style={[styles.title,styles.margins]}>{exam.attributes.questionPaperName}</Text>
+              </View>
+              <View style={[styles.sideBotton, styles.brightBlue]} >
+                <Text style={[styles.bookFont,styles.whiteFont]} >Science & Tech </Text>
+              </View>
             </View>
-          </View>
-          <Text style={[stylish.myview]}>Staff Board Exam </Text>
-          <Text style={[stylish.myview]}>No of Question <Text style={[styles.count]}> {exam.totalExamMarks}  </Text><Text style={[stylish.myview]}>        Time Allocated<Text style={[styles.count]}>  {exam.duration} </Text></Text></Text>
-          <Text style={[stylish.container]}>End on {exam.expiryDate}</Text>
-        </TouchableOpacity>
+            <Text style={[stylish.myview]}>Staff Board Exam </Text>
+            <Text style={[stylish.myview]}>No of Question <Text style={[styles.count]}> {exam.totalExamMarks}  </Text><Text style={[stylish.myview]}>        Time Allocated<Text style={[styles.count]}>  {exam.duration} </Text></Text></Text>
+            <Text style={[stylish.container]}>End on {exam.expiryDate}</Text>
+          </TouchableOpacity>
+        }
+
       </View>);
     })
     return (
