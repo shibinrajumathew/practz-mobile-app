@@ -25,18 +25,20 @@ export class ProfilePage extends Component {
       progressCustomized: 0,
     }
   }
+
   userLogout(){
     sessionDestroy();
     noBack(this.props,'Login')
   }
 
   componentWillMount(){
-        AsyncStorage.multiGet(['name']).then((data) => {
-          this.setState({
-            name:data[0][1],
-          })
-        });
+    AsyncStorage.multiGet(['name']).then((data) => {
+      this.setState({
+        name:data[0][1],
+      })
+    });
   }
+
   render() {
     const barWidth = (Dimensions.get('screen').width / 2) - 30;
     const progressCustomStyles = {
@@ -53,10 +55,8 @@ export class ProfilePage extends Component {
               letterSize={28}
               letter={(this.state.name).charAt(0).toUpperCase()}
               shapeColor={"#FF9800"}
-              />
+            />
             <Text style={[styles.lightTitle]}>{(this.state.name).charAt(0)}</Text>
-
-            {/* <Image source={require('./Assets/users_images/1.jpg')} style={[styles.profileDP]} /> */}
           </View>
           <View style={[styles.flexcol]} >
             <Text style={[styles.lightTitle, { marginLeft: 40}]}>{this.state.name}</Text>
@@ -83,25 +83,24 @@ export class ProfilePage extends Component {
             height: 10,
             width: 10
           }
-        }}>
-        </View>
+        }}/>
         <TouchableOpacity style={[styles.profileSetting]} onPress={() =>
           this.props.navigation.navigate('HistoricPattern')}>
-          <Text style={{ fontWeight: '500' }} >Historic Pattern</Text>
+          <Text style={[styles.LargeFont]} >Historic Pattern</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.profileSetting]} onPress={() =>
           this.props.navigation.navigate('MyOrders')}>
-          <Text style={{ fontWeight: '500' }} >My Orders</Text>
+          <Text style={[styles.LargeFont]} >My Orders</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.profileSetting]} onPress={() =>
           this.props.navigation.navigate('AccountSetting')}>
-          <Text style={{ fontWeight: '500' }} >Account Settings</Text>
+          <Text style={[styles.LargeFont]} >Account Settings</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.profileSetting]}>
-          <Text style={{ fontWeight: '500' }}  onPress={() => this.props.navigation.navigate('ChangePassword')}>Change Password</Text>
+          <Text style={[styles.LargeFont]}  onPress={() => this.props.navigation.navigate('ChangePassword')}>Change Password</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.profileSetting]} onPress={() => this.userLogout()}>
-          <Text style={{ fontWeight: '500' }}>Logout</Text>
+          <Text style={[styles.LargeFont]}>Logout</Text>
         </TouchableOpacity>
       </View>
 

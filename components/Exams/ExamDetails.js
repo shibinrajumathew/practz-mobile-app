@@ -17,7 +17,6 @@ import {
 } from 'react-native';
 import URL from './../Url';
 
-
 export default class ExamDetails extends Component {
   constructor() {
     super();
@@ -79,9 +78,6 @@ export default class ExamDetails extends Component {
       });
     }
     });
-
-
-
   }
   static navigationOptions = {
     title: "Exam Instructions",
@@ -95,7 +91,7 @@ export default class ExamDetails extends Component {
     return (
 
       <View style={{ flex: 1 }}>
-        <ScrollView style={{ flex: 4 }}>
+        <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 4 }}>
           <View style={[styles.examBox, styles.flexrow]}>
             <View style={[styles.flexcol, styles.innerTextBox]} >
               <Text style={[styles.topTitle, styles.blackFont]}>{this.props.navigation.state.params.qname}</Text>
@@ -110,11 +106,15 @@ export default class ExamDetails extends Component {
               </View>
             </View>
           </View>
-          <View style={{padding: 5}}>
-            <Text style={[styles.topTitle]}>Instructions</Text>
+          <View style={{marginLeft: 4,padding: 5}}>
+            <Text style={[styles.lightTitle]}>Instructions</Text>
             <FlatList
               data={this.state.data}
-              renderItem={({ item }) => <Text style={[styles.lightFont]} > {'\u2022'}  {item.key}</Text>}
+              renderItem={({ item }) =>
+              <View style={[styles.flexrow]}>
+                <Text style={{fontSize: 30,color: '#000'}} >{'\u2022'} </Text>
+                <Text style={[styles.examInstructions]}>{item.key}</Text>
+              </View>}
               keyExtractor={(item, index) => index.toString()}
             />
             <Text style={[styles.lightFont, styles.blackFont]} >Question Colors</Text>
@@ -124,8 +124,15 @@ export default class ExamDetails extends Component {
               <View ><Icon name='ios-checkmark-circle' size={20} color='#8BC34A' /></View><Text style={[styles.lightFont]}> Attended</Text>
             </View>
           </View>
-        </ScrollView>
-        <TouchableOpacity style={[styles.submitButton]} onPress={() => this.props.navigation.navigate('StartExam',{eid:this.props.navigation.state.params.eid,examPage:'startQuiz'})}><Text style={[styles.lightFont, styles.whiteFont]} > Start Exam</Text></TouchableOpacity>
+        </ScrollView>{
+          this.props.navigation.state.params.onprogress==true?
+          <TouchableOpacity style={[styles.submitButton]} onPress={() => this.props.navigation.navigate('StartExam',{eid:this.props.navigation.state.params.eid,examPage:'startQuiz'})}><Text style={[styles.lightFont, styles.whiteFont]} > Resume Exam</Text>
+          </TouchableOpacity>
+          :
+          <TouchableOpacity style={[styles.submitButton]} onPress={() => this.props.navigation.navigate('StartExam',{eid:this.props.navigation.state.params.eid,examPage:'startQuiz'})}><Text style={[styles.lightFont, styles.whiteFont]} > Start Exam</Text>
+          </TouchableOpacity>
+        }
+
       </View>
     );
   }

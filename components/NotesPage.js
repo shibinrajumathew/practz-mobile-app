@@ -15,6 +15,7 @@ import {
   AsyncStorage,
 } from 'react-native';
 import URL from './Url';
+import {sessionDestroy,noBack} from './Functions';
 
 export class NotesPage extends Component {
   constructor(){
@@ -40,24 +41,24 @@ export class NotesPage extends Component {
 
   componentWillMount() {
     AsyncStorage.multiGet(['userId','organizationId']).then((data) => {
-      console.log("note page api:",this.state.HOME+this.state.AVAILABLE_NOTES+'orgId='+data[1][1]+'&uId='+data[0][1]+'');
     fetch(this.state.HOME+this.state.AVAILABLE_NOTES+'orgId='+data[1][1]+'&uId='+data[0][1]+'')
     .then(response =>  response.json())
     .then(responseobj => {
-    //   if(responseobj==401){
-    //     this.setState({
-    //       noteList: [
-    //         {
-    //             "title": "",
-    //             "content": "",
-    //             "createdby": "",
-    //             "createdDate": "",
-    //         }
-    //       ]
-    //   });
-    //     logout();
-    //     this.props.navigation.navigate('Loign');
-    //   }else{
+      if(responseobj==401){
+        this.setState({
+          noteList: [
+            {
+              "title": "",
+              "content": "",
+              "createdby": "",
+              "createdDate": "",
+            }
+          ]
+      });
+        logout();
+        noBack(this.props,'Login');
+        this.props.navigation.navigate('Loign');
+      }
     if((responseobj.data).length<1)
       {
         this.setState({
@@ -66,56 +67,49 @@ export class NotesPage extends Component {
           status:'No Notes available now. Please check later.',
           noteData: [
             {
-                "title": "",
-                "content": "",
-                "createdby": "",
-                "createdDate": "",
-
+              "title": "",
+              "content": "",
+              "createdby": "",
+              "createdDate": "",
             }
           ]
-              });
-            }else{
-        this.setState({
-          status:'Latest Notes',
-          checkFlag:2,
-          view:'View All',
-          noteData:responseobj.data,
         });
-      }
-
+      }else{
+          this.setState({
+            status:'Latest Notes',
+            checkFlag:2,
+            view:'View All',
+            noteData:responseobj.data,
+          });
+        }
     });
-
-
 });
 }
 
-  render() {
-    const scalesPageToFit = Platform.OS === 'android';
+  render() { 
     {
-    this.state.checkFlag==1||this.state.checkFlag==0
-    ? noteList = this.state.noteData.map((note, index)=>{
-     return(<View key={index.toString()} ></View>);
-   })
-    : noteList = this.state.noteData.map((note, index)=>{
-     return(
-       <View key={index.toString()} >
-         <TouchableOpacity  style={[styles.announcementBox, styles.flexrow]}
-           onPress={() => this.props.navigation.navigate('NoteDetails',{nid:note.id})}>
-         <View style={[styles.flexcol, styles.innerTextBox]} >
-           <Text style={[styles.topTitle]}>{note.title}</Text>
-           <Text style={[styles.lightFont,styles.attemptedBox]} >Posted by <Text style={[styles.indicator]}>{note.createdBy} </Text></Text>
-           <View style={[styles.flexrow,styles.attemptedBox]}>
-             <Text style={[styles.lightFont]} >Posted on <Text style={[styles.endFont]}>{note.createdDate}</Text></Text>
-           </View>
+      this.state.checkFlag==1||this.state.checkFlag==0
+      ?
+      noteList = this.state.noteData.map((note, index)=>{
+        return(<View key={index.toString()} ></View>);
+      })
+      : noteList = this.state.noteData.map((note, index)=>{
+       return(
+         <View key={index.toString()} >
+            <TouchableOpacity  style={[styles.announcementBox, styles.flexrow]}
+             onPress={() => this.props.navigation.navigate('NoteDetails',{nid:note.id})}>
+             <View style={[styles.flexcol, styles.innerTextBox]} >
+               <Text style={[styles.topTitle]}>{note.title}</Text>
+               <Text style={[styles.lightFont,styles.attemptedBox]} >Posted by <Text style={[styles.indicator]}>{note.createdBy} </Text></Text>
+               <View style={[styles.flexrow,styles.attemptedBox]}>
+                 <Text style={[styles.lightFont]} >Posted on <Text style={[styles.endFont]}>{note.createdDate}</Text></Text>
+               </View>
+              </View>
+            </TouchableOpacity>
          </View>
-         <View style={[styles.sideBotton, styles.brightBlue]} >
-           <Text style={{ fontFamily: 'Avenir, Book', color: '#ffffff' }} >Science & Tech </Text>
-         </View>
-       </TouchableOpacity>
-       </View>
-     );
-   });
- }
+        );
+     });
+    }
     return (
       <ScrollView style={[styles.container, styles.flexcol]} >
       <View style={[styles.flexrow, styles.availableBox]}>

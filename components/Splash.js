@@ -1,6 +1,7 @@
 /* @flow */
 import {  StackActions, NavigationActions } from 'react-navigation';
-import {noBack} from './Functions';
+import {noBack,sessionDestroy} from './Functions';
+import styles from './Assets/Style';
 import React, { Component } from 'react';
 import {
   View,
@@ -10,8 +11,11 @@ import {
   AsyncStorage,
   StyleSheet,
   Dimensions,
+  NetInfo,
+  Alert,
   KeyboardAvoidingView,
 } from 'react-native';
+import URL from './Url';
 
 
 export default class Login extends Component {
@@ -20,6 +24,8 @@ export default class Login extends Component {
     super();
     //create dynamic variables
     this.state = {
+      home:URL.HOME,
+      api_user:URL.USER,
     }
   }
 
@@ -32,60 +38,50 @@ export default class Login extends Component {
       fontWeight: 'bold',
       display: 'none',
     },
-
   };
 
-
   componentDidMount() {
+    //internet connection check
+    NetInfo.isConnected.fetch().then(isConnected => {
+      if (isConnected) {
+        this.setState({ btn: false })
+      }else {
+        Alert.alert("Net info alert", "Please connnect to internet for further app use");
+      }
+    });
+
     this.timeoutHandle = setTimeout(() => {
-      AsyncStorage.multiGet(['UserType']).then((data) => {
+      AsyncStorage.multiGet(['UserType','userId']).then((data) => {
         let user = data[0][1];
+        let UserId = data[1][1];
         if (user !== null) {
-          //redirect to Dash & donot show splash screen again on back
-          noBack(this.props,'Dash');
-        } else {
-          this.props.navigation.navigate('Login');
-        }
-
+          fetch(this.state.home+this.state.api_user+UserId)
+            .then(responseUsr => responseUsr.json())
+            .then(responseUsr=> {
+              if(responseUsr==401){
+                sessionDestroy();
+                noBack(this.props,'Login');
+              }else{
+                //redirect to Dash & donot show splash screen again on back
+                noBack(this.props,'Dash');
+              }
+            })
+        }else {
+            noBack(this.props,'Login');
+            this.props.navigation.navigate('Login');
+          }
       });
-
-
-    }, 500);
+    }, 3000);
   }
 
-
-  // componentWillUnmount() {
-  //
-  //   clearTimeout(this.timeoutHandle);
-  // }
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <View style={styles.logoContainer}>
-        {}
+      <View style={styles.Splash_logoContainer}>
         <Image source={require('./Assets/images/download.png')}
-          style={styles.img}
+          style={styles.Splash_img}
         />
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#5e3f8c',
-  },
-  img: {
-    width: (Dimensions.get('screen').width),
-    height: (Dimensions.get('screen').height),
-
-  },
-  logoContainer: {
-    flex: 1,
-    width: Dimensions.get('window').width,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-});

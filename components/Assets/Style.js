@@ -24,7 +24,7 @@ export default StyleSheet.create({
     marginRight: 2,
     marginTop: 10,
     padding: 10,
-    width: (Dimensions.get('window').width / 2) - 4,
+    width: (Dimensions.get('window').width / 1.5),
     height: Dimensions.get('window').height / 5,
 
   },
@@ -316,6 +316,9 @@ export default StyleSheet.create({
     fontWeight: '500',
     color: 'blue'
   },
+  LargeFont: {
+    fontWeight: '500',
+  },
   boldFont: {
     fontWeight: 'bold',
   },
@@ -339,6 +342,11 @@ export default StyleSheet.create({
     fontFamily: 'Avenir, Book',
     color: 'black'
   },
+  examInstructions:{
+    marginTop:10,
+    flex: 1,
+    flexWrap: 'wrap'
+  },
   indicator: {
     color: '#956FCE', fontWeight: '600'
   },
@@ -349,6 +357,13 @@ export default StyleSheet.create({
   },
   tickedNumberColor:{
     color: "rgba(255, 255, 255, 0.82)"
+  },
+  //font color
+  greenFont:{
+    color: '#6CC644',
+  },
+  redFont:{
+    color: '#E57373',
   },
   whiteFont: {
     color: '#ffffff',
@@ -394,6 +409,7 @@ export default StyleSheet.create({
   lightgreen:{
     backgroundColor:'#8BC34A'
   },
+
   //flex direction
   flexrow: {
     flexDirection: 'row',
@@ -429,6 +445,101 @@ export default StyleSheet.create({
    marginLeft:15,
    marginTop:10,
    marginRight:5
- }
+ },
+  //splash style
+  Splash_img: {
+    left: 0,
+    width: (Dimensions.get('screen').width),
+    height: (Dimensions.get('screen').height),
+  },
+  Splash_logoContainer: {
+    flex: 1,
+    width: Dimensions.get('window').width,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  //Login Style starts here
+  Login_container: {
+    flex: 1,
+    backgroundColor: '#36076b',
+  },
+  Login_img: {
+    width: (Dimensions.get('window').width / 2),
+    height: (Dimensions.get('window').height) / 6,
+    resizeMode: 'contain',
+  },
+  logoContainer: {
+    width: Dimensions.get('window').width,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  tabForm: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    marginLeft: 8,
+    flexDirection: 'row',
+  },
+  innerTabForm: {
+    width: Dimensions.get('window').width / 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    marginLeft: 5,
+    paddingBottom: 15,
+    flexDirection: 'row',
+  },
+  selectedInnerTabForm: {
+    width: Dimensions.get('window').width / 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    marginLeft: 5,
+    paddingBottom: 15,
+    flexDirection: 'row',
+    borderColor: '#8bc34a',
+    borderBottomWidth: 5,
+  },
+  Login_form: {
+    flex: 1.5,
+    marginTop: 20,
+    padding: 20,
+  },
+  Login_formTitle: {
+    flex: 2,
+    fontSize: 22,
+    textAlign: 'center',
+    color: 'black',
+  },
+  Login_input: {
+    height: 60,
+    padding: 20,
+    backgroundColor: '#fff',
+    marginBottom: 10,
+  },
+  Login_buttonContainer: {
+    backgroundColor: '#be36e7',
+    paddingVertical: 25,
+
+  },
+  Login_buttonText: {
+    textAlign: 'center',
+    color: '#fff',
+    fontWeight: 'bold',
+
+  },
+  Login_signIn:{
+    color: '#8bc34a',
+    fontWeight: '500',
+    fontSize: 12,
+  },
+  Login_forgotPass:{
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+  }
+
 
 });

@@ -1,5 +1,4 @@
 /* @flow */
-
 import ProgressBarAnimated from 'react-native-progress-bar-animated';
 import React, { Component } from 'react';
 import styles from './Assets/Style';
@@ -24,11 +23,8 @@ import {
 
 
 class Home extends Component {
-
   render() {
-
     const { navigate } = this.props.navigation;
-
     return (
       <ScrollView style={[styles.container, styles.flexcol]} >
         <LandingPage navigation={this.props.navigation} />
@@ -56,6 +52,7 @@ class Notes extends React.Component {
     );
   }
 }
+
 class Profile extends Component {
   render() {
     return (

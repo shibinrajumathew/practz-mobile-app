@@ -14,14 +14,18 @@ import {
   TouchableOpacity,
   Dimensions,
   Text,
+  TouchableHighlight,
   ToolbarAndroid,
   Alert,
   FlatList,
+  BackHandler,
   Button,
   StyleSheet,
+  AppState,
   AsyncStorage,
 } from 'react-native';
 import URL from './../Url';
+import {handleBackButton} from './../Functions';
 
 export default class StartExam extends Component {
   constructor() {
@@ -37,7 +41,10 @@ export default class StartExam extends Component {
       ANSWER_STATUS:URL.ANSWER_STATUS,
       REVIEW:URL.REVIEW,
       SUBMIT_ANSWER:URL.SUBMIT_ANSWER,
+      appState: AppState.currentState,
       buttonDisable:true,
+      scrollViewWidth:0,
+      currentXOffset:0,
       value: null,//large size for reset/clear selection
       imageFilePath:null,
       hint:null,
@@ -88,6 +95,12 @@ export default class StartExam extends Component {
     }else{
       this.getData();
     }
+    BackHandler.addEventListener('hardwareBackPress', () => {
+     this.submitAnswer(this.state.qpid,this.state.qid);
+     handleBackButton();
+     return true;
+    });
+
   }
 
   prevQuestion(qpId,qId){
@@ -315,13 +328,31 @@ export default class StartExam extends Component {
         this.props.navigation.navigate("ReviewPage",{qpid:this.state.qpid,eid:this.props.navigation.state.params.eid});
       }
     }, 1000);
+    BackHandler.addEventListener('hardwareBackPress', () => {
+     this.submitAnswer(this.state.qpid,this.state.qid);
+     handleBackButton();
+     return true;
+    });
+    AppState.addEventListener('change', this._handleAppStateChange);
+
   }
+
 
   componentWillUnmount () {
     //to save memory we've to clear interval
     this.interval && clearInterval(this.interval);
     this.interval = false;
+    AppState.addEventListener('change', this._handleAppStateChange);
   }
+
+  _handleAppStateChange = (nextAppState) => {
+
+     if (this.state.appState.match(/active/) && nextAppState === 'background') {
+         console.log('App has come to the background!');
+         this.submitAnswer(this.state.qpid,this.state.qid);
+     }
+     this.setState({appState: nextAppState});
+   }
 
   static navigationOptions = ({ navigation  }) => {
     const {state} = navigation;
@@ -347,6 +378,24 @@ export default class StartExam extends Component {
       }else{
         this.setState({checked:false})
       }
+    }
+
+    _handleScroll = (event) => {
+      console.log('currentXOffset =', event.nativeEvent.contentOffset.x);
+      newXOffset = event.nativeEvent.contentOffset.x
+      this.setState({currentXOffset:newXOffset})
+    }
+
+    leftArrow = () => {
+      eachItemOffset = this.state.scrollViewWidth / 10; // Divide by 10 because I have 10 <View> items
+      _currentXOffset =  this.state.currentXOffset - eachItemOffset;
+      this.refs.scrollView.scrollTo({x: _currentXOffset, y: 0, animated: true})
+    }
+
+    rightArrow = () => {
+      eachItemOffset = this.state.scrollViewWidth / 10; // Divide by 10 because I have 10 <View> items
+      _currentXOffset =  this.state.currentXOffset + eachItemOffset;
+      this.refs.scrollView.scrollTo({x: _currentXOffset, y: 0, animated: true})
     }
 
     render() {
@@ -436,9 +485,34 @@ export default class StartExam extends Component {
             <TouchableOpacity disabled={this.state.buttonDisable} style={[styles.buttonContainer, styles.brightBlue]} onPress={() => this.goToReview(this.state.qpid,this.state.qid)} ><Text style={styles.buttonText} >Go to Review page</Text></TouchableOpacity>
           </View>
         </View>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex:1,marginTop: 10, marginBottom: 10}}>
-          {progressNum}
-        </ScrollView>
+        <View style={[styles.flexrow]}>
+          <TouchableHighlight
+            underlayColor={'#50e5ff'}
+            style={{marginTop: 8, marginLeft:5,marginBottom: 10}}
+            onPress={this.leftArrow}>
+            <Icon name="ios-arrow-dropleft" size={22}/>
+          </TouchableHighlight>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              style={{flex:1,marginTop: 10, marginBottom: 10}}
+              pagingEnabled={true}
+              ref="scrollView"
+              onContentSizeChange={(w, h) => this.setState({scrollViewWidth:w})}
+              scrollEventThrottle={16}
+              scrollEnabled={true} // remove if you want user to swipe
+              onScroll={this._handleScroll}
+              >
+            {progressNum}
+          </ScrollView>
+          <TouchableHighlight
+            underlayColor={'#50e5ff'}
+            style={{marginTop: 8, marginRight:5,marginBottom: 10}}
+            onPress={this.rightArrow}>
+            <Icon name="ios-arrow-dropright" size={22}/>
+          </TouchableHighlight>
+        </View>
+
       </ScrollView>
       <View style={[styles.submitButton,styles.flexrow]}>
       {
@@ -461,4 +535,5 @@ export default class StartExam extends Component {
     </View>
   );
 }
+
 }

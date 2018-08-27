@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import IconBadge from 'react-native-icon-badge';
 import Icon from 'react-native-ionicons';
-import {
-  Platform,StyleSheet,Text,View,Image,Button,KeyboardAvoidingView,Dimensions
-} from 'react-native';
+import {Text,View,Image} from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import Splash from './components/Splash';
 import Login from './components/Login';
@@ -49,16 +47,17 @@ export const Practz = createStackNavigator({
   Dash:{ screen: Dash,
     navigationOptions: {
       headerLeft:null,
-      headerRight:(
-      <View style={{flex: 1, flexDirection: 'row'}}><Icon name={'ios-search'} style={{marginRight: 20,color:'#5e3f8c',}} />
-      <IconBadge
-        MainElement={<Icon name={'ios-notifications'} style={{width:30,height:30,marginRight:20,color:'#5e3f8c',}} />}
-        BadgeElement={<Text style={{color:'#FFFFFF',fontSize: 12}}>5</Text>}
-        IconBadgeStyle={{width:18,height:18,marginBottom:10,borderWidth:1,marginRight:20,borderColor:'white',backgroundColor: '#F44336'}}
-        // Hidden={this.state.BadgeCount==0}
-       />
-      </View>),
-      title: 'Confidence',
+      //for notification & search
+      // headerRight:(
+      // <View style={{flex: 1, flexDirection: 'row'}}><Icon name={'ios-search'} style={{marginRight: 20,color:'#5e3f8c',}} />
+      // <IconBadge
+      //   MainElement={<Icon name={'ios-notifications'} style={{width:30,height:30,marginRight:20,color:'#5e3f8c',}} />}
+      //   BadgeElement={<Text style={{color:'#FFFFFF',fontSize: 12}}>5</Text>}
+      //   IconBadgeStyle={{width:18,height:18,marginBottom:10,borderWidth:1,marginRight:20,borderColor:'white',backgroundColor: '#F44336'}}
+      //   // Hidden={this.state.BadgeCount==0}
+      //  />
+      // </View>),
+      title: 'Practz',
       headerTitleStyle:{
         color:'#5e3f8c',
         textAlign: 'center',
@@ -66,12 +65,10 @@ export const Practz = createStackNavigator({
       },
     },
   },
-
   //author hari navigation starts here
   NoteDetails:{ screen:NoteDetails},
   AttemptedExamDetails:{ screen: AttemptedExamDetails},
   InvoicePage:{ screen: InvoicePage},
-
 });
 
 //nothing to change
@@ -79,7 +76,6 @@ export default class App extends Component<{}> {
   render() {
     return (
       <Practz />
-
     );
   }
 }

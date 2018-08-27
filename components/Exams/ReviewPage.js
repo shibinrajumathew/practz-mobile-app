@@ -11,10 +11,12 @@ import {
   Dimensions,
   Text,
   Button,
+  BackHandler,
   StyleSheet,
   AsyncStorage,
 } from 'react-native';
 import URL from './../Url';
+import {handleBackButton} from './../Functions';
 
 class Exam extends Component {
   constructor() {
@@ -25,13 +27,16 @@ class Exam extends Component {
     this.state = {
       HOME:URL.HOME,
       REVIEW_EXAM:URL.REVIEW_EXAM,
+      PROGRESS:URL.PROGRESS,
       questionsReview:[
         { '': '','':'' },
         { '': '','':'' },
         ]
     }
   }
-
+  handleButtonClick = ()=>{
+    this.forceUpdate();
+  }
   getData(){
     AsyncStorage.multiGet(['organizationId','userId']).then((data) => {
       API=this.state.HOME+this.state.REVIEW_EXAM+data[1][1]+'?orgid='+data[0][1]+'&qpid='+this.props.qpid;
@@ -44,6 +49,7 @@ class Exam extends Component {
       })
       .then(response =>  response.json())
       .then(responseobj => {
+        console.log("response from getData");
         this.setState({
           questionsReview:responseobj.data
         });
@@ -53,6 +59,25 @@ class Exam extends Component {
 
   componentWillMount(){
     this.getData();
+    BackHandler.addEventListener('hardwareBackPress', () => {
+     handleBackButton();
+     return true;
+    });
+  }
+  componentDidMount(){
+    this.interval = setInterval(() => {
+        this.getData();
+    }, 5000);
+
+    BackHandler.addEventListener('hardwareBackPress', () => {
+     handleBackButton();
+     return true;
+    });
+  }
+  componentWillUnmount () {
+    //to save memory we've to clear interval
+    this.interval && clearInterval(this.interval);
+    this.interval = false;
   }
 
   // shouldComponentUpdate() {
@@ -87,7 +112,7 @@ class Exam extends Component {
         this.props.name=="ANSWERED"?
             (recStatus=="ANSWERED"?
                 <View key={index.toString()} style={[styles.examBox, styles.flexcol]}>
-                  <TouchableOpacity onPress={() => this.props.navigation.navigate("SecondExam",{qpid:this.props.navigation.state.params.qpid,qindex:value.questionIndex,examPage:"fromReview",eid:this.props.navigation.state.params.eid,getData:this.getData.bind(this)})} style={[styles.flexrow]}>
+                  <TouchableOpacity onPress={() => this.props.navigation.navigate("SecondExam",{qpid:this.props.navigation.state.params.qpid,qindex:value.questionIndex,examPage:"fromReview",eid:this.props.navigation.state.params.eid,getData:this.handleButtonClick.bind(this)})} style={[styles.flexrow]}>
                   <Text style={[styles.topTitle]}>Q{value.questionIndex+1}</Text>
                   <Text style={[styles.lightFont, styles.blackFont]} >{questionTrim}</Text>
                 </TouchableOpacity>
@@ -244,6 +269,18 @@ class Clock extends Component {
 }
 
 class Answered extends Component {
+  componentWillMount(){
+    BackHandler.addEventListener('hardwareBackPress', () => {
+     handleBackButton();
+     return true;
+    });
+  }
+  componentDidMount(){
+    BackHandler.addEventListener('hardwareBackPress', () => {
+     handleBackButton();
+     return true;
+    });
+  }
   render () {
     return (
       <View style={{ flex: 1 }} key="answered">
@@ -262,6 +299,18 @@ class Answered extends Component {
 }
 
 class NotAnswered extends Component {
+  componentWillMount(){
+    BackHandler.addEventListener('hardwareBackPress', () => {
+     handleBackButton();
+     return true;
+    });
+  }
+  componentDidMount(){
+    BackHandler.addEventListener('hardwareBackPress', () => {
+     handleBackButton();
+     return true;
+    });
+  }
   render () {
     return (
       <View style={{ flex: 1 }} key="notanswered">
@@ -280,6 +329,18 @@ class NotAnswered extends Component {
 }
 
 class MarkedForReview extends Component {
+  componentWillMount(){
+    BackHandler.addEventListener('hardwareBackPress', () => {
+     handleBackButton();
+     return true;
+    });
+  }
+  componentDidMount(){
+    BackHandler.addEventListener('hardwareBackPress', () => {
+     handleBackButton();
+     return true;
+    });
+  }
   render () {
     return (
       <View style={{ flex: 1 }} key="markedforreview">
@@ -301,7 +362,7 @@ export default createMaterialTopTabNavigator(
   {
     'Answered': Answered,
     'Not Answered': NotAnswered,
-    'ReviewPage': MarkedForReview,
+    'Review': MarkedForReview,
   },
   {
 

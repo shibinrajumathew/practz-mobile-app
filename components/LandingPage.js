@@ -44,14 +44,12 @@ export class LandingPage extends Component {
         "attributes":"",
         "questionPaperName":"",
         "amountWithCurrencySymbol":"",
-
       ],
       progressData: [
         "name":"",
         "id":" ",
         "percentageCompleted":0,
         "questionPaperName":"",
-
       ],
       availableExamList:[
         {
@@ -67,7 +65,6 @@ export class LandingPage extends Component {
   }
 
   componentWillMount() {
-    console.log("inside landing will mount");
     AsyncStorage.multiGet(['userId']).then((data) => {
       fetch(this.state.HOME+this.state.AVAILABLE_EXAM+'userId='+data[0][1]+'')
       .then(response =>  response.json())
@@ -77,61 +74,52 @@ export class LandingPage extends Component {
             sessionDestroy();
             noBack(this.props,'Login');
           }
-        }
-        if((responseobj.data)=== undefined ||(responseobj.data.length<1)){
-          this.setState({
-            status:'No active exams available now. Please check later.',
-            checkFlag:1,
-            view:'',
-            availableExamList:[
-              {
-                "questionPaperName": "",
-                "examProductName": "",
-                "expiryDate": "",
-                "attributes": {
-                  "questionPaperName": "",
-                  "examPublisherName": "",
-                  "qpSections": [],
-                  "republishStatus": ''
-                },
-              }
-            ],
-            eid:0,
-            eprod:'',
-            qname:'',
-            exp:'',
-          });
-        }else{
-          this.setState({
-            checkFlag:2,
-            status:'Available exams',
-            view:'View all',
-            availableExamList:responseobj.data,
-          });
-
-        }
+          }else {
+              if((responseobj.data)=== undefined ||(responseobj.data.length<1)){
+                this.setState({
+                  status:'No active exams available now. Please check later.',
+                  checkFlag:1,
+                  view:'',
+                  availableExamList:[
+                    {
+                      "questionPaperName": "",
+                      "examProductName": "",
+                      "expiryDate": "",
+                      "attributes": {
+                        "questionPaperName": "",
+                        "examPublisherName": "",
+                        "qpSections": [],
+                        "republishStatus": ''
+                      },
+                    }
+                  ],
+                  eid:0,
+                  eprod:'',
+                  qname:'',
+                  exp:'',
+                });
+              }else{
+                  this.setState({
+                    checkFlag:2,
+                    status:'Available exams',
+                    view:'View all',
+                    availableExamList:responseobj.data,
+                  });
+                }
+            }
       });
-
-
     });
 
-
     //for progressing exams
-
-    console.log("inside progressing exam");
     AsyncStorage.multiGet(['userId','organizationId']).then((data) => {
       fetch(this.state.HOME+this.state.ONGOING_EXAM+'userId='+data[0][1]+'&orgId='+data[1][1]+'')
       .then(response =>  response.json())
       .then(p_responseobj => {
-        //   if(responseobj==401){
-        //   logout();
-        //   this.props.navigation.navigate('Loign');
-        // }else{
-        //     this.setState({
-        //     attempted:responseobj.data,
-        //   });
-        // }
-
+          if(p_responseobj==401){
+            sessionDestroy();
+            noBack(this.props,'Login');
+            this.props.navigation.navigate('Loign');
+          }
         if((p_responseobj.data)=== undefined ||(p_responseobj.data.length<1)){
           this.setState({
             status:'No active exams available now. Please check later.',
@@ -149,14 +137,12 @@ export class LandingPage extends Component {
             qname:'',
             exp:'',
           });
-          console.log("No ongoing exam: ",this.state.HOME+this.state.ONGOING_EXAM+'userId='+data[0][1]+'&orgId='+data[1][1]+'');
         }else{
-          console.log("progress response:",p_responseobj.data);
-          this.setState({
-            checkFlagProgress:2,
-            progressData:p_responseobj.data,
-          });
-        }
+            this.setState({
+              checkFlagProgress:2,
+              progressData:p_responseobj.data,
+            });
+          }
       });
       //buy product
       fetch(this.state.HOME+this.state.PRODUCT+'GwTemplateId=catalog&userId='+data[0][1]+'&organizationId='+data[1][1]+'')
@@ -166,8 +152,7 @@ export class LandingPage extends Component {
           this.setState({
             checkFlagProduct:1,
           })
-        }
-        else {
+        }else {
           this.setState({
             checkFlagProduct:2,
             productData:responseProduct.data,
@@ -176,17 +161,16 @@ export class LandingPage extends Component {
       })
       //buy product ends
     });
-
   }
+
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
   }
 
-
-
   handleBackButton() {
     return BackHandler.exitApp();
   }
+
   addItemToCart(id){
     AsyncStorage.multiGet(['userId','organizationId']).then((data) => {
       fetch(this.state.HOME+this.state.ADDTOCART+data[0][1]+'/product/'+id+'/organization/'+data[1][1]+'')
@@ -198,6 +182,7 @@ export class LandingPage extends Component {
       })
     });
   }
+
   render() {
     const barWidth = Dimensions.get('screen').width - 30;
     const progressCustomStyles = {
@@ -235,16 +220,13 @@ export class LandingPage extends Component {
           {
             (this.state.checkFlagProgress==1||this.state.checkFlagProgress==0)
             ?<TouchableOpacity style={[styles.announcementBox, styles.flexrow]}
-              onPress={() => this.props.navigation.navigate('ExamDetails',{eid:exam.id,eprod:exam.examProductName,qname:exam.attributes.questionPaperName})} >
+              onPress={() => this.props.navigation.navigate('ExamDetails',{eid:exam.id,onprogress:false,eprod:exam.examProductName,qname:exam.attributes.questionPaperName})} >
               <View style={[styles.flexcol, styles.innerTextBox]} >
                 <Text style={[styles.topTitle]}>{exam.attributes.questionPaperName}</Text>
                 <Text style={[styles.lightFont]} >{exam.examProductName}</Text>
                 <View style={[styles.flexrow]}>
                   <Text style={[styles.totalWidth]}>Ends on {exam.expiryDate}</Text>
                 </View>
-              </View>
-              <View style={[styles.sideBotton, styles.brightBlue]} >
-                <Text style={[styles.bookFont,styles.whiteFont]} >Science & Tech </Text>
               </View>
             </TouchableOpacity>
             :
@@ -256,16 +238,11 @@ export class LandingPage extends Component {
                   <Text style={[styles.totalWidth]}>Ends on {exam.expiryDate}</Text>
                 </View>
               </View>
-              <View style={[styles.sideBotton, styles.brightBlue]} >
-                <Text style={[styles.bookFont,styles.whiteFont]} >Science & Tech </Text>
-              </View>
             </TouchableOpacity>
           }
-
           </View>
         );
       });
-
 
       this.state.checkFlagProgress==1||this.state.checkFlagProgress==0
       ? progressList = this.state.progressData.map((exam, index) => {
@@ -275,8 +252,7 @@ export class LandingPage extends Component {
       progressList = this.state.progressData.map((exam, index) => {
         return(
           <View style={[styles.announcementBox, styles.flexrow]} key={index.toString()} >
-
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('ExamDetails',{eid:exam.id,eprod:exam.questionPaperName,qname:exam.questionPaperName})} >
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('ExamDetails',{eid:exam.id,onprogress:true,eprod:exam.questionPaperName,qname:exam.questionPaperName})} >
               <View>
                 <Text style={[styles.bookFont,styles.blackFont,styles.boldFont]} >On progressing exam: {exam.questionPaperName}</Text>
               </View>
@@ -299,26 +275,25 @@ export class LandingPage extends Component {
         );
       });
     }
-    return (
 
+    return (
       <ScrollView>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.flexrow}>
           {productList}
         </ScrollView>
         {progressList}
         <View style={[styles.announcementBox, styles.flexrow]}>
-          <View >
-            <Image style={{ marginTop: 10 }} source={require('./Assets/images/announcements.png')}
-              />
-        </View>
-        <View style={[styles.flexcol, styles.innerTextBox]} >
-          <Text style={[styles.heavyFont,styles.boldFont,styles.blackFont]}>Take a free test</Text>
-          <Text style={[styles.lightFont]} >Lorem ipsum dolor sit amet, consectetur adipisci</Text>
-          <View style={[styles.flexrow]}>
-            <Text style={[styles.endFont]}>TRY NOW</Text>
+            <View >
+              <Image style={{ marginTop: 10 }} source={require('./Assets/images/announcements.png')}/>
+            </View>
+          <View style={[styles.flexcol, styles.innerTextBox]} >
+            <Text style={[styles.heavyFont,styles.boldFont,styles.blackFont]}>Take a free test</Text>
+            <Text style={[styles.lightFont]} >Lorem ipsum dolor sit amet, consectetur adipisci</Text>
+            <View style={[styles.flexrow]}>
+              <Text style={[styles.endFont]}>TRY NOW</Text>
+            </View>
           </View>
         </View>
-      </View>
       <View style={[styles.flexrow, styles.availableBox]}>
         <Text style={{ fontWeight: 'bold', color: '#000', flex: 3 }}>{this.state.status}</Text>
         <TouchableOpacity
@@ -326,7 +301,6 @@ export class LandingPage extends Component {
       </View>
       {examList}
     </ScrollView>
-
   );
 }
 }

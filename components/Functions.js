@@ -2,9 +2,10 @@ import React from 'react';
 import {  StackActions, NavigationActions } from 'react-navigation';
 import {
   AsyncStorage,
+  BackHandler,
+  Alert,
 } from 'react-native';
 import URL from './Url';
-
 
 //logout function
 export const sessionDestroy = () => {
@@ -33,4 +34,16 @@ export const noBack=(prop,route)=>{
     actions: [NavigationActions.navigate({ routeName: route })],
   })
   prop.navigation.dispatch(resetAction);
+};
+
+export const handleBackButton = () => {
+ Alert.alert(
+     'Are you sure you want to exit?',
+     'Changes you made may not be saved',
+      [
+       {text: 'Cancel', onPress: () =>console.log('Cancel Pressed'),style: 'cancel'},
+       {text: 'OK', onPress: () =>BackHandler.exitApp()},
+      ],
+      {cancelable: false}
+  )
 };

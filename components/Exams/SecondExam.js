@@ -7,6 +7,7 @@ import styles from '../Assets/Style';
 import TimerMixin from 'react-timer-mixin';
 import ImageOverlay from "react-native-image-overlay";
 import CheckBox from 'react-native-check-box';
+import {handleBackButton} from './../Functions';
 import {
   View,
   ScrollView,
@@ -18,6 +19,7 @@ import {
   Alert,
   FlatList,
   Button,
+  BackHandler,
   StyleSheet,
   AsyncStorage,
 } from 'react-native';
@@ -80,7 +82,12 @@ export default class StartExam extends Component {
   }
 
   componentWillMount() {
-      this.getData();
+    this.getData();
+    BackHandler.addEventListener('hardwareBackPress', () => {
+     this.submitAnswer(this.state.qpid,this.state.qid);
+     handleBackButton();
+     return true;
+    });
   }
 
   prevQuestion(qpId,qId){
@@ -322,7 +329,11 @@ export default class StartExam extends Component {
     //to save memory we've to clear interval
     this.interval && clearInterval(this.interval);
     this.interval = false;
-
+    BackHandler.addEventListener('hardwareBackPress', () => {
+     this.submitAnswer(this.state.qpid,this.state.qid);
+     handleBackButton();
+     return true;
+    });
   }
 
   static navigationOptions = ({ navigation  }) => {
@@ -438,9 +449,19 @@ export default class StartExam extends Component {
             <TouchableOpacity disabled={this.state.buttonDisable} style={[styles.buttonContainer, styles.brightBlue]} onPress={() => this.goToReview(this.state.qpid,this.state.qid)} ><Text style={styles.buttonText} >Go to Review page</Text></TouchableOpacity>
           </View>
         </View>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex:1,marginTop: 10, marginBottom: 10}}>
-          {progressNum}
-        </ScrollView>
+        <View style={[styles.flexrow]}>
+          <ScrollView horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            style={{flex:1,marginTop: 10, marginBottom: 10}}>
+            <View>
+              <Icon name="ios-arrow-dropleft" size={22}/>
+            </View>
+            {progressNum}
+            <View>
+              <Icon name="ios-arrow-dropright" size={22}/>
+            </View>
+          </ScrollView>
+        </View>
       </ScrollView>
       <View style={[styles.submitButton,styles.flexrow]}>
       {
