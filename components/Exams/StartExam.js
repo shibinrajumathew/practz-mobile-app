@@ -280,8 +280,12 @@ export default class StartExam extends Component {
             qpid:'',
           });
         }else{
+          //To remove unwanted characters
           const regex = /(<([^>]+)>|&nbsp;)/ig;
           const optnresult = ''+responseobj.data.text.replace(regex, ' ')+'';
+          const Entities = require('html-entities').AllHtmlEntities;
+          const entities = new Entities();
+          optnresult=entities.decode(optnresult);
 
           if(examApi=="startQuiz"){
             this.setState({
@@ -337,7 +341,6 @@ export default class StartExam extends Component {
 
   }
 
-
   componentWillUnmount () {
     //to save memory we've to clear interval
     this.interval && clearInterval(this.interval);
@@ -346,7 +349,6 @@ export default class StartExam extends Component {
   }
 
   _handleAppStateChange = (nextAppState) => {
-
      if (this.state.appState.match(/active/) && nextAppState === 'background') {
          console.log('App has come to the background!');
          this.submitAnswer(this.state.qpid,this.state.qid);

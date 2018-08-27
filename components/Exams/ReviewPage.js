@@ -17,7 +17,8 @@ import {
 } from 'react-native';
 import URL from './../Url';
 import {handleBackButton} from './../Functions';
-
+var minute;
+var seconds;
 class Exam extends Component {
   constructor() {
     super();
@@ -86,6 +87,8 @@ class Exam extends Component {
   // }
 
   render () {
+    console.log("minute:",minute);
+    console.log("seconds:",seconds);
     let AnsCount=0;
     let UnAnsCount=0;
     let reviewCount=0;
@@ -107,12 +110,16 @@ class Exam extends Component {
       const regex = /(<([^>]+)>|&nbsp;)/ig;
       let recValue=(value.questionText)+'';
       let recStatus=(value.status)+'';
-      const questionTrim = recValue.replace(regex, ' ');
+      let questionTrim = recValue.replace(regex, ' ');
+
+      const Entities = require('html-entities').AllHtmlEntities;
+      const entities = new Entities();
+      questionTrim=entities.decode(questionTrim);
       return(
         this.props.name=="ANSWERED"?
             (recStatus=="ANSWERED"?
                 <View key={index.toString()} style={[styles.examBox, styles.flexcol]}>
-                  <TouchableOpacity onPress={() => this.props.navigation.navigate("SecondExam",{qpid:this.props.navigation.state.params.qpid,qindex:value.questionIndex,examPage:"fromReview",eid:this.props.navigation.state.params.eid,getData:this.handleButtonClick.bind(this)})} style={[styles.flexrow]}>
+                  <TouchableOpacity onPress={() => this.props.navigation.navigate("SecondExam",{min:minute,sec:seconds,qpid:this.props.navigation.state.params.qpid,qindex:value.questionIndex,examPage:"fromReview",eid:this.props.navigation.state.params.eid,getData:this.handleButtonClick.bind(this)})} style={[styles.flexrow]}>
                   <Text style={[styles.topTitle]}>Q{value.questionIndex+1}</Text>
                   <Text style={[styles.lightFont, styles.blackFont]} >{questionTrim}</Text>
                 </TouchableOpacity>
@@ -136,7 +143,7 @@ class Exam extends Component {
          this.props.name=="UNANSWERED"?
              (recStatus=="UNANSWERED"?
                <View key={index.toString()} style={[styles.examBox, styles.flexcol]}>
-                   <TouchableOpacity onPress={() => this.props.navigation.navigate("SecondExam",{qpid:this.props.navigation.state.params.qpid,qindex:value.questionIndex,examPage:"fromReview",eid:this.props.navigation.state.params.eid,getData:this.getData.bind(this)})} style={[styles.flexrow]}>
+                   <TouchableOpacity onPress={() => this.props.navigation.navigate("SecondExam",{min:minute,sec:seconds,qpid:this.props.navigation.state.params.qpid,qindex:value.questionIndex,examPage:"fromReview",eid:this.props.navigation.state.params.eid,getData:this.getData.bind(this)})} style={[styles.flexrow]}>
                      <Text style={[styles.topTitle]}>Q{value.questionIndex+1}</Text>
                      <Text style={[styles.lightFont, styles.blackFont]} >{questionTrim}</Text>
                     </TouchableOpacity>
@@ -160,7 +167,7 @@ class Exam extends Component {
         this.props.name=="MARKED_FOR_REVIEW"?
             (recStatus=="MARKED_FOR_REVIEW"?
               <View key={index.toString()} style={[styles.examBox, styles.flexcol]}>
-                  <TouchableOpacity onPress={() => this.props.navigation.navigate("SecondExam",{qpid:this.props.navigation.state.params.qpid,qindex:value.questionIndex,examPage:"fromReview",eid:this.props.navigation.state.params.eid,getData:this.getData.bind(this)})} style={[styles.flexrow]}>
+                  <TouchableOpacity onPress={() => this.props.navigation.navigate("SecondExam",{min:minute,sec:seconds,qpid:this.props.navigation.state.params.qpid,qindex:value.questionIndex,examPage:"fromReview",eid:this.props.navigation.state.params.eid,getData:this.getData.bind(this)})} style={[styles.flexrow]}>
                   <Text style={[styles.topTitle]}>Q{value.questionIndex+1}</Text>
                   <Text style={[styles.lightFont, styles.blackFont]} >{questionTrim}</Text>
                   </TouchableOpacity>
@@ -231,11 +238,14 @@ class Clock extends Component {
   componentDidMount(){
     this.interval = setInterval(() => {
       if(this.state.rmSec==0){
+        minute=this.state.rmMin-this.state.minus,
+        seconds=59,
         this.setState({
           rmSec:59,
           rmMin:this.state.rmMin-this.state.minus,
         })
       }else{
+        seconds=this.state.rmSec-this.state.minus,
         this.setState({
           rmSec:this.state.rmSec-this.state.minus
         })
@@ -274,6 +284,9 @@ class Answered extends Component {
      handleBackButton();
      return true;
     });
+
+    minute=this.props.navigation.state.params.rmMin;
+    seconds=this.props.navigation.state.params.rmSec;
   }
   componentDidMount(){
     BackHandler.addEventListener('hardwareBackPress', () => {

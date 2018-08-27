@@ -82,6 +82,8 @@ export default class StartExam extends Component {
   }
 
   componentWillMount() {
+    console.log("min",this.props.navigation.state.params.min);
+    console.log("sec",this.props.navigation.state.params.sec);
     this.getData();
     BackHandler.addEventListener('hardwareBackPress', () => {
      this.submitAnswer(this.state.qpid,this.state.qid);
@@ -276,12 +278,15 @@ export default class StartExam extends Component {
           });
         }else{
           const regex = /(<([^>]+)>|&nbsp;)/ig;
-          const optnresult = ''+responseobj.data.text.replace(regex, ' ')+'';
+          let optnresult = ''+responseobj.data.text.replace(regex, ' ')+'';
+          const Entities = require('html-entities').AllHtmlEntities;
+          const entities = new Entities();
+          optnresult=entities.decode(optnresult);
 
           if(examApi=="startQuiz"){
             this.setState({
-              rmMin:responseobj.data.remainingMinutes,
-              rmSec:responseobj.data.remainingSeconds
+              rmMin:this.props.navigation.state.params.min,
+              rmSec:this.props.navigation.state.params.sec
             })
           }
           this.setState({
