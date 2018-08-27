@@ -28,7 +28,8 @@ NOTE_DETAILS:'/practz/ilearn/v1/notes/',
 ATTEMPTED_EXAM_DETAILS:'/practz/ilearn/v1/questions/examSummary/secure/',
 AVAILABLE_EXAMS:'/practz/ilearn/v1/questions/active-exams/?GwTemplateId=exam&userId=',
 ACCOUNT_SETTINGS:'/practz/v1/users/',
-UPDATE:'/practz/ilearn/v2/users/my-account/update'
-
+UPDATE:'/practz/ilearn/v2/users/my-account/update',
+CHANGE_PASSWORD:'/practz/ilearn/v2/users/password',
+HISTORIC_PATTERN:'/practz/ilearn/v1/reports/graphs'
 };
 export default URL

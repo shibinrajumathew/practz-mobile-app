@@ -12,6 +12,7 @@
     "radio-button-react-native": "^1.1.6",
     "react": "16.3.1",
     "react-native": "0.55.4",
+    "react-native-chartjs": "^1.0.2",
     "react-native-check-box": "^2.1.0",
     "react-native-datepicker": "^1.7.2",
     "react-native-display-html": "^1.2.5",
